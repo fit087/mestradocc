@@ -15,7 +15,7 @@ import main.heuristic.exceptions.ParameterInvalidException;
  */
 public class GRASPParameters {
 
-    public static GRASPParameters defaultParameters = new GRASPParameters(1000, 100, 0.5f);
+    public final static GRASPParameters defaultParameters = new GRASPParameters(1000, 100, 0.1f);
     
     private Integer numberOfConstructions;
 
@@ -38,6 +38,30 @@ public class GRASPParameters {
         }
         
         this.alfa = alfa;
+    }
+
+    public Float getAlfa() {
+        return alfa;
+    }
+
+    public void setAlfa(Float alfa) {
+        this.alfa = alfa;
+    }
+
+    public Integer getNumberOfConstructions() {
+        return numberOfConstructions;
+    }
+
+    public void setNumberOfConstructions(Integer numberOfConstructions) {
+        this.numberOfConstructions = numberOfConstructions;
+    }
+
+    public Integer getNumberOfRepetitions() {
+        return numberOfRepetitions;
+    }
+
+    public void setNumberOfRepetitions(Integer numberOfRepetitions) {
+        this.numberOfRepetitions = numberOfRepetitions;
     }
 
 }

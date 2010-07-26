@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package main.entities;
 
 import java.io.Serializable;
@@ -23,57 +22,73 @@ public class Flight implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Identifica se o actualFlight tem ligação direta com o voo candidato.
+     * Uma ligação direta acontece quando a cidade de chegada do voo atual é
+     * igual a cidade de partida do voo candidato.
+     * @param actualFlight
+     * @param candidate
+     * @return
+     */
+    public static boolean isDirectFlight(Flight actualFlight, Flight candidate) {
+        if (actualFlight.getArrivalCity().getName().equals(candidate.getDepartureCity().getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Indica se tem tempo para fazer essa sequencia de voos dado um atraso maximo.
+     * @param actualFlight
+     * @param candidate
+     * @param maxDelay
+     * @return
+     */
+    public static boolean hasTime(Flight actualFlight, Flight candidate, int maxDelay) {
+        if (actualFlight.getRealArrivalTime() <= candidate.getDepartureTime() - candidate.getDepartureCity().getGroundTime()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     //Nome do voo
-    private String flightName;
-
+    private String name;
     //Cidade de saida
     private City departureCity;
-
     //Cidade de chegada
     private City arrivalCity;
-
     //Horario de saida
     private Integer departureTime;
-
     //Horario de chegada
     private Integer arrivalTime;
-
     //Numero do voo
     @Transient
-    private Integer flightNumber;
-
+    private Integer number;
     //Numero do trilho
     @Transient
     private Integer railNumber;
-
     //Atraso no voo
     @Transient
-    private Integer flightDelay;
-
+    private Integer delay;
     //Possivel atraso do voo
     @Transient
-    private Integer possibleFlightDelay;
-
+    private Integer possibleDelay;
     //Custo do voo
     @Transient
     private Integer cost;
-
     //Proximo voo.
     @Transient
     private Flight nextFlight;
-
     //Voo anterior
     @Transient
     private Flight previousFlight;
-
     //Voo selecionado
     @Transient
     private Boolean selected;
-
     //Voo excluido
     @Transient
     private Boolean excluded;
@@ -81,13 +96,21 @@ public class Flight implements Serializable {
     public Flight() {
     }
 
-    public Flight(String flightName, Integer flightNumber, City departureCity, City arrivalCity, Integer departureTime, Integer arrivalTime) {
-        this.flightName = flightName;
-        this.flightNumber = flightNumber;
+    public Flight(String name, Integer number, City departureCity, City arrivalCity, Integer departureTime, Integer arrivalTime) {
+        this.name = name;
+        this.number = number;
         this.departureCity = departureCity;
         this.arrivalCity = arrivalCity;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
+        this.railNumber = -1;
+        this.delay = 0;
+        this.possibleDelay = 0;
+        this.cost = 0;
+        this.previousFlight = null;
+        this.nextFlight = null;
+        this.selected = false;
+        this.excluded = false;
     }
 
     public Long getId() {
@@ -98,12 +121,12 @@ public class Flight implements Serializable {
         this.id = id;
     }
 
-    public String getFlightName() {
-        return flightName;
+    public String getName() {
+        return name;
     }
 
-    public void setFlightName(String flightName) {
-        this.flightName = flightName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public City getArrivalCity() {
@@ -154,20 +177,20 @@ public class Flight implements Serializable {
         this.excluded = excluded;
     }
 
-    public Integer getFlightDelay() {
-        return flightDelay;
+    public Integer getDelay() {
+        return delay;
     }
 
-    public void setFlightDelay(Integer flightDelay) {
-        this.flightDelay = flightDelay;
+    public void setDelay(Integer delay) {
+        this.delay = delay;
     }
 
-    public Integer getFlightNumber() {
-        return flightNumber;
+    public Integer getNumber() {
+        return number;
     }
 
-    public void setFlightNumber(Integer flightNumber) {
-        this.flightNumber = flightNumber;
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Flight getNextFlight() {
@@ -178,12 +201,12 @@ public class Flight implements Serializable {
         this.nextFlight = nextFlight;
     }
 
-    public Integer getPossibleFlightDelay() {
-        return possibleFlightDelay;
+    public Integer getPossibleDelay() {
+        return possibleDelay;
     }
 
-    public void setPossibleFlightDelay(Integer possibleFlightDelay) {
-        this.possibleFlightDelay = possibleFlightDelay;
+    public void setPossibleDelay(Integer possibleDelay) {
+        this.possibleDelay = possibleDelay;
     }
 
     public Flight getPreviousFlight() {
@@ -210,6 +233,31 @@ public class Flight implements Serializable {
         this.selected = selected;
     }
 
+    /**
+     * Obtem o horario de saida acrescido de atrasos.
+     * @return
+     */
+    public int getRealDepartureTime() {
+        return getDepartureTime() + getDelay();
+    }
+
+    /**
+     * Obtem o horario de pouso acrescido de atrasos.
+     * @return
+     */
+    public int getRealArrivalTime() {
+        return getArrivalTime() + getDelay();
+    }
+
+    /**
+     * Obtem o tempo de solo desse voo.
+     * @return
+     */
+    public int getGroundTime(){
+        return getDepartureCity().getGroundTime();
+    }
+
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -232,7 +280,12 @@ public class Flight implements Serializable {
 
     @Override
     public String toString() {
-        return "Id: " + id + " Number:" + flightNumber + " Name:" + flightName + " Origem: " + departureCity.getName() + " Duracao: " + departureTime + " Destino: " + arrivalCity.getName() + " Duracao: " + arrivalTime;
+        String r = String.format("%5s[%3d] | %4s (%4d) ->  %4s (%4d)", name, number, departureCity.getName(), departureTime, arrivalCity.getName(), arrivalTime);
+        r += " [ + " + delay + " ]";
+        r += "\n";
+        return r;
+
+        // return "Id: " + id + " Number:" + flightNumber + " Name:" + flightName + " Origem: " + departureCity.getName() + " Inicio: " + departureTime + " Destino: " + arrivalCity.getName() + " Fim: " + arrivalTime;
     }
 
 }

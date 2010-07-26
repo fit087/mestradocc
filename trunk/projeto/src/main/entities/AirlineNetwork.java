@@ -5,7 +5,10 @@
 
 package main.entities;
 
+import graphic.GraphicConfigs;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -15,17 +18,19 @@ import java.util.ArrayList;
  */
 public class AirlineNetwork {
     
-    private ArrayList< ArrayList<Flight> > bestNetwork = new ArrayList<ArrayList<Flight>>();
+    private ArrayList< Rail > bestNetwork = new ArrayList< Rail >();
 
     private ArrayList<Flight> flights = new ArrayList<Flight>();
     
     private ArrayList<City> cities = new ArrayList<City>();
 
-    public ArrayList<ArrayList<Flight>> getBestNetwork() {
+    private GraphicConfigs graphicConfigs = GraphicConfigs.defaultGraphicConfig;
+
+    public ArrayList<Rail> getBestNetwork() {
         return bestNetwork;
     }
 
-    public void setBestNetwork(ArrayList<ArrayList<Flight>> bestNetwork) {
+    public void setBestNetwork(ArrayList<Rail> bestNetwork) {
         this.bestNetwork = bestNetwork;
     }
 
@@ -41,8 +46,62 @@ public class AirlineNetwork {
         return flights;
     }
 
+    public GraphicConfigs getGraphicConfigs() {
+        return graphicConfigs;
+    }
+
+    public void setGraphicConfigs(GraphicConfigs graphicConfigs) {
+        this.graphicConfigs = graphicConfigs;
+    }
+
     public void setFlights(ArrayList<Flight> flights) {
+        //Ordena em relação ao tempo de partida.
+        Collections.sort(flights, new Comparator<Flight>() {
+            public int compare(Flight o1, Flight o2) {
+                return o1.getDepartureTime() - o2.getDepartureTime();
+            }
+        });
+        
         this.flights = flights;
+    }
+
+    /**
+     * Obtem o menor tempo de inicio de todos os trilhos.
+     * @return
+     */
+    public Integer getLowTime(){
+        Integer lowTime = this.bestNetwork.get(0).getBeginTime();
+
+
+        for (int i = 1; i < bestNetwork.size(); i++) {
+            if(bestNetwork.get(i).getBeginTime() < lowTime){
+                lowTime = bestNetwork.get(i).getBeginTime();
+            }
+        }
+
+        return lowTime;
+    }
+
+    /**
+     * Obtem o maior tempo de pouso de todos os trilhos.
+     * @return
+     */
+    public Integer getHighTime(){
+        Integer highTime = this.bestNetwork.get(0).getEndTime();
+
+        for (int i = 1; i < bestNetwork.size(); i++) {
+            if(bestNetwork.get(i).getEndTime() > highTime){
+                highTime = bestNetwork.get(i).getEndTime();
+            }
+        }
+
+        return highTime;
+    }
+
+    public void showBestNetwork(){
+        for (Rail rail : bestNetwork) {
+            rail.show();
+        }
     }
 
     /**
