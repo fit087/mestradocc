@@ -216,7 +216,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabelToDownChartMouseClicked
 
     private void jSpinnerQtdeFlightsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerQtdeFlightsStateChanged
-        slidingGanttCategoryDataset.setMaximumCategoryCount((Integer)jSpinnerQtdeFlights.getValue());
+        slidingGanttCategoryDataset.setMaximumCategoryCount((Integer) jSpinnerQtdeFlights.getValue());
     }//GEN-LAST:event_jSpinnerQtdeFlightsStateChanged
 
     private void jLabelToRightChartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelToRightChartMouseClicked
@@ -259,12 +259,33 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         jLabelToDownChart.setEnabled(true);
     }
 
-    public void incrementRange(){
-        dateAxis.incrementRange(airlineNetwork.getGraphicConfigs().getRangeIncrement());
+    public void incrementRange() {
+
+        if (dateAxis.getRange().getUpperBound() > airlineNetwork.getGraphicConfigs().getHighTime()) {
+
+            jLabelToRightChart.setEnabled(false);
+        } else {
+            dateAxis.incrementRange(airlineNetwork.getGraphicConfigs().getRangeIncrement());
+        }
+
+        jLabelToLeftChart.setEnabled(true);
     }
 
-    public void decrementRange(){
-        dateAxis.decrementRange(airlineNetwork.getGraphicConfigs().getRangeIncrement());
+    public void decrementRange() {
+        
+
+        System.out.println("Teste " + dateAxis.getRange().getLowerBound());
+        System.out.println("Teste2 " + airlineNetwork.getLowTime()*60*1000);
+        System.out.println("Teste3 " + airlineNetwork.getGraphicConfigs().getVisibleRange());
+
+
+        if (dateAxis.getRange().getLowerBound() < airlineNetwork.getGraphicConfigs().getLowTime()) {
+            jLabelToLeftChart.setEnabled(false);
+        } else {
+            dateAxis.decrementRange(airlineNetwork.getGraphicConfigs().getRangeIncrement());
+        }
+
+        jLabelToRightChart.setEnabled(true);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -289,9 +310,6 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         this.dateAxis = new AircraftDateAxis("Tempo");
 
         GraphicConfigs graphicConfigs = airlineNetwork.getGraphicConfigs();
-
-        //dateAxis.setRange(graphicConfigs.getLowTime(),  graphicConfigs.getLowTime() + graphicConfigs.getRange());
-        //dateAxis.
 
         CategoryItemRenderer renderer = new GanttRenderer();
 
@@ -318,7 +336,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         plot.setFixedLegendItems(createLegends());
 
         JFreeChart chart = new JFreeChart("Aircraft Scheduling", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
-        
+
 
         this.chartPanel = new ChartPanel(chart);
         this.chartPanel.setPreferredSize(jScrollPaneAircraftChart.getPreferredSize());
@@ -360,7 +378,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
                 incrementRange();
             }
         };
-        
+
         ActionListener keyLeft = new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -372,7 +390,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         this.registerKeyboardAction(keyDown, "DOWN", KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         this.registerKeyboardAction(keyRight, "RIGHT", KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         this.registerKeyboardAction(keyLeft, "LEFT", KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        
+
 
     }
 

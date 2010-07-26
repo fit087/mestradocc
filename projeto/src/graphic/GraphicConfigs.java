@@ -17,21 +17,21 @@ public class GraphicConfigs {
 
     public static final GraphicConfigs defaultGraphicConfig = new GraphicConfigs(
             new GregorianCalendar(2010, GregorianCalendar.JULY, 20, 0, 0, 0).getTimeInMillis()
-            , new GregorianCalendar(2010, GregorianCalendar.JULY, 20, 23, 59, 59).getTimeInMillis()
+            , new GregorianCalendar(2010, GregorianCalendar.JULY, 21, 5, 59, 59).getTimeInMillis()
             , 24*60*60*1000l, 60*60*1000l);
 
     public Long lowTime;
 
     public Long highTime;
 
-    public Long range;
+    public Long visibleRange;
 
     private Long rangeIncrement;
 
-    public GraphicConfigs(Long lowTime, Long highTime, Long range, Long rangeIncrement) {
+    public GraphicConfigs(Long lowTime, Long highTime, Long visibleRange, Long rangeIncrement) {
         this.lowTime = lowTime;
         this.highTime = highTime;
-        this.range = range;
+        this.visibleRange = visibleRange;
         this.rangeIncrement = rangeIncrement;
     }
 
@@ -51,12 +51,12 @@ public class GraphicConfigs {
         this.lowTime = lowTime;
     }
 
-    public Long getRange() {
-        return range;
+    public Long getVisibleRange() {
+        return visibleRange;
     }
 
-    public void setRange(Long range) {
-        this.range = range;
+    public void setVisibleRange(Long range) {
+        this.visibleRange = range;
     }
 
     public long getRangeIncrement() {
