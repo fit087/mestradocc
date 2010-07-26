@@ -5,7 +5,7 @@
 
 package main.entities;
 
-import graphic.GraphicConfigs;
+import graphic.AirlineGraphicConfigs;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,7 +24,7 @@ public class AirlineNetwork {
     
     private ArrayList<City> cities = new ArrayList<City>();
 
-    private GraphicConfigs graphicConfigs = GraphicConfigs.defaultGraphicConfig;
+    private AirlineGraphicConfigs airlineGraphicConfigs = AirlineGraphicConfigs.defaultGraphicConfig;
 
     public ArrayList<Rail> getBestNetwork() {
         return bestNetwork;
@@ -46,12 +46,12 @@ public class AirlineNetwork {
         return flights;
     }
 
-    public GraphicConfigs getGraphicConfigs() {
-        return graphicConfigs;
+    public AirlineGraphicConfigs getAirlineGraphicConfigs() {
+        return airlineGraphicConfigs;
     }
 
-    public void setGraphicConfigs(GraphicConfigs graphicConfigs) {
-        this.graphicConfigs = graphicConfigs;
+    public void setAirlineGraphicConfigs(AirlineGraphicConfigs airlineGraphicConfigs) {
+        this.airlineGraphicConfigs = airlineGraphicConfigs;
     }
 
     public void setFlights(ArrayList<Flight> flights) {

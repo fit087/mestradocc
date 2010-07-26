@@ -6,6 +6,7 @@ package graphic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -13,6 +14,8 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import main.entities.AirlineNetwork;
 import main.entities.Flight;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.EntityCollection;
@@ -32,11 +35,10 @@ import org.jfree.ui.RectangleEdge;
 public class AircraftGanttRenderer extends GanttRenderer {
 
     private static Color flightColorBegin = new Color(0, 56, 186); //Dark Azure ;
-    private static Color flightColorEnd = new Color(0,0,128);//Navi
+    private static Color flightColorEnd = new Color(0, 0, 128);//Navi
     private static Paint groundColor = new Color(255, 186, 0); //Selective Yellow;
-    private static Paint barStrokeColor  = Color.BLACK;
+    private static Paint barStrokeColor = Color.BLACK;
     private static Stroke barStroke = new BasicStroke(1.0f);
-    
     private final AirlineNetwork airlineNetwork;
     private final AircraftGanttCategoryDataset aircraftGanttCategoryDataset;
 
@@ -67,13 +69,13 @@ public class AircraftGanttRenderer extends GanttRenderer {
             if (value0 == null) {
                 return;
             }
-            Number newNumber = value0.longValue() + flight.getGroundTime()*60*1000;
+            Number newNumber = value0.longValue() + flight.getGroundTime() * 60 * 1000;
             double translatedValue0 = rangeAxis.valueToJava2D(
                     value0.doubleValue(), dataArea, rangeAxisLocation);
 
             // value 1
             Number value1 = dataset.getEndValue(row, column, subinterval);
-            
+
             if (value1 == null) {
                 return;
             }
@@ -101,8 +103,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
                 bar = new Rectangle2D.Double(translatedValue0, rectStart,
                         rectLength, rectBreadth);
                 barBase = RectangleEdge.LEFT;
-            }
-            else if (plot.getOrientation() == PlotOrientation.VERTICAL) {
+            } else if (plot.getOrientation() == PlotOrientation.VERTICAL) {
                 bar = new Rectangle2D.Double(rectStart, translatedValue0,
                         rectBreadth, rectLength);
                 barBase = RectangleEdge.BOTTOM;
@@ -123,8 +124,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
                     incompleteBar = new Rectangle2D.Double(translatedValue0
                             + rectLength * p, rectStart + start * rectBreadth,
                             rectLength * (1 - p), rectBreadth * (end - start));
-                }
-                else if (orientation == PlotOrientation.VERTICAL) {
+                } else if (orientation == PlotOrientation.VERTICAL) {
                     completeBar = new Rectangle2D.Double(rectStart + start
                             * rectBreadth, translatedValue0 + rectLength
                             * (1 - p), rectBreadth * (end - start),
@@ -136,15 +136,20 @@ public class AircraftGanttRenderer extends GanttRenderer {
 
             }
 
+            boolean type1 = false;
+
+            if (!type1) {
+                bar.setRect(bar.getMinX(), bar.getMinY() + 10, bar.getWidth(), bar.getHeight() - 10);
+            }
+
             if (getShadowsVisible()) {
                 getBarPainter().paintBarShadow(g2, this, row, column, bar,
                         barBase, true);
             }
 
-            float midX = (float) ((bar.getMinX() + bar.getMaxX())/2.0);
-            
+            float midX = (float) ((bar.getMinX() + bar.getMaxX()) / 2.0);
 
-            g2.setPaint(new GradientPaint(midX,(float) bar.getMinY(), flightColorBegin, midX, (float)bar.getMaxY(), flightColorEnd));
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
             g2.fill(bar);
 
             completeBar.setRect(bar.getX(), bar.getY(), groundLength, bar.getHeight());
@@ -155,7 +160,47 @@ public class AircraftGanttRenderer extends GanttRenderer {
             g2.setStroke(barStroke);
             g2.draw(bar);
 
+            float midY = (float) ((bar.getMinY() + bar.getMaxY()) / 2.0);
+
+            boolean showCities = true;
+
+
+
+
+            if (showCities) {
+                if (type1) {
+                    g2.setPaint(Color.black);
+                    g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+                    g2.drawString(flight.getDepartureCity().getName(), (float) bar.getMinX() - 15, midY + 5);
+                    g2.setPaint(Color.WHITE);
+                    g2.drawString(flight.getName(), midX, midY);
+                } else {
+                    g2.setPaint(Color.black);
+                    g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
+                    g2.drawString(flight.getDepartureCity().getName(), (float) bar.getMinX() - 15, (float) bar.getMinY() - 1);
+                    g2.setPaint(Color.WHITE);
+                    g2.drawString(flight.getName(), midX, midY + 5);
+                }
+            }
+
             if (subinterval == count - 1) {
+
+                if (showCities) {
+                    if (type1) {
+                        g2.setPaint(Color.black);
+                        g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+                        g2.drawString(flight.getArrivalCity().getName(), (float) bar.getMaxX() - 15, midY + 5);
+                        g2.setPaint(Color.WHITE);
+                        g2.drawString(flight.getName(), midX, midY + 5);
+                    } else {
+                        g2.setPaint(Color.black);
+                        g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
+                        g2.drawString(flight.getArrivalCity().getName(), (float) bar.getMaxX() - 15, (float) bar.getMinY() - 1);
+                        g2.setPaint(Color.WHITE);
+                        g2.drawString(flight.getName(), midX, midY + 5);
+                    }
+                }
+
                 // submit the current data point as a crosshair candidate
                 int datasetIndex = plot.indexOf(dataset);
                 Comparable columnKey = dataset.getColumnKey(column);
@@ -218,7 +263,4 @@ public class AircraftGanttRenderer extends GanttRenderer {
     public static void setGroundColor(Paint groundColor) {
         AircraftGanttRenderer.groundColor = groundColor;
     }
-
-    
-
 }

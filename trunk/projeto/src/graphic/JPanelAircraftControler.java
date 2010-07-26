@@ -10,24 +10,29 @@
  */
 package graphic;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.text.DateFormat;
+import java.awt.geom.Rectangle2D;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import main.entities.AirlineNetwork;
+import org.jfree.chart.ChartMouseEvent;
+import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
 import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.labels.IntervalCategoryToolTipGenerator;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.entity.CategoryItemEntity;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.GanttRenderer;
-import org.jfree.chart.urls.StandardCategoryURLGenerator;
 
 /**
  *
@@ -40,10 +45,13 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private AircraftDateAxis dateAxis;
     private AirlineNetwork airlineNetwork;
 
+    private final JPopupMenu jpm = new JPopupMenu();
+
     /** Creates new form JPanelAircraftControler */
     public JPanelAircraftControler() {
         initComponents();
         initKeys();
+
     }
 
     /** This method is called from within the constructor to
@@ -62,6 +70,8 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         jLabelToLeftChart = new javax.swing.JLabel();
         jLabelToRightChart = new javax.swing.JLabel();
         jLabelToDownChart = new javax.swing.JLabel();
+        jLabelZoomIn = new javax.swing.JLabel();
+        jLabelZoomOut = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSpinnerQtdeFlights = new javax.swing.JSpinner();
@@ -102,6 +112,22 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
             }
         });
 
+        jLabelZoomIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomin.png"))); // NOI18N
+        jLabelZoomIn.setToolTipText("Zoom in");
+        jLabelZoomIn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelZoomInMouseClicked(evt);
+            }
+        });
+
+        jLabelZoomOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomout.png"))); // NOI18N
+        jLabelZoomOut.setToolTipText("Zoom out");
+        jLabelZoomOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelZoomOutMouseClicked(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -109,20 +135,28 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jLabelToUpChart)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jLabelZoomOut)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jLabelToUpChart))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jLabelToLeftChart)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabelToDownChart)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jLabelToRightChart)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelToRightChart)
+                    .add(jLabelZoomIn))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jLabelToUpChart)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabelToUpChart)
+                    .add(jLabelZoomIn)
+                    .add(jLabelZoomOut))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jLabelToLeftChart)
@@ -156,7 +190,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
                 .add(jSpinnerQtdeFlights, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jButton1)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(261, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -176,7 +210,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
             .add(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(12, 12, 12)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -184,9 +218,9 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -227,6 +261,14 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         decrementRange();
     }//GEN-LAST:event_jLabelToLeftChartMouseClicked
 
+    private void jLabelZoomInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelZoomInMouseClicked
+        zoomIn();
+    }//GEN-LAST:event_jLabelZoomInMouseClicked
+
+    private void jLabelZoomOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelZoomOutMouseClicked
+        zoomOut();
+    }//GEN-LAST:event_jLabelZoomOutMouseClicked
+
     /**
      * Acao de mostrar voos mais acima.
      */
@@ -259,33 +301,41 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         jLabelToDownChart.setEnabled(true);
     }
 
+    /**
+     * Acao para avancar no gráfico.
+     */
     public void incrementRange() {
 
-        if (dateAxis.getRange().getUpperBound() > airlineNetwork.getGraphicConfigs().getHighTime()) {
+        if (dateAxis.getRange().getUpperBound() > airlineNetwork.getAirlineGraphicConfigs().getHighTime()) {
 
             jLabelToRightChart.setEnabled(false);
         } else {
-            dateAxis.incrementRange(airlineNetwork.getGraphicConfigs().getRangeIncrement());
+            dateAxis.incrementRange(airlineNetwork.getAirlineGraphicConfigs().getRangeIncrement());
         }
 
         jLabelToLeftChart.setEnabled(true);
     }
 
+    /**
+     * Acao para retroceder no gráfico.
+     */
     public void decrementRange() {
-        
 
-        System.out.println("Teste " + dateAxis.getRange().getLowerBound());
-        System.out.println("Teste2 " + airlineNetwork.getLowTime()*60*1000);
-        System.out.println("Teste3 " + airlineNetwork.getGraphicConfigs().getVisibleRange());
-
-
-        if (dateAxis.getRange().getLowerBound() < airlineNetwork.getGraphicConfigs().getLowTime()) {
+        if (dateAxis.getRange().getLowerBound() < airlineNetwork.getAirlineGraphicConfigs().getLowTime()) {
             jLabelToLeftChart.setEnabled(false);
         } else {
-            dateAxis.decrementRange(airlineNetwork.getGraphicConfigs().getRangeIncrement());
+            dateAxis.decrementRange(airlineNetwork.getAirlineGraphicConfigs().getRangeIncrement());
         }
 
         jLabelToRightChart.setEnabled(true);
+    }
+
+    public void zoomIn() {
+        dateAxis.zoomIn(airlineNetwork.getAirlineGraphicConfigs().getZoomIncrement());
+    }
+
+    public void zoomOut() {
+        dateAxis.zoomOut(airlineNetwork.getAirlineGraphicConfigs().getZoomIncrement());
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -294,6 +344,8 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelToLeftChart;
     private javax.swing.JLabel jLabelToRightChart;
     private javax.swing.JLabel jLabelToUpChart;
+    private javax.swing.JLabel jLabelZoomIn;
+    private javax.swing.JLabel jLabelZoomOut;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -301,35 +353,33 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private javax.swing.JSpinner jSpinnerQtdeFlights;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Iniciar o gráfico da solução do ARP que é passado no airlineNetwork
+     * @param airlineNetwork
+     */
     public void initChart(AirlineNetwork airlineNetwork) {
 
         this.airlineNetwork = airlineNetwork;
 
         CategoryAxis categoryAxis = new CategoryAxis("Aviões");
 
-        this.dateAxis = new AircraftDateAxis("Tempo");
+        this.dateAxis = new AircraftDateAxis("Horário");
 
-        GraphicConfigs graphicConfigs = airlineNetwork.getGraphicConfigs();
+        AirlineGraphicConfigs graphicConfigs = airlineNetwork.getAirlineGraphicConfigs();
 
-        CategoryItemRenderer renderer = new GanttRenderer();
+        long baseTime = graphicConfigs.getBaseTime();
 
-        boolean tooltips = false;
-        if (tooltips) {
-            renderer.setBaseToolTipGenerator(
-                    new IntervalCategoryToolTipGenerator(
-                    "{3} - {4}", DateFormat.getDateInstance()));
-        }
-        boolean urls = false;
-        if (urls) {
-            renderer.setBaseItemURLGenerator(
-                    new StandardCategoryURLGenerator());
-        }
+        graphicConfigs.setLowTime(baseTime + (airlineNetwork.getLowTime() - 30) * 60 * 1000l);
+        graphicConfigs.setHighTime(baseTime + (airlineNetwork.getHighTime() + 60) * 60 * 1000l);
+        graphicConfigs.setVisibleRange(10 * 60 * 60 * 1000l);
+
+        dateAxis.setRange(graphicConfigs.getLowTime(), graphicConfigs.getLowTime() + graphicConfigs.getVisibleRange());
 
         this.slidingGanttCategoryDataset = new AircraftGanttCategoryDataset(airlineNetwork, DataSetGenerator.getDataSet(airlineNetwork), 0, 7);
 
-        AircraftGanttRenderer aircraftGanttRenderer = new AircraftGanttRenderer(airlineNetwork, slidingGanttCategoryDataset);
+        CategoryItemRenderer aircraftRenderer = new AircraftGanttRenderer(airlineNetwork, slidingGanttCategoryDataset);
 
-        CategoryPlot plot = new CategoryPlot(slidingGanttCategoryDataset, categoryAxis, dateAxis, aircraftGanttRenderer);
+        CategoryPlot plot = new CategoryPlot(slidingGanttCategoryDataset, categoryAxis, dateAxis, aircraftRenderer);
 
         plot.setOrientation(PlotOrientation.HORIZONTAL);
 
@@ -337,8 +387,41 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
 
         JFreeChart chart = new JFreeChart("Aircraft Scheduling", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
-
         this.chartPanel = new ChartPanel(chart);
+
+        chartPanel.addChartMouseListener(new ChartMouseListener() {
+
+            public void chartMouseClicked(ChartMouseEvent event) {
+                //throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            public void chartMouseMoved(ChartMouseEvent event) {
+                CategoryPlot categoryPlot = (CategoryPlot) event.getChart().getPlot();
+                int valueX = event.getTrigger().getX();
+                Rectangle2D dataArea = chartPanel.getScreenDataArea();
+                DateAxis da = (DateAxis) categoryPlot.getRangeAxis();
+                long h = (long) da.java2DToValue(valueX, dataArea, categoryPlot.getRangeAxisEdge());
+
+                jpm.setVisible(false);
+
+                if (event.getEntity() instanceof CategoryItemEntity) {
+                    CategoryItemEntity categoryItem = (CategoryItemEntity) event.getEntity();
+                    String selectedName = categoryItem.getColumnKey().toString();
+                    System.out.println("Teste " + selectedName);
+
+                    
+
+                    jpm.removeAll();
+                    jpm.add(new SimpleDateFormat().format(new Date(h)));
+                    Point point = event.getTrigger().getPoint();
+                    jpm.setLocation((int) (point.getX()), (int) (point.getY() + 30));
+                    jpm.setVisible(true);
+                }
+
+
+            }
+        });
+
         this.chartPanel.setPreferredSize(jScrollPaneAircraftChart.getPreferredSize());
 
         jScrollPaneAircraftChart.getViewport().removeAll();
