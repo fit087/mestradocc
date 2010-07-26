@@ -31,7 +31,7 @@ public class DataSetGenerator {
 
         ArrayList<Rail> rails = airlineNetwork.getBestNetwork();
 
-        Long baseTime = airlineNetwork.getGraphicConfigs().getLowTime();
+        Long baseTime = airlineNetwork.getAirlineGraphicConfigs().getBaseTime();
 
         long minTomili = 60*1000;
 
