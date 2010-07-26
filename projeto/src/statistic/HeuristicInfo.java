@@ -5,9 +5,11 @@
 
 package statistic;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import util.RandomManager;
 import util.VersionManager;
 
 /**
@@ -18,7 +20,7 @@ import util.VersionManager;
  */
 
 @Entity
-public class HeuristicInfo {
+public class HeuristicInfo implements Serializable {
 
     //Identificacao
     @Id
@@ -30,6 +32,9 @@ public class HeuristicInfo {
 
     //Horario em que foi executado o algoritmo.
     private long executeTime;
+
+    //Semente utilizada na randomização dos números.
+    private long seed;
 
     //Numero de construções GRASP efetuadas.
     private int numberOfConstructions;
@@ -52,6 +57,7 @@ public class HeuristicInfo {
     private void initialize(){
         this.version = VersionManager.currentVersion;
         this.executeTime = System.currentTimeMillis();
+        this.seed = RandomManager.seed;
     }
 
     public int getDuracao() {
