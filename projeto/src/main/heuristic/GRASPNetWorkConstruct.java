@@ -5,6 +5,7 @@
 package main.heuristic;
 
 import com.sun.xml.internal.ws.api.pipe.Tube;
+import gui.JFrameGraphicTest;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +49,10 @@ public class GRASPNetWorkConstruct {
 
     public void GRASPResolve() {
 
+
         for (int i = 0; i < gRASPParameters.getNumberOfRepetitions(); i++) {
+            int percentComplete = (100*(i+1))/gRASPParameters.getNumberOfRepetitions();
+            JFrameGraphicTest.instance.setPercentComplete(percentComplete);
 
             for (int j = 0; j < gRASPParameters.getNumberOfConstructions(); j++) {
 
@@ -57,12 +61,13 @@ public class GRASPNetWorkConstruct {
                     LogManager.writeMsg(String.format("Melhorou a solução (%s - %s)\n", airlineNetwork.railsSize(), network.size()));
                     airlineNetwork.setBestNetwork(network);
                     if (!airlineNetwork.validadeSolution()) {
-                        System.out.println("ERRO =(");
+                        LogManager.writeMsg("ERRO");
                         System.exit(1);
                     }
                 }
             }
         }
+
     }
 
     /**

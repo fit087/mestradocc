@@ -8,18 +8,25 @@
  *
  * Created on 25/07/2010, 15:13:54
  */
-package graphic;
+package gui;
 
+import graphic.AircraftDataSet;
+import graphic.AircraftDateAxis;
+import graphic.AircraftGanttCategoryDataset;
+import graphic.AircraftGanttRenderer;
+import graphic.AirlineGraphicConfigs;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.JSpinner.NumberEditor;
 import javax.swing.KeyStroke;
 import main.entities.AirlineNetwork;
 import main.entities.Flight;
@@ -47,7 +54,6 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private AircraftDateAxis dateAxis;
     private AirlineNetwork airlineNetwork;
     private JPanelFlightInfo jPanelInfo = new JPanelFlightInfo();
-
     private final JPopupMenu jpm = new JPopupMenu();
 
     /** Creates new form JPanelAircraftControler */
@@ -55,11 +61,14 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         initComponents();
         initKeys();
         jpm.add(jPanelInfo);
-
     }
 
-    public void refreshJPanelInfo(Flight flight){
+    public void refreshJPanelInfo(Flight flight) {
         jPanelInfo.setInfo(flight, airlineNetwork);
+    }
+
+    public void setPercentComplete(int value) {
+        jProgressBar1.getModel().setValue(value);
     }
 
     /** This method is called from within the constructor to
@@ -84,6 +93,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jSpinnerQtdeFlights = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -178,6 +188,10 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         jLabel1.setText("Qtde:");
 
         jSpinnerQtdeFlights.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jSpinnerQtdeFlights.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jSpinnerQtdeFlights.setEnabled(false);
+        jSpinnerQtdeFlights.setFocusable(false);
+        jSpinnerQtdeFlights.setOpaque(true);
         jSpinnerQtdeFlights.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerQtdeFlightsStateChanged(evt);
@@ -185,6 +199,13 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         });
 
         jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jProgressBar1.setStringPainted(true);
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -192,12 +213,15 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jLabel1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jSpinnerQtdeFlights, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton1)
-                .addContainerGap(261, Short.MAX_VALUE))
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jProgressBar1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                    .add(jPanel3Layout.createSequentialGroup()
+                        .add(jLabel1)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jSpinnerQtdeFlights, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 49, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jButton1)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -207,7 +231,9 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
                     .add(jButton1)
                     .add(jSpinnerQtdeFlights, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel1))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 28, Short.MAX_VALUE)
+                .add(jProgressBar1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
@@ -275,6 +301,10 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private void jLabelZoomOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelZoomOutMouseClicked
         zoomOut();
     }//GEN-LAST:event_jLabelZoomOutMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * Acao de mostrar voos mais acima.
@@ -356,21 +386,23 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPaneAircraftChart;
     private javax.swing.JSpinner jSpinnerQtdeFlights;
     // End of variables declaration//GEN-END:variables
 
-    public Flight getFlight(String railName, long flightTime){
+    public Flight getFlight(String railName, long flightTime) {
         return airlineNetwork.getFlight(railName, flightTime);
     }
 
-    public int getRealXPoint(Point point){
+    public int getRealXPoint(Point point) {
         return (int) (getLocationOnScreen().getX() + point.getX());
     }
 
-    public int getRealYPoint(Point point){
+    public int getRealYPoint(Point point) {
         return (int) (getLocationOnScreen().getY() + point.getY());
     }
+
     /**
      * Iniciar o gráfico da solução do ARP que é passado no airlineNetwork
      * @param airlineNetwork
@@ -502,7 +534,8 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         LegendItemCollection legendItemCollection = new LegendItemCollection();
 
         legendItemCollection.add(new LegendItem("Tempo de Solo", AircraftGanttRenderer.getGroundColor()));
-        legendItemCollection.add(new LegendItem("Tempo no Ar", AircraftGanttRenderer.getFlightColorEnd()));
+        legendItemCollection.add(new LegendItem("Sem atraso", AircraftGanttRenderer.getFlightColorEnd()));
+        legendItemCollection.add(new LegendItem("Com atraso", AircraftGanttRenderer.getFlightColorBeginDelayed()));
 
         return legendItemCollection;
     }

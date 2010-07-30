@@ -8,11 +8,12 @@
  *
  * Created on 25/07/2010, 08:23:58
  */
-package graphic;
+package gui;
 
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import main.entities.AirlineNetwork;
 import main.heuristic.AircraftRotationParameters;
 import main.heuristic.GRASPNetWorkConstruct;
@@ -25,14 +26,24 @@ import main.reader.AircraftFileReader;
  */
 public class JFrameGraphicTest extends javax.swing.JFrame {
 
+    public static JFrameGraphicTest instance;
     private JPanelAircraftControler jpac = new JPanelAircraftControler();
 
     /** Creates new form JFrameGraphicTest */
     public JFrameGraphicTest() {
         initComponents();
         jScrollPane1.getViewport().add(jpac);
-        initGraphics();
-        jpac.initConfigures();
+        instance = this;
+
+        new Thread(){
+
+            @Override
+            public void run() {
+                initGraphics();
+            }
+
+        }.start();
+        
     }
 
     public void initGraphics() {
@@ -48,6 +59,12 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         gRASPNetWorkConstruct.GRASPResolve();
 
         jpac.initChart(airlineNetwork);
+
+        jpac.initConfigures();
+    }
+
+    public static void setPercentComplete(int value){
+        instance.getJPanelAircraftControler().setPercentComplete(value);
     }
 
     /** This method is called from within the constructor to
@@ -100,7 +117,14 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        initGraphics();
+        new Thread(){
+
+            @Override
+            public void run() {
+                initGraphics();
+            }
+
+        }.start();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -121,6 +145,10 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    private JPanelAircraftControler getJPanelAircraftControler() {
+        return this.jpac;
+    }
 
     
 }
