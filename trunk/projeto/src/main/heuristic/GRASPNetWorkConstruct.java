@@ -4,8 +4,10 @@
  */
 package main.heuristic;
 
+import com.sun.xml.internal.ws.api.pipe.Tube;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import main.entities.AirlineNetwork;
 import main.entities.Flight;
 import main.entities.Rail;
@@ -44,13 +46,35 @@ public class GRASPNetWorkConstruct {
         this.resolved = false;
     }
 
-    public void resolve() {
-        LogManager.writeMsg("Iniciando a construção GRASP da malha.");
+    public void GRASPResolve() {
 
-        ArrayList<Flight> flights = airlineNetwork.getFlights();
+        for (int i = 0; i < gRASPParameters.getNumberOfRepetitions(); i++) {
+
+            for (int j = 0; j < gRASPParameters.getNumberOfConstructions(); j++) {
+
+                ArrayList<Rail> network = GRASPConstruction();
+                if (network.size() < airlineNetwork.railsSize()) {
+                    LogManager.writeMsg(String.format("Melhorou a solução (%s - %s)\n", airlineNetwork.railsSize(), network.size()));
+                    airlineNetwork.setBestNetwork(network);
+                    if (!airlineNetwork.validadeSolution()) {
+                        System.out.println("ERRO =(");
+                        System.exit(1);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Efetua uma construção do GRASP
+     */
+    public ArrayList<Rail> GRASPConstruction() {
+        //LogManager.writeMsg("Iniciando a construção GRASP da malha.");
+
+        ArrayList<Flight> clonedFlights = airlineNetwork.getFlightsClone();
         ArrayList<Rail> network = new ArrayList<Rail>();
 
-        for (int i = 0; i < flights.size(); i++) {
+        for (int i = 0; i < clonedFlights.size(); i++) {
 
             //Lista de candidatos a primeiro voo.
             ArrayList<Flight> firstFlightCandidates = new ArrayList<Flight>();
@@ -62,8 +86,9 @@ public class GRASPNetWorkConstruct {
              * 4 Voos já é suficiente para ter um candidato. O aumento desse
              * número aumenta a aleatóriedade da solução final.
              */
-            for (Flight flightCandidate : flights) {
+            for (Flight flightCandidate : clonedFlights) {
                 if (flightCandidate.getRailNumber() == -1) {
+                    flightCandidate.setDelay(0);
                     firstFlightCandidates.add(flightCandidate);
                 }
 
@@ -85,19 +110,20 @@ public class GRASPNetWorkConstruct {
             while (actualFlight != null) {
                 actualFlight.setRailNumber(rail.getNumber());
                 rail.addFlight(actualFlight);
-                actualFlight = calculateNextFlight(actualFlight);
+                Flight f = calculateNextFlight(actualFlight, clonedFlights);
+
+                actualFlight = f;
             }
 
             //rail.calculateCost();
 
         }
 
-        airlineNetwork.setBestNetwork(network);
-        airlineNetwork.showBestNetwork();
-
         resolved = true;
 
-        LogManager.writeMsg("Finalizando a construção GRASP da malha.");
+        // LogManager.writeMsg("Finalizando a construção GRASP da malha.");
+
+        return network;
     }
 
     /**
@@ -113,20 +139,38 @@ public class GRASPNetWorkConstruct {
      * @param flightCandidate
      * @return null caso não haja mais nenhum vôo que possa sucede-lo
      */
-    private Flight calculateNextFlight(Flight actualFlight) {
+    private Flight calculateNextFlight(Flight actualFlight, ArrayList<Flight> clonedFlights) {
         int arcType;
+        int cicleNumber = 0;
 
         arcType = randomizingArc();
-        ArrayList<Flight> adjacentFlight = extractAdjacentFlight(actualFlight, arcType);
+        ArrayList<Flight> adjacentFlight;
 
-        if (adjacentFlight.isEmpty()) {
-            return null;
+        while (true) {
+
+            adjacentFlight = extractAdjacentFlight(actualFlight, arcType, clonedFlights);
+
+            if (adjacentFlight.isEmpty()) {
+
+                cicleNumber++;
+                if (cicleNumber == 3) {
+                    return null;
+                }
+
+                arcType = (arcType + cicleNumber) % 4;
+
+            } else {
+                break;
+            }
+
+
+
         }
 
         int range = (int) Math.ceil(adjacentFlight.size() * gRASPParameters.getAlfa());
 
         Flight selectedFlight = adjacentFlight.get(RandomManager.getNext(range));
-        
+
         return selectedFlight;
     }
 
@@ -147,8 +191,13 @@ public class GRASPNetWorkConstruct {
      */
     private int randomizingArc() {
 
-        if(true) return 0;
+
         int number = RandomManager.getNext(100) + 1;
+
+        if (true) {
+            return 1;
+        }
+
         if (number <= aircraftRotationParameters.getProbabilityType1Arc()) {
             return 0;
         }
@@ -156,19 +205,19 @@ public class GRASPNetWorkConstruct {
         number -= aircraftRotationParameters.getProbabilityType1Arc();
 
         if (number <= aircraftRotationParameters.getProbabilityType2Arc()) {
-            return 1;
+            return 0;
         }
 
         number -= aircraftRotationParameters.getProbabilityType2Arc();
 
         if (number <= aircraftRotationParameters.getProbabilityType3Arc()) {
-            return 2;
+            return 0;
         }
 
         number -= aircraftRotationParameters.getProbabilityType3Arc();
 
         if (number <= aircraftRotationParameters.getProbabilityType4Arc()) {
-            return 3;
+            return 0;
         }
 
         return -1;
@@ -180,7 +229,7 @@ public class GRASPNetWorkConstruct {
         AircraftFileReader.readDataFromFile("instances/01", airlineNetwork);
 
         GRASPNetWorkConstruct gRASPNetWorkConstruct = new GRASPNetWorkConstruct(airlineNetwork, GRASPParameters.defaultParameters, AircraftRotationParameters.defaultParameters);
-        gRASPNetWorkConstruct.resolve();
+        gRASPNetWorkConstruct.GRASPResolve();
     }
 
     /**
@@ -191,13 +240,18 @@ public class GRASPNetWorkConstruct {
      *
      * Lista de Voos adjacentes permitidos.
      */
-    private ArrayList<Flight> extractAdjacentFlight(Flight actualFlight, int arcType) {
-        switch(arcType){
-            case 0: return extractAdjacentFlightArcType1(actualFlight);
-            case 1: return extractAdjacentFlightArcType2(actualFlight);
-            case 2: return extractAdjacentFlightArcType3(actualFlight);
-            case 3: return extractAdjacentFlightArcType4(actualFlight);
-            default: throw new RuntimeException("Tipo de arco invalido.");
+    private ArrayList<Flight> extractAdjacentFlight(Flight actualFlight, int arcType, ArrayList<Flight> clonedFlights) {
+        switch (arcType) {
+            case 0:
+                return extractAdjacentFlightArcType1(actualFlight, clonedFlights);
+            case 1:
+                return extractAdjacentFlightArcType2(actualFlight, clonedFlights);
+            case 2:
+                return extractAdjacentFlightArcType3(actualFlight, clonedFlights);
+            case 3:
+                return extractAdjacentFlightArcType4(actualFlight, clonedFlights);
+            default:
+                throw new RuntimeException("Tipo de arco invalido.");
 
         }
     }
@@ -208,47 +262,91 @@ public class GRASPNetWorkConstruct {
      * @param actualFlight
      * @return
      */
-    private ArrayList<Flight> extractAdjacentFlightArcType1(Flight actualFlight) {
+    private ArrayList<Flight> extractAdjacentFlightArcType1(Flight actualFlight, ArrayList<Flight> clonedFlights) {
         //Como o candidato tem que partir depois do voo atual.
         int candidateNumber = actualFlight.getNumber() + 1;
-        ArrayList<Flight> flights = airlineNetwork.getFlights();
+        ArrayList<Flight> flights = clonedFlights;
         ArrayList<Flight> adjacentFlights = new ArrayList<Flight>();
         int numberOfFlights = flights.size();
         Flight candidate = null;
-        
 
-	/*
-	 * Para todos os voos faca:
-	 * 	se ainda nao esta em nenhum trilho
-	 * 	     se a ligacao e direta
+
+        /*
+         * Para todos os voos faca:
+         * 	se ainda nao esta em nenhum trilho
+         * 	     se a ligacao e direta
          *                e nao e necessario atraso
-	 * 		       adicione este voo aos voos_adjacentes
-	 */
-        while(candidateNumber < numberOfFlights){
+         * 		       adicione este voo aos voos_adjacentes
+         */
+        while (candidateNumber < numberOfFlights) {
             candidate = flights.get(candidateNumber);
 
-            if((candidate.getRailNumber() == -1) &&
-                    Flight.isDirectFlight(actualFlight, candidate) &&
-                        Flight.hasTime(actualFlight, candidate, 0)){
+            if (candidate.getRailNumber() == -1) {
+                
+                candidate.setDelay(0);
+                
+                if (ConstraintsValidator.validateGeographicalConstraint(actualFlight, candidate)
+                        && ConstraintsValidator.validateTemporalConstraintWithoutDelay(actualFlight, candidate)) {
 
-                adjacentFlights.add(candidate);
+                    adjacentFlights.add(candidate);
+                }
             }
 
             candidateNumber++;
         }
-        
-	return adjacentFlights;
+
+        /**
+         * Como os voos já vem ordenado por tempo de partida essa lista já se encontra ordenada.
+         */
+        return adjacentFlights;
     }
 
-    private ArrayList<Flight> extractAdjacentFlightArcType2(Flight actualFlight) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private ArrayList<Flight> extractAdjacentFlightArcType2(Flight actualFlight, ArrayList<Flight> clonedFlights) {
+        //Como o candidato tem que partir depois do voo atual.
+        int candidateNumber = actualFlight.getNumber() + 1;
+        ArrayList<Flight> flights = clonedFlights;
+        ArrayList<Flight> adjacentFlights = new ArrayList<Flight>();
+        int numberOfFlights = flights.size();
+        Flight candidate = null;
+
+        /*
+         * Para todos os voos faca:
+         * 	se ainda nao esta em nenhum trilho
+         * 	     se a ligacao e direta
+         *                e nao e necessario atraso
+         * 		       adicione este voo aos voos_adjacentes
+         */
+        while (candidateNumber < numberOfFlights) {
+            candidate = flights.get(candidateNumber);
+
+            if ((candidate.getRailNumber() == -1)
+                    && ConstraintsValidator.validateGeographicalConstraint(actualFlight, candidate)) {
+
+                int delay = actualFlight.getRealArrivalTime() - (candidate.getDepartureTime() - candidate.getGroundTime());
+
+                if ((delay != 0) && (Math.abs(delay) <= aircraftRotationParameters.getMaximumDelay())) {
+                    candidate.setDelay(delay);
+
+                    adjacentFlights.add(candidate);
+                }
+            }
+
+            candidateNumber++;
+        }
+
+
+        /**
+         * Ordena em relação ao custo
+         */
+        Collections.sort(adjacentFlights);
+        return adjacentFlights;
     }
 
-    private ArrayList<Flight> extractAdjacentFlightArcType3(Flight actualFlight) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private ArrayList<Flight> extractAdjacentFlightArcType3(Flight actualFlight, ArrayList<Flight> clonedFlights) {
+        return new ArrayList<Flight>();
     }
 
-    private ArrayList<Flight> extractAdjacentFlightArcType4(Flight actualFlight) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private ArrayList<Flight> extractAdjacentFlightArcType4(Flight actualFlight, ArrayList<Flight> clonedFlights) {
+        return new ArrayList<Flight>();
     }
 }

@@ -5,6 +5,7 @@
 
 package graphic;
 
+import java.awt.Font;
 import java.util.GregorianCalendar;
 
 /**
@@ -94,6 +95,10 @@ public class AirlineGraphicConfigs {
 
     public void setZoomIncrement(Long zoomIncrement) {
         this.zoomIncrement = zoomIncrement;
+    }
+
+    public Font getReduzedFont() {
+        return new Font(Font.SANS_SERIF, Font.BOLD, 9);
     }
 
 }

@@ -25,6 +25,10 @@ public class Rail {
         this.number = number;
     }
 
+    public String getName(){
+        return "Voo[" + (number+1) + "]";
+    }
+
     public int getNumber() {
         return number;
     }

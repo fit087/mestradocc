@@ -18,40 +18,10 @@ import javax.persistence.Transient;
  * @author alexanderdealmeidapinto
  */
 @Entity
-public class Flight implements Serializable {
+public class Flight implements Serializable, Comparable<Flight> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Identifica se o actualFlight tem ligação direta com o voo candidato.
-     * Uma ligação direta acontece quando a cidade de chegada do voo atual é
-     * igual a cidade de partida do voo candidato.
-     * @param actualFlight
-     * @param candidate
-     * @return
-     */
-    public static boolean isDirectFlight(Flight actualFlight, Flight candidate) {
-        if (actualFlight.getArrivalCity().getName().equals(candidate.getDepartureCity().getName())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Indica se tem tempo para fazer essa sequencia de voos dado um atraso maximo.
-     * @param actualFlight
-     * @param candidate
-     * @param maxDelay
-     * @return
-     */
-    public static boolean hasTime(Flight actualFlight, Flight candidate, int maxDelay) {
-        if (actualFlight.getRealArrivalTime() <= candidate.getDepartureTime() - candidate.getDepartureCity().getGroundTime()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -77,9 +47,6 @@ public class Flight implements Serializable {
     //Possivel atraso do voo
     @Transient
     private Integer possibleDelay;
-    //Custo do voo
-    @Transient
-    private Integer cost;
     //Proximo voo.
     @Transient
     private Flight nextFlight;
@@ -106,7 +73,6 @@ public class Flight implements Serializable {
         this.railNumber = -1;
         this.delay = 0;
         this.possibleDelay = 0;
-        this.cost = 0;
         this.previousFlight = null;
         this.nextFlight = null;
         this.selected = false;
@@ -146,11 +112,7 @@ public class Flight implements Serializable {
     }
 
     public Integer getCost() {
-        return cost;
-    }
-
-    public void setCost(Integer cost) {
-        this.cost = cost;
+        return Math.abs(delay);
     }
 
     public City getDepartureCity() {
@@ -182,6 +144,9 @@ public class Flight implements Serializable {
     }
 
     public void setDelay(Integer delay) {
+        if(railNumber != -1){
+            throw new RuntimeException("Erro");
+        }
         this.delay = delay;
     }
 
@@ -286,6 +251,14 @@ public class Flight implements Serializable {
         return r;
 
         // return "Id: " + id + " Number:" + flightNumber + " Name:" + flightName + " Origem: " + departureCity.getName() + " Inicio: " + departureTime + " Destino: " + arrivalCity.getName() + " Fim: " + arrivalTime;
+    }
+
+    protected Flight clonedInstance() {
+        return new Flight(name, number, departureCity, arrivalCity, departureTime, arrivalTime);
+    }
+
+    public int compareTo(Flight o) {
+        return getCost() - o.getCost();
     }
 
 }
