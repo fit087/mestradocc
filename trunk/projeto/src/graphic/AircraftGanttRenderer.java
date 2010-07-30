@@ -36,6 +36,7 @@ import org.jfree.ui.RectangleEdge;
 public class AircraftGanttRenderer extends GanttRenderer {
 
     private static Color flightColorBegin = new Color(0, 56, 186); //Dark Azure ;
+    private static Color flightColorBeginDelayed = Color.RED;
     private static Color flightColorEnd = new Color(0, 0, 128);//Navi
     private static Paint groundColor = new Color(255, 186, 0); //Selective Yellow;
     private static Paint barStrokeColor = Color.BLACK;
@@ -47,6 +48,9 @@ public class AircraftGanttRenderer extends GanttRenderer {
         super();
         this.airlineNetwork = airlineNetwork;
         this.aircraftGanttCategoryDataset = aircraftGanttCategoryDataset;
+
+
+
     }
 
     @Override
@@ -189,7 +193,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
         float midY = (float) ((bar.getMinY() + bar.getMaxY()) / 2.0);
 
         if (flight.getDelay() != 0) {
-            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), Color.RED, midX, (float) bar.getMaxY(), flightColorEnd));
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginDelayed, midX, (float) bar.getMaxY(), flightColorEnd));
         } else {
             g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
         }
@@ -260,4 +264,14 @@ public class AircraftGanttRenderer extends GanttRenderer {
     public static void setGroundColor(Paint groundColor) {
         AircraftGanttRenderer.groundColor = groundColor;
     }
+
+    public static Color getFlightColorBeginDelayed() {
+        return flightColorBeginDelayed;
+    }
+
+    public static void setFlightColorBeginDelayed(Color flightColorBeginDelayed) {
+        AircraftGanttRenderer.flightColorBeginDelayed = flightColorBeginDelayed;
+    }
+
+    
 }

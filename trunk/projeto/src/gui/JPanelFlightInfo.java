@@ -9,8 +9,9 @@
  * Created on 30/07/2010, 09:55:04
  */
 
-package graphic;
+package gui;
 
+import graphic.AircraftGanttRenderer;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -73,9 +74,14 @@ public class JPanelFlightInfo extends javax.swing.JPanel {
         long beginTime = baseTime + (flight.getRealDepartureTime() - flight.getGroundTime())*minToMili;
         long endTime = baseTime + (flight.getRealArrivalTime())*minToMili;
 
+        long testEndTime = baseTime + (flight.getArrivalTime())*minToMili;
+
         g.setFont(airlineNetword.getAirlineGraphicConfigs().getReduzedFont());
         g.drawString(simpleDateFormat.format(new Date(beginTime)), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 20));
         g.drawString(simpleDateFormat.format(new Date(endTime)), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 20));
+
+        g.drawString(simpleDateFormat.format(new Date(testEndTime)), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 40));
+
         g.drawString(String.format("%-7s [%d]", "Tempo de Solo", flight.getGroundTime()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 30));
         if(flight.getDelay() != 0) g.drawString(String.format("%-7s [%+d]", "Atraso", flight.getDelay()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 40));
 
