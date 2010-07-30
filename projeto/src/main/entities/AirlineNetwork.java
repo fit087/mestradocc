@@ -66,16 +66,15 @@ public class AirlineNetwork {
     }
 
     /**
-     * Obtem o menor tempo de inicio de todos os trilhos.
+     * Obtem o menor tempo de inicio de todos os voos
      * @return
      */
     public Integer getLowTime(){
-        Integer lowTime = this.bestNetwork.get(0).getBeginTime();
+        Integer lowTime = this.flights.get(0).getDepartureTime();
 
-
-        for (int i = 1; i < bestNetwork.size(); i++) {
-            if(bestNetwork.get(i).getBeginTime() < lowTime){
-                lowTime = bestNetwork.get(i).getBeginTime();
+        for (int i = 0; i < flights.size(); i++) {
+            if(flights.get(i).getDepartureTime() < lowTime){
+                lowTime = flights.get(i).getDepartureTime();
             }
         }
 
@@ -83,15 +82,16 @@ public class AirlineNetwork {
     }
 
     /**
-     * Obtem o maior tempo de pouso de todos os trilhos.
+     * Obtem o maior tempo de pouso de todos os voos.
      * @return
      */
     public Integer getHighTime(){
-        Integer highTime = this.bestNetwork.get(0).getEndTime();
+        Integer highTime = this.flights.get(0).getArrivalTime();
 
-        for (int i = 1; i < bestNetwork.size(); i++) {
-            if(bestNetwork.get(i).getEndTime() > highTime){
-                highTime = bestNetwork.get(i).getEndTime();
+
+        for (int i = 0; i < flights.size(); i++) {
+            if(flights.get(i).getArrivalTime() > highTime){
+                highTime = flights.get(i).getArrivalTime();
             }
         }
 
@@ -112,6 +112,57 @@ public class AirlineNetwork {
     public City getCity(String cityName) {
         for (City city : cities) {
             if(city.getName().equals(cityName)) return city;
+        }
+
+        return null;
+    }
+
+    public int railsSize() {
+        if(bestNetwork.isEmpty()) return Integer.MAX_VALUE;
+        else return bestNetwork.size();
+    }
+
+    public ArrayList<Flight> getFlightsClone() {
+        ArrayList<Flight> cloneFlights = new ArrayList<Flight>();
+
+        for (Flight flight : flights) {
+            cloneFlights.add(flight.clonedInstance());
+        }
+
+        return cloneFlights;
+    }
+
+    public boolean validadeSolution(){
+        for (Rail rail : bestNetwork) {
+            for(int i = 1; i < rail.getFlights().size(); i++){
+                Flight first = rail.getFlights().get(i-1);
+                Flight second = rail.getFlights().get(i);
+
+                if(first.getRealArrivalTime() > (second.getRealDepartureTime() - second.getGroundTime())){
+                    System.out.println("i " + i + " Delay " + first.getDelay() + " " + second.getDelay());
+                    System.out.println(">>>>> " + first.getRealArrivalTime() + " " + (second.getRealDepartureTime() - second.getGroundTime()));
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public Flight getFlight(String railName, long time) {
+        long basetime = getAirlineGraphicConfigs().getBaseTime();
+        time -= basetime;
+        time/=60*1000;
+        
+        for (Rail rail : bestNetwork) {
+            if(rail.getName().equals(railName)){
+                for (Flight flight : rail.getFlights()) {
+                    if(((flight.getRealDepartureTime() - flight.getGroundTime()) <= time)
+                            && (flight.getRealArrivalTime() >= time)){
+                        return flight;
+                    }
+                }
+            }
         }
 
         return null;

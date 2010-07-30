@@ -23,6 +23,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRendererState;
 import org.jfree.chart.renderer.category.GanttRenderer;
+import org.jfree.chart.renderer.category.GradientBarPainter;
 import org.jfree.data.gantt.GanttCategoryDataset;
 import org.jfree.ui.RectangleEdge;
 
@@ -109,97 +110,48 @@ public class AircraftGanttRenderer extends GanttRenderer {
                 barBase = RectangleEdge.BOTTOM;
             }
 
-            Rectangle2D completeBar = null;
-            Rectangle2D incompleteBar = null;
-            Number percent = dataset.getPercentComplete(row, column,
-                    subinterval);
-            double start = getStartPercent();
-            double end = getEndPercent();
-            if (percent != null) {
-                double p = percent.doubleValue();
-                if (orientation == PlotOrientation.HORIZONTAL) {
-                    completeBar = new Rectangle2D.Double(translatedValue0,
-                            rectStart + start * rectBreadth, rectLength * p,
-                            rectBreadth * (end - start));
-                    incompleteBar = new Rectangle2D.Double(translatedValue0
-                            + rectLength * p, rectStart + start * rectBreadth,
-                            rectLength * (1 - p), rectBreadth * (end - start));
-                } else if (orientation == PlotOrientation.VERTICAL) {
-                    completeBar = new Rectangle2D.Double(rectStart + start
-                            * rectBreadth, translatedValue0 + rectLength
-                            * (1 - p), rectBreadth * (end - start),
-                            rectLength * p);
-                    incompleteBar = new Rectangle2D.Double(rectStart + start
-                            * rectBreadth, translatedValue0, rectBreadth
-                            * (end - start), rectLength * (1 - p));
-                }
 
-            }
 
-            boolean type1 = false;
+//            bar.setRect(bar.getMinX(), bar.getMinY() + 10, bar.getWidth(), bar.getHeight() - 10);
+//
+//            if (getShadowsVisible()) {
+//                //System.out.println("Teste " + getBarPainter().getClass());
+//                //getBarPainter().paintBarShadow(g2, this, row, column, bar,
+//                //      barBase, true);
+//                g2.setPaint(Color.GRAY);
+//                Rectangle2D shadowBar = new Rectangle2D.Double(bar.getX() + 5, bar.getY() + 5, bar.getWidth(), bar.getHeight());
+//                g2.fill(shadowBar);
+//            }
+//
+//            
+//
+//            if (flight.getDelay() != 0) {
+//                g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), Color.RED, midX, (float) bar.getMaxY(), flightColorEnd));
+//            } else {
+//                g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
+//            }
+//
+//            g2.fill(bar);
+//
+//            Rectangle2D groundBar = new Rectangle2D.Double(bar.getX(), bar.getY(), groundLength, bar.getHeight());
+//            g2.setPaint(groundColor);
+//            g2.fill(groundBar);
+//
+//            g2.setPaint(barStrokeColor);
+//            g2.setStroke(barStroke);
+//            g2.draw(bar);
 
-            if (!type1) {
-                bar.setRect(bar.getMinX(), bar.getMinY() + 10, bar.getWidth(), bar.getHeight() - 10);
-            }
 
-            if (getShadowsVisible()) {
-                getBarPainter().paintBarShadow(g2, this, row, column, bar,
-                        barBase, true);
-            }
-
-            float midX = (float) ((bar.getMinX() + bar.getMaxX()) / 2.0);
-
-            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
-            g2.fill(bar);
-
-            completeBar.setRect(bar.getX(), bar.getY(), groundLength, bar.getHeight());
-            g2.setPaint(groundColor);
-            g2.fill(completeBar);
-
-            g2.setPaint(barStrokeColor);
-            g2.setStroke(barStroke);
-            g2.draw(bar);
-
-            float midY = (float) ((bar.getMinY() + bar.getMaxY()) / 2.0);
 
             boolean showCities = true;
 
+            AircraftGanttRenderer.drawFlight(g2, bar, groundLength, true, showCities, (subinterval == count - 1), flight);
 
 
-
-            if (showCities) {
-                if (type1) {
-                    g2.setPaint(Color.black);
-                    g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-                    g2.drawString(flight.getDepartureCity().getName(), (float) bar.getMinX() - 15, midY + 5);
-                    g2.setPaint(Color.WHITE);
-                    g2.drawString(flight.getName(), midX, midY);
-                } else {
-                    g2.setPaint(Color.black);
-                    g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
-                    g2.drawString(flight.getDepartureCity().getName(), (float) bar.getMinX() - 15, (float) bar.getMinY() - 1);
-                    g2.setPaint(Color.WHITE);
-                    g2.drawString(flight.getName(), midX, midY + 5);
-                }
-            }
 
             if (subinterval == count - 1) {
 
-                if (showCities) {
-                    if (type1) {
-                        g2.setPaint(Color.black);
-                        g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-                        g2.drawString(flight.getArrivalCity().getName(), (float) bar.getMaxX() - 15, midY + 5);
-                        g2.setPaint(Color.WHITE);
-                        g2.drawString(flight.getName(), midX, midY + 5);
-                    } else {
-                        g2.setPaint(Color.black);
-                        g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
-                        g2.drawString(flight.getArrivalCity().getName(), (float) bar.getMaxX() - 15, (float) bar.getMinY() - 1);
-                        g2.setPaint(Color.WHITE);
-                        g2.drawString(flight.getName(), midX, midY + 5);
-                    }
-                }
+
 
                 // submit the current data point as a crosshair candidate
                 int datasetIndex = plot.indexOf(dataset);
@@ -222,6 +174,51 @@ public class AircraftGanttRenderer extends GanttRenderer {
                 }
             }
         }
+    }
+
+    public static void drawFlight(Graphics2D g2, Rectangle2D bar, double groundLength, boolean shadowsVisible, boolean showCities, boolean lastFlight, Flight flight) {
+        bar.setRect(bar.getMinX(), bar.getMinY() + 10, bar.getWidth(), bar.getHeight() - 10);
+
+        if (shadowsVisible) {
+            g2.setPaint(Color.GRAY);
+            Rectangle2D shadowBar = new Rectangle2D.Double(bar.getX() + 5, bar.getY() + 5, bar.getWidth(), bar.getHeight());
+            g2.fill(shadowBar);
+        }
+
+        float midX = (float) ((bar.getMinX() + bar.getMaxX()) / 2.0);
+        float midY = (float) ((bar.getMinY() + bar.getMaxY()) / 2.0);
+
+        if (flight.getDelay() != 0) {
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), Color.RED, midX, (float) bar.getMaxY(), flightColorEnd));
+        } else {
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
+        }
+
+        g2.fill(bar);
+
+        Rectangle2D groundBar = new Rectangle2D.Double(bar.getX(), bar.getY(), groundLength, bar.getHeight());
+        g2.setPaint(groundColor);
+        g2.fill(groundBar);
+
+        g2.setPaint(barStrokeColor);
+        g2.setStroke(barStroke);
+        g2.draw(bar);
+
+        if (showCities) {
+            g2.setPaint(Color.black);
+            g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
+            g2.drawString(flight.getDepartureCity().getName(), (float) bar.getMinX() - 15, (float) bar.getMinY() - 1);
+            
+            g2.setPaint(Color.WHITE);
+            g2.drawString(flight.getName(), midX, midY + 5);
+            
+            if (lastFlight) {
+                g2.setPaint(Color.black);
+                g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
+                g2.drawString(flight.getArrivalCity().getName(), (float) bar.getMaxX() - 15, (float) bar.getMinY() - 1);
+            }
+        }
+
     }
 
     public static Stroke getBarStroke() {

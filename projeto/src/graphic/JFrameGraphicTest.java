@@ -18,7 +18,6 @@ import main.heuristic.AircraftRotationParameters;
 import main.heuristic.GRASPNetWorkConstruct;
 import main.heuristic.GRASPParameters;
 import main.reader.AircraftFileReader;
-import org.jfree.chart.ChartPanel;
 
 /**
  *
@@ -46,7 +45,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         }
 
         GRASPNetWorkConstruct gRASPNetWorkConstruct = new GRASPNetWorkConstruct(airlineNetwork, GRASPParameters.defaultParameters, AircraftRotationParameters.defaultParameters);
-        gRASPNetWorkConstruct.resolve();
+        gRASPNetWorkConstruct.GRASPResolve();
 
         jpac.initChart(airlineNetwork);
     }

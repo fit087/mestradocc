@@ -15,7 +15,7 @@ import main.heuristic.exceptions.ParameterInvalidException;
  */
 public class GRASPParameters {
 
-    public final static GRASPParameters defaultParameters = new GRASPParameters(1000, 100, 0.1f);
+    public final static GRASPParameters defaultParameters = new GRASPParameters(100, 100, 0.1f);
     
     private Integer numberOfConstructions;
 

@@ -11,6 +11,7 @@
 package graphic;
 
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -21,6 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import main.entities.AirlineNetwork;
+import main.entities.Flight;
 import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.ChartPanel;
@@ -44,6 +46,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private ChartPanel chartPanel;
     private AircraftDateAxis dateAxis;
     private AirlineNetwork airlineNetwork;
+    private JPanelFlightInfo jPanelInfo = new JPanelFlightInfo();
 
     private final JPopupMenu jpm = new JPopupMenu();
 
@@ -51,7 +54,12 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     public JPanelAircraftControler() {
         initComponents();
         initKeys();
+        jpm.add(jPanelInfo);
 
+    }
+
+    public void refreshJPanelInfo(Flight flight){
+        jPanelInfo.setInfo(flight, airlineNetwork);
     }
 
     /** This method is called from within the constructor to
@@ -170,7 +178,6 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
         jLabel1.setText("Qtde:");
 
         jSpinnerQtdeFlights.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-        jSpinnerQtdeFlights.setEnabled(false);
         jSpinnerQtdeFlights.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerQtdeFlightsStateChanged(evt);
@@ -353,6 +360,17 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private javax.swing.JSpinner jSpinnerQtdeFlights;
     // End of variables declaration//GEN-END:variables
 
+    public Flight getFlight(String railName, long flightTime){
+        return airlineNetwork.getFlight(railName, flightTime);
+    }
+
+    public int getRealXPoint(Point point){
+        return (int) (getLocationOnScreen().getX() + point.getX());
+    }
+
+    public int getRealYPoint(Point point){
+        return (int) (getLocationOnScreen().getY() + point.getY());
+    }
     /**
      * Iniciar o gráfico da solução do ARP que é passado no airlineNetwork
      * @param airlineNetwork
@@ -371,11 +389,11 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
 
         graphicConfigs.setLowTime(baseTime + (airlineNetwork.getLowTime() - 30) * 60 * 1000l);
         graphicConfigs.setHighTime(baseTime + (airlineNetwork.getHighTime() + 60) * 60 * 1000l);
-        graphicConfigs.setVisibleRange(10 * 60 * 60 * 1000l);
+        graphicConfigs.setVisibleRange(24 * 60 * 60 * 1000l);
 
         dateAxis.setRange(graphicConfigs.getLowTime(), graphicConfigs.getLowTime() + graphicConfigs.getVisibleRange());
 
-        this.slidingGanttCategoryDataset = new AircraftGanttCategoryDataset(airlineNetwork, DataSetGenerator.getDataSet(airlineNetwork), 0, 7);
+        this.slidingGanttCategoryDataset = new AircraftGanttCategoryDataset(airlineNetwork, AircraftDataSet.configure(airlineNetwork), 0, 7);
 
         CategoryItemRenderer aircraftRenderer = new AircraftGanttRenderer(airlineNetwork, slidingGanttCategoryDataset);
 
@@ -400,21 +418,21 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
                 int valueX = event.getTrigger().getX();
                 Rectangle2D dataArea = chartPanel.getScreenDataArea();
                 DateAxis da = (DateAxis) categoryPlot.getRangeAxis();
-                long h = (long) da.java2DToValue(valueX, dataArea, categoryPlot.getRangeAxisEdge());
+
+                long flightTime = (long) da.java2DToValue(valueX, dataArea, categoryPlot.getRangeAxisEdge());
 
                 jpm.setVisible(false);
 
                 if (event.getEntity() instanceof CategoryItemEntity) {
                     CategoryItemEntity categoryItem = (CategoryItemEntity) event.getEntity();
-                    String selectedName = categoryItem.getColumnKey().toString();
-                    System.out.println("Teste " + selectedName);
+                    String railName = categoryItem.getColumnKey().toString();
+                    Flight flight = getFlight(railName, flightTime);
+                    //jpm.removeAll();
+                    //jpm.add(new SimpleDateFormat().format(new Date(flightTime)) + " " + flight.getName());
 
-                    
-
-                    jpm.removeAll();
-                    jpm.add(new SimpleDateFormat().format(new Date(h)));
+                    refreshJPanelInfo(flight);
                     Point point = event.getTrigger().getPoint();
-                    jpm.setLocation((int) (point.getX()), (int) (point.getY() + 30));
+                    jpm.setLocation(getRealXPoint(point), getRealYPoint(point) + 15);
                     jpm.setVisible(true);
                 }
 
@@ -429,7 +447,6 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
 
         initControler();
 
-        System.out.println(plot.getRenderer().getClass());
     }
 
     private void initControler() {

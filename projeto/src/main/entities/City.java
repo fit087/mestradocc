@@ -86,10 +86,13 @@ public class City implements Serializable {
             return false;
         }
         City other = (City) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
+        
+        if(other.getName().equals(getName())) {
+            return true;
         }
-        return true;
+        else {
+            return true;
+        }
     }
 
     @Override
