@@ -4,7 +4,6 @@
  */
 package main.heuristic;
 
-import com.sun.xml.internal.ws.api.pipe.Tube;
 import gui.JFrameGraphicTest;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -57,9 +56,10 @@ public class GRASPNetWorkConstruct {
             for (int j = 0; j < gRASPParameters.getNumberOfConstructions(); j++) {
 
                 ArrayList<Rail> network = GRASPConstruction();
-                if (network.size() < airlineNetwork.railsSize()) {
-                    LogManager.writeMsg(String.format("Melhorou a solução (%s - %s)\n", airlineNetwork.railsSize(), network.size()));
-                    airlineNetwork.setBestNetwork(network);
+                int cost = AirlineNetwork.getTotalCost(network);
+                if (cost < airlineNetwork.getBestNetworkCost()) {
+                    LogManager.writeMsg(String.format("Melhorou a solução (%s - %s)\n", airlineNetwork.getBestNetworkCost(), cost));
+                    airlineNetwork.setBestNetwork(network, cost);
                     if (!airlineNetwork.validadeSolution()) {
                         LogManager.writeMsg("ERRO");
                         System.exit(1);
@@ -67,7 +67,6 @@ public class GRASPNetWorkConstruct {
                 }
             }
         }
-
     }
 
     /**
