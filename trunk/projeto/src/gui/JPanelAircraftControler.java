@@ -189,7 +189,6 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
 
         jSpinnerQtdeFlights.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         jSpinnerQtdeFlights.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jSpinnerQtdeFlights.setEnabled(false);
         jSpinnerQtdeFlights.setFocusable(false);
         jSpinnerQtdeFlights.setOpaque(true);
         jSpinnerQtdeFlights.addChangeListener(new javax.swing.event.ChangeListener() {

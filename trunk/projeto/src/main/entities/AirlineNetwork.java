@@ -20,6 +20,8 @@ public class AirlineNetwork {
     
     private ArrayList< Rail > bestNetwork = new ArrayList< Rail >();
 
+    private int bestNetworkCost = Integer.MAX_VALUE;
+
     private ArrayList<Flight> flights = new ArrayList<Flight>();
     
     private ArrayList<City> cities = new ArrayList<City>();
@@ -30,8 +32,9 @@ public class AirlineNetwork {
         return bestNetwork;
     }
 
-    public void setBestNetwork(ArrayList<Rail> bestNetwork) {
+    public void setBestNetwork(ArrayList<Rail> bestNetwork, int cost) {
         this.bestNetwork = bestNetwork;
+        this.bestNetworkCost = cost;
     }
 
     public ArrayList<City> getCities() {
@@ -166,6 +169,26 @@ public class AirlineNetwork {
         }
 
         return null;
+    }
+
+    public int getBestNetworkCost() {
+        return bestNetworkCost;
+    }
+
+    /**
+     * Calcula o custo do trilho passado no parametro.
+     * Custo = Somatorio(atrasos) + NumeroDeTrilhos*1000;
+     * @param network
+     * @return
+     */
+    public static int getTotalCost(ArrayList<Rail> network){
+        int totalcost = network.size()*1000;
+
+        for (Rail rail : network) {
+            totalcost += rail.getCost();
+        }
+
+        return totalcost;
     }
 
 }

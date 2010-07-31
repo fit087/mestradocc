@@ -19,8 +19,6 @@ public class Rail {
 
     private ArrayList<Flight> flights = new ArrayList<Flight>();
 
-    private int cost;
-
     public Rail(int number) {
         this.number = number;
     }
@@ -38,11 +36,13 @@ public class Rail {
     }
 
     public int getCost() {
-        return cost;
-    }
+        int cost = 0;
 
-    public void setCost(int cost) {
-        this.cost = cost;
+        for (Flight flight : flights) {
+            cost += flight.getCost();
+        }
+
+        return cost;
     }
 
     public ArrayList<Flight> getFlights() {
