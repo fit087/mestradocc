@@ -14,15 +14,15 @@ import org.jfree.data.category.CategoryDataset;
  *
  * @author alexanderdealmeidapinto
  */
-public class AircraftTooltipGenerator extends StandardCategoryToolTipGenerator {
+public class ARPTooltipGenerator extends StandardCategoryToolTipGenerator {
 
-    public AircraftTooltipGenerator() {
+    public ARPTooltipGenerator() {
         super();
     }
 
     @Override
     public String generateToolTip(CategoryDataset dataset, int row, int column) {
-        AircraftGanttCategoryDataset aircraftGanttCategoryDataset = (AircraftGanttCategoryDataset) dataset;
+        ARPGanttCategoryDataset aircraftGanttCategoryDataset = (ARPGanttCategoryDataset) dataset;
         return super.generateToolTip(dataset, row, column);
     }
 

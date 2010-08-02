@@ -13,9 +13,9 @@ import java.util.GregorianCalendar;
  *
  * @author alexanderdealmeidapinto
  */
-public class AirlineGraphicConfigs {
+public class ARPGraphicConfigs {
 
-    public static final AirlineGraphicConfigs defaultGraphicConfig = new AirlineGraphicConfigs(
+    public static final ARPGraphicConfigs defaultGraphicConfig = new ARPGraphicConfigs(
             new GregorianCalendar(2010, GregorianCalendar.JULY, 30, 0, 0, 0).getTimeInMillis()
             , 0l , 24*60*60*1000l, 24*60*60*1000l, 60*60*1000l, 2*60*60*1000l);
 
@@ -40,7 +40,7 @@ public class AirlineGraphicConfigs {
      * @param visibleRange O range que deseja ser visível no gráfico.
      * @param rangeIncrement O incremento que se deseja ter ao avançar ou retroceder no gráfico.
      */
-    public AirlineGraphicConfigs(Long baseTime, Long lowTime, Long highTime, Long visibleRange, Long rangeIncrement, Long zoomIncrement) {
+    public ARPGraphicConfigs(Long baseTime, Long lowTime, Long highTime, Long visibleRange, Long rangeIncrement, Long zoomIncrement) {
         this.baseTime = baseTime;
         this.lowTime = lowTime;
         this.highTime = highTime;

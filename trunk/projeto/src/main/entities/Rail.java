@@ -100,5 +100,13 @@ public class Rail {
         return flight.getRealArrivalTime();
     }
 
+    public int size() {
+        return flights.size();
+    }
+
+    public Flight getFlight(int i) {
+        return flights.get(i);
+    }
+
     
 }

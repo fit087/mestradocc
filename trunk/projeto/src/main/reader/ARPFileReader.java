@@ -17,9 +17,9 @@ import main.entities.AirlineNetwork;
  *
  * @author alexanderdealmeidapinto
  */
-public class AircraftFileReader {
+public class ARPFileReader {
 
-    private AircraftFileReader() {
+    private ARPFileReader() {
     }
 
     /**

@@ -17,9 +17,9 @@ import org.jfree.data.time.DateRange;
  *
  * @author alexanderdealmeidapinto
  */
-public class AircraftDateAxis extends DateAxis {
+public class ARPDateAxis extends DateAxis {
 
-    public AircraftDateAxis(String label) {
+    public ARPDateAxis(String label) {
         super(label);
     }
 

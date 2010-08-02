@@ -5,6 +5,10 @@
 
 package main.heuristic;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import main.heuristic.exceptions.ParameterInvalidException;
 
 /**
@@ -13,9 +17,15 @@ import main.heuristic.exceptions.ParameterInvalidException;
  *
  * @author alexanderdealmeidapinto
  */
-public class AircraftRotationParameters {
+@Entity
+public class ARPParameters implements Serializable {
 
-    public final static AircraftRotationParameters defaultParameters = new AircraftRotationParameters(10, 53, 35, 10, 2);
+    //Identificacao
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public final static ARPParameters defaultParameters = new ARPParameters(10, 53, 35, 10, 2);
 
     private int probabilityType1Arc;
 
@@ -46,7 +56,7 @@ public class AircraftRotationParameters {
      * @param probabilityType4Arc
      * @throws ParameterInvalidException
      */
-    public AircraftRotationParameters(int maximumDelay, int probabilityType1Arc, int probabilityType2Arc, int probabilityType3Arc, int probabilityType4Arc) throws ParameterInvalidException {
+    public ARPParameters(int maximumDelay, int probabilityType1Arc, int probabilityType2Arc, int probabilityType3Arc, int probabilityType4Arc) throws ParameterInvalidException {
 
         if((probabilityType1Arc + probabilityType2Arc + probabilityType3Arc + probabilityType4Arc) != 100){
             throw new ParameterInvalidException("A soma das probabilidades dos 4 arcos devem ser igual a 100");
@@ -58,6 +68,14 @@ public class AircraftRotationParameters {
         this.probabilityType4Arc = probabilityType4Arc;
         this.maximumDelay = maximumDelay;
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getMaximumDelay() {

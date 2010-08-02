@@ -22,11 +22,11 @@ import org.jfree.data.time.TimePeriod;
  *
  * @author alexanderdealmeidapinto
  */
-public class AircraftDataSet extends TaskSeriesCollection {
+public class ARPDataSet extends TaskSeriesCollection {
 
-    public static AircraftDataSet configure(AirlineNetwork airlineNetwork){
+    public static ARPDataSet configure(AirlineNetwork airlineNetwork){
 
-        AircraftDataSet aircraftDataSet = new AircraftDataSet(airlineNetwork);
+        ARPDataSet aircraftDataSet = new ARPDataSet(airlineNetwork);
 
         for (int i = 0; i < airlineNetwork.getBestNetwork().size(); i++) {
             Rail rail = airlineNetwork.getBestNetwork().get(i);
@@ -47,7 +47,7 @@ public class AircraftDataSet extends TaskSeriesCollection {
     private Long baseTime;
     private TimePeriod maxTimePeriod;
 
-    public AircraftDataSet(AirlineNetwork airlineNetwork) {
+    public ARPDataSet(AirlineNetwork airlineNetwork) {
         this.baseTime = airlineNetwork.getAirlineGraphicConfigs().getBaseTime();
         this.minTomili = 60 * 1000l;
         this.lowTime = baseTime + (Long) ((airlineNetwork.getLowTime() - 80) * minTomili);

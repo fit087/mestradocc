@@ -43,7 +43,7 @@ import org.jfree.chart.renderer.category.CategoryItemRenderer;
  *
  * @author alexanderdealmeidapinto
  */
-public class JPanelAircraftControler extends javax.swing.JPanel {
+public class JPanelARPControler extends javax.swing.JPanel {
 
     private ARPGanttCategoryDataset slidingGanttCategoryDataset;
     private ChartPanel chartPanel;
@@ -54,7 +54,7 @@ public class JPanelAircraftControler extends javax.swing.JPanel {
     private boolean stop;
 
     /** Creates new form JPanelAircraftControler */
-    public JPanelAircraftControler() {
+    public JPanelARPControler() {
         initComponents();
         initKeys();
         jpm.add(jPanelInfo);

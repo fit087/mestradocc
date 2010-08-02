@@ -19,6 +19,10 @@ public class RandomManager {
     
     private static Random random = new Random(seed);
 
+    static {
+        System.out.println("Seed: " + seed);
+    }
+
     /**
      * Retorna uma valor na faixa especificada.
      * O valor max deve ser maior ou igual ao min com a finalidade de

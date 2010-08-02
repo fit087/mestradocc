@@ -57,7 +57,7 @@ import org.jfree.util.PublicCloneable;
  *
  * @since 1.0.10
  */
-public class AircraftGanttCategoryDataset extends AbstractDataset
+public class ARPGanttCategoryDataset extends AbstractDataset
         implements GanttCategoryDataset {
 
     private AirlineNetwork airlineNetwork;
@@ -77,7 +77,7 @@ public class AircraftGanttCategoryDataset extends AbstractDataset
      *     underlying dataset.
      * @param maxColumns  the maximumColumnCount.
      */
-    public AircraftGanttCategoryDataset(AirlineNetwork airlineNetwork, GanttCategoryDataset underlying,
+    public ARPGanttCategoryDataset(AirlineNetwork airlineNetwork, GanttCategoryDataset underlying,
             int firstColumn, int maxColumns) {
 
         this.airlineNetwork = airlineNetwork;
@@ -589,10 +589,10 @@ public class AircraftGanttCategoryDataset extends AbstractDataset
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof AircraftGanttCategoryDataset)) {
+        if (!(obj instanceof ARPGanttCategoryDataset)) {
             return false;
         }
-        AircraftGanttCategoryDataset that = (AircraftGanttCategoryDataset) obj;
+        ARPGanttCategoryDataset that = (ARPGanttCategoryDataset) obj;
         if (this.firstCategoryIndex != that.firstCategoryIndex) {
             return false;
         }
@@ -620,7 +620,7 @@ public class AircraftGanttCategoryDataset extends AbstractDataset
      *         any reason.
      */
     public Object clone() throws CloneNotSupportedException {
-        AircraftGanttCategoryDataset clone = (AircraftGanttCategoryDataset) super.clone();
+        ARPGanttCategoryDataset clone = (ARPGanttCategoryDataset) super.clone();
         if (this.underlying instanceof PublicCloneable) {
             PublicCloneable pc = (PublicCloneable) this.underlying;
             clone.underlying = (GanttCategoryDataset) pc.clone();
