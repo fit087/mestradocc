@@ -33,7 +33,7 @@ import org.jfree.ui.RectangleEdge;
  *
  * @author alexanderdealmeidapinto
  */
-public class AircraftGanttRenderer extends GanttRenderer {
+public class ARPGanttRenderer extends GanttRenderer {
 
     private static Color flightColorBegin = new Color(0, 56, 186); //Dark Azure ;
     private static Color flightColorBeginDelayed = Color.RED;
@@ -42,9 +42,9 @@ public class AircraftGanttRenderer extends GanttRenderer {
     private static Paint barStrokeColor = Color.BLACK;
     private static Stroke barStroke = new BasicStroke(1.0f);
     private final AirlineNetwork airlineNetwork;
-    private final AircraftGanttCategoryDataset aircraftGanttCategoryDataset;
+    private final ARPGanttCategoryDataset aircraftGanttCategoryDataset;
 
-    public AircraftGanttRenderer(AirlineNetwork airlineNetwork, AircraftGanttCategoryDataset aircraftGanttCategoryDataset) {
+    public ARPGanttRenderer(AirlineNetwork airlineNetwork, ARPGanttCategoryDataset aircraftGanttCategoryDataset) {
         super();
         this.airlineNetwork = airlineNetwork;
         this.aircraftGanttCategoryDataset = aircraftGanttCategoryDataset;
@@ -149,7 +149,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
 
             boolean showCities = true;
 
-            AircraftGanttRenderer.drawFlight(g2, bar, groundLength, true, showCities, (subinterval == count - 1), flight);
+            ARPGanttRenderer.drawFlight(g2, bar, groundLength, true, showCities, (subinterval == count - 1), flight);
 
 
 
@@ -230,7 +230,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
     }
 
     public static void setBarStroke(Stroke barStroke) {
-        AircraftGanttRenderer.barStroke = barStroke;
+        ARPGanttRenderer.barStroke = barStroke;
     }
 
     public static Paint getBarStrokeColor() {
@@ -238,7 +238,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
     }
 
     public static void setBarStrokeColor(Paint barStrokeColor) {
-        AircraftGanttRenderer.barStrokeColor = barStrokeColor;
+        ARPGanttRenderer.barStrokeColor = barStrokeColor;
     }
 
     public static Color getFlightColorBegin() {
@@ -246,7 +246,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
     }
 
     public static void setFlightColorBegin(Color flightColorBegin) {
-        AircraftGanttRenderer.flightColorBegin = flightColorBegin;
+        ARPGanttRenderer.flightColorBegin = flightColorBegin;
     }
 
     public static Color getFlightColorEnd() {
@@ -254,7 +254,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
     }
 
     public static void setFlightColorEnd(Color flightColorEnd) {
-        AircraftGanttRenderer.flightColorEnd = flightColorEnd;
+        ARPGanttRenderer.flightColorEnd = flightColorEnd;
     }
 
     public static Paint getGroundColor() {
@@ -262,7 +262,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
     }
 
     public static void setGroundColor(Paint groundColor) {
-        AircraftGanttRenderer.groundColor = groundColor;
+        ARPGanttRenderer.groundColor = groundColor;
     }
 
     public static Color getFlightColorBeginDelayed() {
@@ -270,7 +270,7 @@ public class AircraftGanttRenderer extends GanttRenderer {
     }
 
     public static void setFlightColorBeginDelayed(Color flightColorBeginDelayed) {
-        AircraftGanttRenderer.flightColorBeginDelayed = flightColorBeginDelayed;
+        ARPGanttRenderer.flightColorBeginDelayed = flightColorBeginDelayed;
     }
 
     

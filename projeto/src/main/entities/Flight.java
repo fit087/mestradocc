@@ -144,9 +144,6 @@ public class Flight implements Serializable, Comparable<Flight> {
     }
 
     public void setDelay(Integer delay) {
-        if(railNumber != -1){
-            throw new RuntimeException("Erro");
-        }
         this.delay = delay;
     }
 

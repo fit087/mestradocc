@@ -5,23 +5,36 @@
 
 package main.heuristic;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import main.heuristic.exceptions.ParameterInvalidException;
 
 /**
  *
- * Desenvolvido por: Alexander de Almeida Pinto
+ * Desenvolvido por: Alexander de Almeida Pinto 
  *
  * @author alexanderdealmeidapinto
  */
-public class GRASPParameters {
+@Entity
+public class GRASPParameters implements Serializable {
 
-    public final static GRASPParameters defaultParameters = new GRASPParameters(100, 100, 0.2f);
+    public final static GRASPParameters defaultParameters = new GRASPParameters(10, 10, 0.2f);
+    
+    //Identificacao
+    @Id
+    @GeneratedValue
+    private Long id;
     
     private Integer numberOfConstructions;
 
     private Integer numberOfRepetitions;
 
     private Float alfa; //Grau de aleatóriedade da fase de construção.
+
+    public GRASPParameters() {
+    }
 
     /**
      * Define os parametros do GRASP

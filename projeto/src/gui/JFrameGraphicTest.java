@@ -11,14 +11,14 @@
 package gui;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 import main.entities.AirlineNetwork;
-import main.heuristic.AircraftRotationParameters;
-import main.heuristic.GRASPNetWorkConstruct;
+import main.heuristic.ARPParameters;
+import main.heuristic.GRASPConstruct;
 import main.heuristic.GRASPParameters;
-import main.reader.AircraftFileReader;
+import main.reader.ARPFileReader;
 
 /**
  *
@@ -27,7 +27,7 @@ import main.reader.AircraftFileReader;
 public class JFrameGraphicTest extends javax.swing.JFrame {
 
     public static JFrameGraphicTest instance;
-    private JPanelAircraftControler jpac = new JPanelAircraftControler();
+    private JPanelARPControler jpac = new JPanelARPControler();
 
     /** Creates new form JFrameGraphicTest */
     public JFrameGraphicTest() {
@@ -35,35 +35,72 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         jScrollPane1.getViewport().add(jpac);
         instance = this;
 
-        new Thread(){
+        new Thread() {
 
             @Override
             public void run() {
                 initGraphics();
             }
-
         }.start();
-        
+
     }
 
     public void initGraphics() {
-        AirlineNetwork airlineNetwork = new AirlineNetwork();
+        ArrayList<Integer> conts = new ArrayList<Integer>();
+        int menorcusto = 9999999;
 
-        try {
-            AircraftFileReader.readDataFromFile("instances/01", airlineNetwork);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+        jpac.setStop(false);
+        for (int i = 0; i < 1; i++) {
+            int cont = 0;
+            
+                cont++;
+                AirlineNetwork airlineNetwork = new AirlineNetwork();
+
+                try {
+                    ARPFileReader.readDataFromFile("instances/01", airlineNetwork);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                GRASPConstruct gRASPConstruct = new GRASPConstruct(airlineNetwork, GRASPParameters.defaultParameters, ARPParameters.defaultParameters);
+                gRASPConstruct.GRASPResolve();
+
+                jpac.initChart(airlineNetwork);
+
+                jpac.initConfigures();
+
+                if(menorcusto >  airlineNetwork.getBestNetworkCost()){
+                    menorcusto = airlineNetwork.getBestNetworkCost();
+                }
+
+                if(jpac.getStop()) break;
+
+                if (airlineNetwork.getBestNetworkCost() < 19000) {
+                    break;
+                }
+                if(cont == 10) break;
+            
+
+            conts.add(cont);
+
+            if(jpac.getStop()) break;
         }
 
-        GRASPNetWorkConstruct gRASPNetWorkConstruct = new GRASPNetWorkConstruct(airlineNetwork, GRASPParameters.defaultParameters, AircraftRotationParameters.defaultParameters);
-        gRASPNetWorkConstruct.GRASPResolve();
+        System.out.println("Conts: ");
+        int media = 0;
+        for (Integer integer : conts) {
+            System.out.print(integer + " ");
+            media += integer;
+        }
+        System.out.println("");
 
-        jpac.initChart(airlineNetwork);
+        System.out.println("Media: " + ((float)media/(float)conts.size()));
+        System.out.println("Menor Custo " + menorcusto);
 
-        jpac.initConfigures();
+
     }
 
-    public static void setPercentComplete(int value){
+    public static void setPercentComplete(int value) {
         instance.getJPanelAircraftControler().setPercentComplete(value);
     }
 
@@ -86,6 +123,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.META_MASK));
         jMenuItem1.setText("Executar");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,13 +155,15 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        new Thread(){
+
+
+        new Thread() {
 
             @Override
             public void run() {
+
                 initGraphics();
             }
-
         }.start();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -146,9 +186,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
-    private JPanelAircraftControler getJPanelAircraftControler() {
+    private JPanelARPControler getJPanelAircraftControler() {
         return this.jpac;
     }
-
-    
 }

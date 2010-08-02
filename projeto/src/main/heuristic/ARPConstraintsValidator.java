@@ -12,7 +12,7 @@ import main.entities.Flight;
  *
  * @author alexanderdealmeidapinto
  */
-public class ConstraintsValidator {
+public class ARPConstraintsValidator {
 
     /**
      * Verifica se os voos especificados respeitam as restrições geográficas.

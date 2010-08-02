@@ -11,7 +11,7 @@
 
 package gui;
 
-import graphic.AircraftGanttRenderer;
+import graphic.ARPGanttRenderer;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -68,7 +68,7 @@ public class JPanelFlightInfo extends javax.swing.JPanel {
         super.paint(g);
 
         Rectangle2D bar = new Rectangle2D.Double(45.0, 10.0, 100.0, 30.0);
-        AircraftGanttRenderer.drawFlight((Graphics2D) g,bar, 30, true, true, true, flight);
+        ARPGanttRenderer.drawFlight((Graphics2D) g,bar, 30, true, true, true, flight);
 
         long baseTime = airlineNetword.getAirlineGraphicConfigs().getBaseTime();
         long beginTime = baseTime + (flight.getRealDepartureTime() - flight.getGroundTime())*minToMili;
