@@ -5,11 +5,6 @@
 
 package statistic;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import main.heuristic.ARPParameters;
 import main.heuristic.GRASPParameters;
 import util.RandomManager;
