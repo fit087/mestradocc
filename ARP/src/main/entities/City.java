@@ -5,13 +5,7 @@
 
 package main.entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Transient;
 
 /**
@@ -20,14 +14,7 @@ import javax.persistence.Transient;
  *
  * @author alexanderdealmeidapinto
  */
-@Entity
-public class City implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class City  {
 
     //Nome da cidade.
     private String name;
@@ -45,14 +32,6 @@ public class City implements Serializable {
     public City(String name, Integer groundTime) {
         this.name = name;
         this.groundTime = groundTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public HashMap<City, Integer> getFlightTimes() {
@@ -97,7 +76,7 @@ public class City implements Serializable {
 
     @Override
     public String toString() {
-        return "ID: " + id + " Nome: " + name + " GroundTime: " + groundTime;
+        return "Nome: " + name + " GroundTime: " + groundTime;
     }
 
 

@@ -22,14 +22,9 @@ import util.VersionManager;
  * @author alexanderdealmeidapinto
  */
 
-@Entity
-public class HeuristicInfo implements Serializable {
+public class HeuristicInfo {
 
-    //Identificacao
-    @Id
-    @GeneratedValue
-    private Long id;
-
+    
     // Versao do algoritmo.
     private int version;
 
@@ -40,11 +35,11 @@ public class HeuristicInfo implements Serializable {
     private long duration;
 
     //Parametros do ARP que foram utilizados
-    @OneToOne
+   // @OneToOne
     private ARPParameters aRPParameters;
 
     //Parametros do GRASP que foram utilizados
-    @OneToOne
+   // @OneToOne
     private GRASPParameters gRASPParameters;
 
     //Melhor valor obtido.
@@ -101,14 +96,6 @@ public class HeuristicInfo implements Serializable {
 
     public void setgRASPParameters(GRASPParameters gRASPParameters) {
         this.gRASPParameters = gRASPParameters;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getObservation() {

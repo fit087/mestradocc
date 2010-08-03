@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.Persistence;
 import main.entities.AirlineNetwork;
 import main.heuristic.ARPParameters;
 import main.heuristic.GRASPConstruct;
@@ -172,14 +173,15 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        try {
+       /*try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             DriverManager.getConnection("jdbc:derby:ARPDB;create=true;").close();
         } catch (Exception ex) {
             Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 
-        //if(true) return;
+
+        if(true) return;
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {

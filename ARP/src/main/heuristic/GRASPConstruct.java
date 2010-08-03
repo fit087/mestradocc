@@ -4,9 +4,6 @@
  */
 package main.heuristic;
 
-import database.CityJpaController;
-import database.HeuristicInfoJpaController;
-import database.TesteJpaController;
 import gui.JFrameGraphicTest;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -15,9 +12,6 @@ import main.entities.AirlineNetwork;
 import main.entities.City;
 import main.entities.Flight;
 import main.entities.Rail;
-import main.entities.Teste;
-import main.reader.ARPFileReader;
-import statistic.HeuristicInfo;
 import util.LogManager;
 import util.RandomManager;
 
@@ -53,11 +47,6 @@ public class GRASPConstruct {
     }
 
     public void GRASPResolve() {
-
-        Teste teste = new Teste("Opa");
-        TesteJpaController testeJpaController = new TesteJpaController();
-        testeJpaController.create(teste);
-
 
         LogManager.writeMsg("Começou a resolver...");
         Long beginTime = System.currentTimeMillis();

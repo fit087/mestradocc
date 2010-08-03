@@ -5,10 +5,6 @@
 
 package main.heuristic;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import main.heuristic.exceptions.ParameterInvalidException;
 
 /**
@@ -17,13 +13,9 @@ import main.heuristic.exceptions.ParameterInvalidException;
  *
  * @author alexanderdealmeidapinto
  */
-@Entity
-public class ARPParameters implements Serializable {
+public class ARPParameters {
 
-    //Identificacao
-    @Id
-    @GeneratedValue
-    private Long id;
+ 
 
     public final static ARPParameters defaultParameters = new ARPParameters(10, 53, 35, 10, 2);
 
@@ -69,15 +61,7 @@ public class ARPParameters implements Serializable {
         this.maximumDelay = maximumDelay;
 
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    
     public int getMaximumDelay() {
         return maximumDelay;
     }
