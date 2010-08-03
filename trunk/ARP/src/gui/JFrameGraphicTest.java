@@ -184,6 +184,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         if(true) return;
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 new JFrameGraphicTest().setVisible(true);
             }
