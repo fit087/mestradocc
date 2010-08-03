@@ -12,7 +12,7 @@ import org.jfree.data.category.CategoryDataset;
  *
  * Desenvolvido por: Alexander de Almeida Pinto
  *
- * @author alexanderdealmeidapinto
+ * @author alexanderdealmeidapinto 
  */
 public class ARPTooltipGenerator extends StandardCategoryToolTipGenerator {
 

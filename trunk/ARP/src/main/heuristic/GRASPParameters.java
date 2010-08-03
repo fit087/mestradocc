@@ -5,10 +5,6 @@
 
 package main.heuristic;
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import main.heuristic.exceptions.ParameterInvalidException;
 
 /**
@@ -17,16 +13,10 @@ import main.heuristic.exceptions.ParameterInvalidException;
  *
  * @author alexanderdealmeidapinto
  */
-@Entity
-public class GRASPParameters implements Serializable {
+public class GRASPParameters {
 
     public final static GRASPParameters defaultParameters = new GRASPParameters(10, 10, 0.2f);
-    
-    //Identificacao
-    @Id
-    @GeneratedValue
-    private Long id;
-    
+        
     private Integer numberOfConstructions;
 
     private Integer numberOfRepetitions;
@@ -51,14 +41,6 @@ public class GRASPParameters implements Serializable {
         }
         
         this.alfa = alfa;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Float getAlfa() {
