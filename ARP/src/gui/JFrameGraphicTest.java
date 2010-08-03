@@ -174,7 +174,6 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
     public static void main(String args[]) {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            
         } catch (Exception ex) {
             Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
         }
