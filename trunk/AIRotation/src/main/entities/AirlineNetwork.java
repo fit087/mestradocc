@@ -17,6 +17,9 @@ import java.util.Comparator;
  * @author alexanderdealmeidapinto
  */
 public class AirlineNetwork {
+
+
+    private String pathInstance;
     
     private ArrayList< Rail > bestNetwork = new ArrayList< Rail >();
 
@@ -27,6 +30,18 @@ public class AirlineNetwork {
     private ArrayList<City> cities = new ArrayList<City>();
 
     private ARPGraphicConfigs airlineGraphicConfigs = ARPGraphicConfigs.defaultGraphicConfig;
+
+    public AirlineNetwork(String pathInstance) {
+        this.pathInstance = pathInstance;
+    }
+
+    public String getPathInstance() {
+        return pathInstance;
+    }
+
+    public void setPathInstance(String pathInstance) {
+        this.pathInstance = pathInstance;
+    }
 
     public ArrayList<Rail> getBestNetwork() {
         return bestNetwork;
@@ -55,6 +70,17 @@ public class AirlineNetwork {
 
     public void setAirlineGraphicConfigs(ARPGraphicConfigs airlineGraphicConfigs) {
         this.airlineGraphicConfigs = airlineGraphicConfigs;
+    }
+
+    public Integer getNumberOfRepo() {
+
+        int nFlights = 0;
+
+        for (Rail rail : bestNetwork) {
+            nFlights += rail.size();
+        }
+
+        return nFlights - flights.size();
     }
 
     public void setFlights(ArrayList<Flight> flights) {
@@ -141,7 +167,13 @@ public class AirlineNetwork {
                 Flight first = rail.getFlights().get(i-1);
                 Flight second = rail.getFlights().get(i);
 
+                if(!first.getArrivalCity().getName().equals(second.getDepartureCity().getName())){
+                    System.out.println("Cidades diferentes");
+                    return false;
+                }
+
                 if(first.getRealArrivalTime() > (second.getRealDepartureTime() - second.getGroundTime())){
+                    System.out.println("Sobreposição de tempos");
                     System.out.println("i " + i + " Delay " + first.getDelay() + " " + second.getDelay());
                     System.out.println(">>>>> " + first.getRealArrivalTime() + " " + (second.getRealDepartureTime() - second.getGroundTime()));
                     return false;

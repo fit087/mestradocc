@@ -463,7 +463,6 @@ public class JPanelARPControler extends javax.swing.JPanel {
 
                 long flightTime = (long) da.java2DToValue(valueX, dataArea, categoryPlot.getRangeAxisEdge());
 
-                jpm.setVisible(false);
 
                 if (event.getEntity() instanceof CategoryItemEntity) {
                     CategoryItemEntity categoryItem = (CategoryItemEntity) event.getEntity();
@@ -474,8 +473,14 @@ public class JPanelARPControler extends javax.swing.JPanel {
 
                     refreshJPanelInfo(flight);
                     Point point = event.getTrigger().getPoint();
+
                     jpm.setLocation(getRealXPoint(point), getRealYPoint(point) + 15);
-                    jpm.setVisible(true);
+                    if(!jpm.isVisible()){
+//                        System.out.println("setVisible(true)");
+                        jpm.setVisible(true);
+                    }
+                }else{
+                    jpm.setVisible(false);
                 }
 
 

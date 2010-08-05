@@ -6,7 +6,6 @@ package main.heuristic;
 
 import database.entity.HeuristicInformation;
 import database.entity.HeuristicInformationJpaController;
-import database.entity.exceptions.PreexistingEntityException;
 import gui.JFrameGraphicTest;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,25 +32,25 @@ public class GRASPConstruct {
     private Boolean resolved = false;
     private AirlineNetwork airlineNetwork;
     private GRASPParameters gRASPParameters;
-    private ARPParameters aircraftRotationParameters;
+    private ARPParameters aRPParameters;
     private Integer numberOfReposisions;
 
     /**
      * Constroi uma malha
      * @param airlineNetwork Dados do problema.
      * @param gRASPParameters Parametros do GRASPl
-     * @param aircraftRotationParameters Parametros do ARP (Aircraft Rotation Problem)
+     * @param arpParameters Parametros do ARP (Aircraft Rotation Problem)
      */
-    public GRASPConstruct(AirlineNetwork airlineNetwork, GRASPParameters gRASPParameters, ARPParameters aircraftRotationParameters) {
+    public GRASPConstruct(AirlineNetwork airlineNetwork, GRASPParameters gRASPParameters, ARPParameters arpParameters) {
         this.airlineNetwork = airlineNetwork;
         this.gRASPParameters = gRASPParameters;
-        this.aircraftRotationParameters = aircraftRotationParameters;
+        this.aRPParameters = arpParameters;
         this.resolved = false;
     }
 
     public void GRASPResolve() {
 
-        System.out.println("Teste " + airlineNetwork.getFlights().size());
+        System.out.println("Numero de voos " + airlineNetwork.getFlights().size());
 
         LogManager.writeMsg("Começou a resolver...");
         Long beginTime = System.currentTimeMillis();
@@ -63,14 +62,15 @@ public class GRASPConstruct {
             for (int j = 0; j < gRASPParameters.getNumberOfConstructions(); j++) {
 
                 ArrayList<Rail> network = GRASPConstruction();
-                //int relaxedDelays = ARPOtimizator.relaxAllDelays(network);
-                //System.out.println("Delays relaxados = " + relaxedDelays);
+                int relaxedDelays = ARPOtimizator.relaxAllDelays(network);
                 int cost = AirlineNetwork.getTotalCost(network);
                 if (cost < airlineNetwork.getBestNetworkCost())
                 {
+                    System.out.println("Delays relaxados = " + relaxedDelays);
                     Long actualTime = System.currentTimeMillis();
                     LogManager.writeMsg(String.format("Melhorou a solução (%s - %s) [%d s]\n", airlineNetwork.getBestNetworkCost(), cost, ((actualTime - beginTime)/1000)));
                     airlineNetwork.setBestNetwork(network, cost);
+                    
                     if (!airlineNetwork.validadeSolution()) {
                         LogManager.writeMsg("ERRO");
                         System.exit(1);
@@ -79,7 +79,7 @@ public class GRASPConstruct {
             }
         }
 
-        HeuristicInformation heuristicInformation = new HeuristicInformation();
+        HeuristicInformation heuristicInformation = new HeuristicInformation(gRASPParameters, aRPParameters, airlineNetwork.getPathInstance());
         heuristicInformation.setDuration((int)((System.currentTimeMillis()-beginTime)/1000));
         heuristicInformation.setBestValue(airlineNetwork.getBestNetworkCost());
         HeuristicInformationJpaController heuristicInformationJpaController = HeuristicInformationJpaController.getInstance();
@@ -133,7 +133,7 @@ public class GRASPConstruct {
             }
 
             Flight actualFlight = firstFlightCandidates.get(RandomManager.getNext(firstFlightCandidates.size()));
-            actualFlight.setDelay(-aircraftRotationParameters.getMaximumDelay());
+            actualFlight.setDelay(-aRPParameters.getMaximumDelay());
 
             Rail rail = new Rail(network.size());
             network.add(rail);
@@ -141,7 +141,15 @@ public class GRASPConstruct {
             while (actualFlight != null) {
                 actualFlight.setRailNumber(rail.getNumber());
                 rail.addFlight(actualFlight);
+                //Flight repoFlight = new Flight();
+                //repoFlight.setName(null);
                 Flight f = calculateNextFlight(actualFlight, clonedFlights);
+
+//                if(repoFlight.getName() != null){
+//                    repoFlight.setRailNumber(rail.getNumber());
+//                    repoFlight.setReposition(true);
+//                    rail.addFlight(repoFlight);
+//                }
 
                 actualFlight = f;
             }
@@ -176,6 +184,10 @@ public class GRASPConstruct {
 
         arcType = randomizingArc();
         ArrayList<Flight> adjacentFlight;
+        boolean [] selectedFligths = new boolean[]{false,false,false,false};
+        selectedFligths[arcType] = true;
+
+//        System.out.println("------------------");
 
         while (true) {
 
@@ -184,11 +196,24 @@ public class GRASPConstruct {
             if (adjacentFlight.isEmpty()) {
 
                 cicleNumber++;
-                if (cicleNumber == 3) {
+                if (cicleNumber == 4) {
                     return null;
                 }
 
-                arcType = (arcType + cicleNumber) % 4;
+                int oldArcType = arcType;
+                
+                for (int i = 0; i < selectedFligths.length; i++) {
+                    if(!selectedFligths[i]){
+                        selectedFligths[i] = true;
+                        arcType = i;
+                        break;
+                    }
+
+                }
+
+                //arcType = (arcType + 1) % 4;
+
+                //System.out.printf("Mudando de %d para %d\n", oldArcType, arcType);
 
             } else {
                 break;
@@ -201,6 +226,17 @@ public class GRASPConstruct {
         int range = (int) Math.ceil(adjacentFlight.size() * gRASPParameters.getAlfa());
 
         Flight selectedFlight = adjacentFlight.get(RandomManager.getNext(range));
+
+        
+//        if(arcType == 2 || arcType == 3){
+//            int newArrivalTime = selectedFlight.getRealDepartureTime() - selectedFlight.getGroundTime();
+//            int fligthTime = actualFlight.getArrivalCity().getFlightTimes().get(selectedFlight.getDepartureCity());
+//            int newDepartureTime = newArrivalTime - fligthTime;
+//
+//            repositionFlight.configure(new Flight("REPO", clonedFlights.size(), actualFlight.getArrivalCity(), selectedFlight.getDepartureCity()
+//                    , newDepartureTime, newArrivalTime));
+//
+//        }
 
         return selectedFlight;
     }
@@ -222,28 +258,27 @@ public class GRASPConstruct {
      */
     private int randomizingArc() {
 
-
         int number = RandomManager.getNext(100) + 1;
 
-        if (number <= aircraftRotationParameters.getProbabilityType1Arc()) {
+        if (number <= aRPParameters.getProbabilityType1Arc()) {
             return 0;
         }
 
-        number -= aircraftRotationParameters.getProbabilityType1Arc();
+        number -= aRPParameters.getProbabilityType1Arc();
 
-        if (number <= aircraftRotationParameters.getProbabilityType2Arc()) {
+        if (number <= aRPParameters.getProbabilityType2Arc()) {
             return 1;
         }
 
-        number -= aircraftRotationParameters.getProbabilityType2Arc();
+        number -= aRPParameters.getProbabilityType2Arc();
 
-        if (number <= aircraftRotationParameters.getProbabilityType3Arc()) {
+        if (number <= aRPParameters.getProbabilityType3Arc()) {
             return 2;
         }
 
-        number -= aircraftRotationParameters.getProbabilityType3Arc();
+        number -= aRPParameters.getProbabilityType3Arc();
 
-        if (number <= aircraftRotationParameters.getProbabilityType4Arc()) {
+        if (number <= aRPParameters.getProbabilityType4Arc()) {
             return 3;
         }
 
@@ -356,7 +391,7 @@ public class GRASPConstruct {
                     adjacentFlights.add(candidate);
                 }*/
 
-                if(delay != 0 && Math.abs(delay) <= aircraftRotationParameters.getMaximumDelay()){
+                if(delay != 0 && Math.abs(delay) <= aRPParameters.getMaximumDelay()){
                     candidate.setDelay(delay);
                     adjacentFlights.add(candidate);
                 }
@@ -374,7 +409,47 @@ public class GRASPConstruct {
     }
 
     private ArrayList<Flight> extractAdjacentFlightArcType3(Flight actualFlight, ArrayList<Flight> clonedFlights) {
-        return new ArrayList<Flight>();
+
+        if(true) return new ArrayList<Flight>();
+        //Como o candidato tem que partir depois do voo atual.
+        int candidateNumber = actualFlight.getNumber() + 1;
+        ArrayList<Flight> flights = clonedFlights;
+        ArrayList<Flight> adjacentFlights = new ArrayList<Flight>();
+        int numberOfFlights = flights.size();
+        Flight candidate = null;
+
+
+        /*
+         * Para todos os voos faca:
+         * 	se ainda nao esta em nenhum trilho
+         * 	     se a ligacao e direta
+         *                e nao e necessario atraso
+         * 		       adicione este voo aos voos_adjacentes
+         */
+        while (candidateNumber < numberOfFlights) {
+            candidate = flights.get(candidateNumber);
+
+            if ((candidate.getRailNumber() == -1)
+                    && (!ARPConstraintsValidator.validateGeographicalConstraint(actualFlight, candidate))) {
+
+                candidate.setDelay(0);
+
+               int timeSpace = (candidate.getDepartureTime() - candidate.getGroundTime()) - actualFlight.getRealArrivalTime();
+               int needTime = actualFlight.getArrivalCity().getFlightTimes().get(candidate.getDepartureCity()) + actualFlight.getArrivalCity().getGroundTime();
+
+               if(timeSpace >= needTime){
+                adjacentFlights.add(candidate);
+               }
+
+            }
+
+            candidateNumber++;
+        }
+
+        /**
+         * Como os voos já vem ordenado por tempo de partida essa lista já se encontra ordenada.
+         */
+        return adjacentFlights;
     }
 
     private ArrayList<Flight> extractAdjacentFlightArcType4(Flight actualFlight, ArrayList<Flight> clonedFlights) {

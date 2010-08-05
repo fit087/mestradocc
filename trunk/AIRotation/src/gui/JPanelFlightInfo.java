@@ -53,14 +53,17 @@ public class JPanelFlightInfo extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 86, Short.MAX_VALUE)
+            .add(0, 91, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     public void setInfo(Flight flight, AirlineNetwork airlineNetwork){
-        this.flight = flight;
-        this.airlineNetword = airlineNetwork;
-        repaint();
+        if(this.flight != flight){
+//            System.out.println("Repintando");
+            this.flight = flight;
+            this.airlineNetword = airlineNetwork;
+            repaint();
+        }
     }
 
     @Override
@@ -74,16 +77,13 @@ public class JPanelFlightInfo extends javax.swing.JPanel {
         long beginTime = baseTime + (flight.getRealDepartureTime() - flight.getGroundTime())*minToMili;
         long endTime = baseTime + (flight.getRealArrivalTime())*minToMili;
 
-        long testEndTime = baseTime + (flight.getArrivalTime())*minToMili;
-
         g.setFont(airlineNetword.getAirlineGraphicConfigs().getReduzedFont());
         g.drawString(simpleDateFormat.format(new Date(beginTime)), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 20));
         g.drawString(simpleDateFormat.format(new Date(endTime)), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 20));
 
-        g.drawString(simpleDateFormat.format(new Date(testEndTime)), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 40));
-
-        g.drawString(String.format("%-7s [%d]", "Tempo de Solo", flight.getGroundTime()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 30));
-        if(flight.getDelay() != 0) g.drawString(String.format("%-7s [%+d]", "Atraso", flight.getDelay()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 40));
+        g.drawString(String.format("%-7s [%d]", "Tempo de Voo", flight.getFlightTime()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 30));
+        g.drawString(String.format("%-7s [%d]", "Tempo de Solo", flight.getGroundTime()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 40));
+        if(flight.getDelay() != 0) g.drawString(String.format("%-7s [%+d]", "Atraso", flight.getDelay()), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 30));
 
     }
 

@@ -28,12 +28,9 @@ public class Flight implements Comparable<Flight> {
     private Integer railNumber;
     //Atraso no voo
     private Integer delay;
-    //Possivel atraso do voo    @Transient
-    private Integer possibleDelay;
-    //Proximo voo.
-    private Flight nextFlight;
-    //Voo anterior
-    private Flight previousFlight;
+
+    //É um voo de reposicionamento.
+    private Boolean reposition;
     //Voo selecionado
     private Boolean selected;
     //Voo excluido
@@ -51,9 +48,7 @@ public class Flight implements Comparable<Flight> {
         this.arrivalTime = arrivalTime;
         this.railNumber = -1;
         this.delay = 0;
-        this.possibleDelay = 0;
-        this.previousFlight = null;
-        this.nextFlight = null;
+        this.reposition = false;
         this.selected = false;
         this.excluded = false;
     }
@@ -126,30 +121,6 @@ public class Flight implements Comparable<Flight> {
         this.number = number;
     }
 
-    public Flight getNextFlight() {
-        return nextFlight;
-    }
-
-    public void setNextFlight(Flight nextFlight) {
-        this.nextFlight = nextFlight;
-    }
-
-    public Integer getPossibleDelay() {
-        return possibleDelay;
-    }
-
-    public void setPossibleDelay(Integer possibleDelay) {
-        this.possibleDelay = possibleDelay;
-    }
-
-    public Flight getPreviousFlight() {
-        return previousFlight;
-    }
-
-    public void setPreviousFlight(Flight previousFlight) {
-        this.previousFlight = previousFlight;
-    }
-
     public Integer getRailNumber() {
         return railNumber;
     }
@@ -164,6 +135,14 @@ public class Flight implements Comparable<Flight> {
 
     public void setSelected(Boolean selected) {
         this.selected = selected;
+    }
+
+    /**
+     * Obtem o tempo de voo
+     * @return
+     */
+    public int getFlightTime(){
+        return getArrivalTime() - getDepartureTime();
     }
 
     /**
@@ -190,6 +169,13 @@ public class Flight implements Comparable<Flight> {
         return getDepartureCity().getGroundTime();
     }
 
+    public Boolean getReposition() {
+        return reposition;
+    }
+
+    public void setReposition(Boolean reposition) {
+        this.reposition = reposition;
+    }
 
     @Override
     public String toString() {
@@ -207,6 +193,17 @@ public class Flight implements Comparable<Flight> {
 
     public int compareTo(Flight o) {
         return getCost() - o.getCost();
+    }
+
+    public void configure(Flight flight) {
+        this.name = flight.getName();
+        this.departureCity = flight.getDepartureCity();
+        this.arrivalCity = flight.getArrivalCity();
+        this.departureTime = flight.getDepartureTime();
+        this.arrivalTime = flight.getArrivalTime();
+        this.delay = flight.getDelay();
+        this.railNumber = flight.getRailNumber();
+        this.reposition = flight.getReposition();
     }
 
 }
