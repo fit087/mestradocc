@@ -5,6 +5,11 @@
 
 package main.heuristic;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import main.heuristic.exceptions.ParameterInvalidException;
 
 /**
@@ -13,12 +18,15 @@ import main.heuristic.exceptions.ParameterInvalidException;
  *
  * @author alexanderdealmeidapinto
  */
-public class ARPParameters {
 
- 
+@Entity
+public class ARPParameters implements Serializable {
 
-    public final static ARPParameters defaultParameters = new ARPParameters(10, 53, 35, 10, 2);
+    public transient final static ARPParameters defaultParameters = new ARPParameters(5, 53, 35, 10, 2);
 
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    
     private int probabilityType1Arc;
 
     private int probabilityType2Arc;
@@ -28,6 +36,9 @@ public class ARPParameters {
     private int probabilityType4Arc;
 
     private int maximumDelay;
+
+    public ARPParameters() {
+    }
 
     /**
      * Parametros do aircraft rotation.
@@ -100,6 +111,14 @@ public class ARPParameters {
 
     public void setProbabilityType4Arc(int probabilityType4Arc) {
         this.probabilityType4Arc = probabilityType4Arc;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

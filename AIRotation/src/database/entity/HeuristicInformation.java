@@ -5,10 +5,13 @@
 package database.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
+import main.heuristic.ARPParameters;
+import main.heuristic.GRASPParameters;
 import util.VersionManager;
 
 /**
@@ -30,12 +33,31 @@ public class HeuristicInformation implements Serializable {
     private String observation;
     private Integer duration;
     private Integer bestValue;
+    private String pathInstance;
+
+    @OneToOne(cascade=CascadeType.PERSIST)
+    private ARPParameters aRPParameters;
+
+    @OneToOne(cascade=CascadeType.PERSIST)
+    private GRASPParameters gRASPParameters;
 
     public HeuristicInformation() {
+        initData();
+    }
+
+    public HeuristicInformation(GRASPParameters gRASPParameters, ARPParameters aRPParameters, String pathInstance) {
+        initData();
+        this.gRASPParameters = gRASPParameters;
+        this.gRASPParameters.setId(null);
+        this.aRPParameters = aRPParameters;
+        this.aRPParameters.setId(null);
+        this.pathInstance = pathInstance;
+    }
+
+    private void initData(){
         this.seed = System.currentTimeMillis();
         this.version = VersionManager.currentVersion;
         this.observation = VersionManager.observation;
-
     }
 
     public long getSeed() {
@@ -76,6 +98,30 @@ public class HeuristicInformation implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public ARPParameters getaRPParameters() {
+        return aRPParameters;
+    }
+
+    public void setaRPParameters(ARPParameters aRPParameters) {
+        this.aRPParameters = aRPParameters;
+    }
+
+    public GRASPParameters getgRASPParameters() {
+        return gRASPParameters;
+    }
+
+    public void setgRASPParameters(GRASPParameters gRASPParameters) {
+        this.gRASPParameters = gRASPParameters;
+    }
+
+    public String getPathInstance() {
+        return pathInstance;
+    }
+
+    public void setPathInstance(String pathInstance) {
+        this.pathInstance = pathInstance;
     }
 
     @Override

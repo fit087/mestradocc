@@ -3,6 +3,8 @@
   <persistence-unit name="airotationpu" transaction-type="RESOURCE_LOCAL">
     <provider>oracle.toplink.essentials.PersistenceProvider</provider>
     <class>database.entity.HeuristicInformation</class>
+    <class>main.heuristic.ARPParameters</class>
+    <class>main.heuristic.GRASPParameters</class>
     <properties>
       <property name="toplink.jdbc.user" value="alex"/>
       <property name="toplink.jdbc.password" value="alex"/>
