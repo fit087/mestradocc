@@ -7,7 +7,7 @@ package main.heuristic;
 import java.util.ArrayList;
 import main.entities.AirlineNetwork;
 import main.entities.Flight;
-import main.entities.Rail;
+import main.entities.Track;
 
 /**
  *
@@ -24,17 +24,17 @@ public class ARPOtimizator {
      *
      * O tempo total de atraso que foi relaxado.
      */
-    public static int relaxAllDelays(ArrayList<Rail> network) {
+    public static int relaxAllDelays(ArrayList<Track> network) {
         int relaxedDelay = 0;
 
-        for (Rail rail : network) {
+        for (Track track : network) {
 
-            for (int i = rail.size() - 1; i >= 0; i--) {
+            for (int i = track.numberOfFlights() - 1; i >= 0; i--) {
 
-                Flight flight = rail.getFlight(i);
+                Flight flight = track.getFlight(i);
 
                 if (flight.getDelay() < 0) {
-                    Flight nextFlight = (i == rail.size() - 1) ? null : rail.getFlight(i + 1);
+                    Flight nextFlight = (i == track.numberOfFlights() - 1) ? null : track.getFlight(i + 1);
                     if (nextFlight == null) {
                         relaxedDelay += (-flight.getDelay());
                         flight.setDelay(0);
@@ -51,7 +51,7 @@ public class ARPOtimizator {
                     }
 
                 } else if (flight.getDelay() > 0) {
-                    Flight previosFlight = (i == 0) ? null : rail.getFlight(i - 1);
+                    Flight previosFlight = (i == 0) ? null : track.getFlight(i - 1);
                     if (previosFlight == null) {
                         relaxedDelay += Math.abs(flight.getDelay());
                         flight.setDelay(0);

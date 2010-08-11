@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.entities.AirlineNetwork;
 import main.entities.Flight;
-import main.entities.Rail;
+import main.entities.Track;
 import util.LogManager;
 import util.RandomManager;
 
@@ -61,16 +61,16 @@ public class GRASPConstruct {
 
             for (int j = 0; j < gRASPParameters.getNumberOfConstructions(); j++) {
 
-                ArrayList<Rail> network = GRASPConstruction();
+                ArrayList<Track> network = GRASPConstruction();
                 int relaxedDelays = ARPOtimizator.relaxAllDelays(network);
                 int cost = AirlineNetwork.getTotalCost(network);
-                if (cost < airlineNetwork.getBestNetworkCost())
-                {
+                if (cost < airlineNetwork.getBestNetworkCost()) {
                     System.out.println("Delays relaxados = " + relaxedDelays);
                     Long actualTime = System.currentTimeMillis();
-                    LogManager.writeMsg(String.format("Melhorou a solução (%s - %s) [%d s]\n", airlineNetwork.getBestNetworkCost(), cost, ((actualTime - beginTime)/1000)));
+                    LogManager.writeMsg(String.format("Melhorou a solução (%s - %s) (REP: %d) [tempo de execução: %d s] \n", airlineNetwork.getBestNetworkCost(), cost, airlineNetwork.getNumberOfRepo(), ((actualTime - beginTime) / 1000)));
+                    System.out.println("Quantidade de trilhos em SDU " + airlineNetwork.getTracksInACity("SDU"));
                     airlineNetwork.setBestNetwork(network, cost);
-                    
+
                     if (!airlineNetwork.validadeSolution()) {
                         LogManager.writeMsg("ERRO");
                         System.exit(1);
@@ -80,7 +80,7 @@ public class GRASPConstruct {
         }
 
         HeuristicInformation heuristicInformation = new HeuristicInformation(gRASPParameters, aRPParameters, airlineNetwork.getPathInstance());
-        heuristicInformation.setDuration((int)((System.currentTimeMillis()-beginTime)/1000));
+        heuristicInformation.setDuration((int) ((System.currentTimeMillis() - beginTime) / 1000));
         heuristicInformation.setBestValue(airlineNetwork.getBestNetworkCost());
         HeuristicInformationJpaController heuristicInformationJpaController = HeuristicInformationJpaController.getInstance();
         try {
@@ -91,18 +91,19 @@ public class GRASPConstruct {
 
 
         System.out.println("Solucao com custo " + airlineNetwork.getBestNetworkCost());
+        System.out.println("Reposicionamentos: " + airlineNetwork.getNumberOfRepo());
         Long actualTime = System.currentTimeMillis();
-        System.out.println("Tempo total " + ((actualTime - beginTime)/1000) + " s");
+        System.out.println("Tempo total " + ((actualTime - beginTime) / 1000) + " s");
     }
 
     /**
      * Efetua uma construção do GRASP
      */
-    public ArrayList<Rail> GRASPConstruction() {
+    public ArrayList<Track> GRASPConstruction() {
         //LogManager.writeMsg("Iniciando a construção GRASP da malha.");
 
         ArrayList<Flight> clonedFlights = airlineNetwork.getFlightsClone();
-        ArrayList<Rail> network = new ArrayList<Rail>();
+        ArrayList<Track> network = new ArrayList<Track>();
 
         for (int i = 0; i < clonedFlights.size(); i++) {
 
@@ -117,7 +118,7 @@ public class GRASPConstruct {
              * número aumenta a aleatóriedade da solução final.
              */
             for (Flight flightCandidate : clonedFlights) {
-                if (flightCandidate.getRailNumber() == -1) {
+                if (flightCandidate.getTrackNumber() == -1) {
                     flightCandidate.setDelay(0);
                     firstFlightCandidates.add(flightCandidate);
                 }
@@ -135,21 +136,23 @@ public class GRASPConstruct {
             Flight actualFlight = firstFlightCandidates.get(RandomManager.getNext(firstFlightCandidates.size()));
             actualFlight.setDelay(-aRPParameters.getMaximumDelay());
 
-            Rail rail = new Rail(network.size());
+            Track rail = new Track(network.size());
             network.add(rail);
 
             while (actualFlight != null) {
-                actualFlight.setRailNumber(rail.getNumber());
+                actualFlight.setTrackNumber(rail.getNumber());
                 rail.addFlight(actualFlight);
-                //Flight repoFlight = new Flight();
-                //repoFlight.setName(null);
-                Flight f = calculateNextFlight(actualFlight, clonedFlights);
 
-//                if(repoFlight.getName() != null){
-//                    repoFlight.setRailNumber(rail.getNumber());
-//                    repoFlight.setReposition(true);
-//                    rail.addFlight(repoFlight);
-//                }
+                Flight repoFlight = new Flight();
+                repoFlight.setName(null);
+
+                Flight f = calculateNextFlight(actualFlight, clonedFlights, repoFlight);
+
+                if (repoFlight.getName() != null) {
+                    repoFlight.setTrackNumber(rail.getNumber());
+                    repoFlight.setReposition(true);
+                    rail.addFlight(repoFlight);
+                }
 
                 actualFlight = f;
             }
@@ -178,13 +181,13 @@ public class GRASPConstruct {
      * @param flightCandidate
      * @return null caso não haja mais nenhum vôo que possa sucede-lo
      */
-    private Flight calculateNextFlight(Flight actualFlight, ArrayList<Flight> clonedFlights) {
+    private Flight calculateNextFlight(Flight actualFlight, ArrayList<Flight> clonedFlights, Flight repositionFlight) {
         int arcType;
         int cicleNumber = 0;
 
         arcType = randomizingArc();
         ArrayList<Flight> adjacentFlight;
-        boolean [] selectedFligths = new boolean[]{false,false,false,false};
+        boolean[] selectedFligths = new boolean[]{false, false, false, false};
         selectedFligths[arcType] = true;
 
 //        System.out.println("------------------");
@@ -196,22 +199,26 @@ public class GRASPConstruct {
             if (adjacentFlight.isEmpty()) {
 
                 cicleNumber++;
-                if (cicleNumber == 4) {
+                if (cicleNumber == 2) {
                     return null;
                 }
 
-                int oldArcType = arcType;
-                
-                for (int i = 0; i < selectedFligths.length; i++) {
-                    if(!selectedFligths[i]){
-                        selectedFligths[i] = true;
-                        arcType = i;
-                        break;
-                    }
+//                int oldArcType = arcType;
 
+                if (arcType == 0) {
+                    arcType = 1;
+                } else {
+                    arcType = 0;
                 }
 
-                //arcType = (arcType + 1) % 4;
+//                for (int i = 0; i < selectedFligths.length; i++) {
+//                    if(!selectedFligths[i]){
+//                        selectedFligths[i] = true;
+//                        arcType = i;
+//                        break;
+//                    }
+//
+//                }
 
                 //System.out.printf("Mudando de %d para %d\n", oldArcType, arcType);
 
@@ -227,16 +234,13 @@ public class GRASPConstruct {
 
         Flight selectedFlight = adjacentFlight.get(RandomManager.getNext(range));
 
-        
-//        if(arcType == 2 || arcType == 3){
-//            int newArrivalTime = selectedFlight.getRealDepartureTime() - selectedFlight.getGroundTime();
-//            int fligthTime = actualFlight.getArrivalCity().getFlightTimes().get(selectedFlight.getDepartureCity());
-//            int newDepartureTime = newArrivalTime - fligthTime;
-//
-//            repositionFlight.configure(new Flight("REPO", clonedFlights.size(), actualFlight.getArrivalCity(), selectedFlight.getDepartureCity()
-//                    , newDepartureTime, newArrivalTime));
-//
-//        }
+        if (arcType == 2 || arcType == 3) {
+            int newArrivalTime = selectedFlight.getRealDepartureTime() - selectedFlight.getGroundTime();
+            int fligthTime = actualFlight.getArrivalCity().getFlightTimes().get(selectedFlight.getDepartureCity());
+            int newDepartureTime = newArrivalTime - fligthTime;
+
+            repositionFlight.configure(new Flight("REPO", clonedFlights.size(), actualFlight.getArrivalCity(), selectedFlight.getDepartureCity(), newDepartureTime, newArrivalTime));
+        }
 
         return selectedFlight;
     }
@@ -335,21 +339,21 @@ public class GRASPConstruct {
         while (candidateNumber < numberOfFlights) {
             candidate = flights.get(candidateNumber);
 
-            if ((candidate.getRailNumber() == -1)
+            if ((candidate.getTrackNumber() == -1)
                     && (ARPConstraintsValidator.validateGeographicalConstraint(actualFlight, candidate))
-                        &&  ARPConstraintsValidator.validateTemporalConstraintWithoutDelay(actualFlight, candidate)) {
+                    && ARPConstraintsValidator.validateTemporalConstraintWithoutDelay(actualFlight, candidate)) {
 
                 candidate.setDelay(0);
                 adjacentFlights.add(candidate);
                 /*int delay = actualFlight.getRealArrivalTime() - (candidate.getDepartureTime() - candidate.getGroundTime());
 
                 if (delay <= 0) {
-                    if((-delay) > aircraftRotationParameters.getMaximumDelay()){
-                        delay = -aircraftRotationParameters.getMaximumDelay();
-                    }
+                if((-delay) > aircraftRotationParameters.getMaximumDelay()){
+                delay = -aircraftRotationParameters.getMaximumDelay();
+                }
 
-                    candidate.setDelay(delay);
-                    adjacentFlights.add(candidate);
+                candidate.setDelay(delay);
+                adjacentFlights.add(candidate);
                 }*/
 
             }
@@ -381,17 +385,17 @@ public class GRASPConstruct {
         while (candidateNumber < numberOfFlights) {
             candidate = flights.get(candidateNumber);
 
-            if ((candidate.getRailNumber() == -1)
+            if ((candidate.getTrackNumber() == -1)
                     && ARPConstraintsValidator.validateGeographicalConstraint(actualFlight, candidate)) {
 
                 int delay = actualFlight.getRealArrivalTime() - (candidate.getDepartureTime() - candidate.getGroundTime());
 
                 /*if ((delay > 0) && (delay <= aircraftRotationParameters.getMaximumDelay())) {
-                    candidate.setDelay(delay);
-                    adjacentFlights.add(candidate);
+                candidate.setDelay(delay);
+                adjacentFlights.add(candidate);
                 }*/
 
-                if(delay != 0 && Math.abs(delay) <= aRPParameters.getMaximumDelay()){
+                if (delay != 0 && Math.abs(delay) <= aRPParameters.getMaximumDelay()) {
                     candidate.setDelay(delay);
                     adjacentFlights.add(candidate);
                 }
@@ -411,6 +415,7 @@ public class GRASPConstruct {
     private ArrayList<Flight> extractAdjacentFlightArcType3(Flight actualFlight, ArrayList<Flight> clonedFlights) {
 
         if(true) return new ArrayList<Flight>();
+
         //Como o candidato tem que partir depois do voo atual.
         int candidateNumber = actualFlight.getNumber() + 1;
         ArrayList<Flight> flights = clonedFlights;
@@ -429,18 +434,22 @@ public class GRASPConstruct {
         while (candidateNumber < numberOfFlights) {
             candidate = flights.get(candidateNumber);
 
-            if ((candidate.getRailNumber() == -1)
+            if ((candidate.getTrackNumber() == -1)
                     && (!ARPConstraintsValidator.validateGeographicalConstraint(actualFlight, candidate))) {
 
-                candidate.setDelay(0);
+                if (actualFlight.getArrivalCity().getFlightTimes().get(candidate.getDepartureCity()) != null) {
+                    candidate.setDelay(0);
 
-               int timeSpace = (candidate.getDepartureTime() - candidate.getGroundTime()) - actualFlight.getRealArrivalTime();
-               int needTime = actualFlight.getArrivalCity().getFlightTimes().get(candidate.getDepartureCity()) + actualFlight.getArrivalCity().getGroundTime();
 
-               if(timeSpace >= needTime){
-                adjacentFlights.add(candidate);
-               }
+                    int timeSpace = (candidate.getDepartureTime() - candidate.getGroundTime()) - actualFlight.getRealArrivalTime();
+                    int needTime = actualFlight.getArrivalCity().getFlightTimes().get(candidate.getDepartureCity()) + actualFlight.getArrivalCity().getGroundTime();
 
+                    if (timeSpace >= needTime) {
+                        adjacentFlights.add(candidate);
+                    }
+
+
+                }
             }
 
             candidateNumber++;

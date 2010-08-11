@@ -21,7 +21,7 @@ public class AirlineNetwork {
 
     private String pathInstance;
     
-    private ArrayList< Rail > bestNetwork = new ArrayList< Rail >();
+    private ArrayList< Track > bestNetwork = new ArrayList< Track >();
 
     private int bestNetworkCost = Integer.MAX_VALUE;
 
@@ -43,11 +43,11 @@ public class AirlineNetwork {
         this.pathInstance = pathInstance;
     }
 
-    public ArrayList<Rail> getBestNetwork() {
+    public ArrayList<Track> getBestNetwork() {
         return bestNetwork;
     }
 
-    public void setBestNetwork(ArrayList<Rail> bestNetwork, int cost) {
+    public void setBestNetwork(ArrayList<Track> bestNetwork, int cost) {
         this.bestNetwork = bestNetwork;
         this.bestNetworkCost = cost;
     }
@@ -76,8 +76,8 @@ public class AirlineNetwork {
 
         int nFlights = 0;
 
-        for (Rail rail : bestNetwork) {
-            nFlights += rail.size();
+        for (Track track : bestNetwork) {
+            nFlights += track.numberOfFlights();
         }
 
         return nFlights - flights.size();
@@ -127,9 +127,13 @@ public class AirlineNetwork {
         return highTime;
     }
 
+    /**
+     * Mostra na saida padrão, todos os trilhos que compoem
+     * o melhor resultado obtido.
+     */
     public void showBestNetwork(){
-        for (Rail rail : bestNetwork) {
-            rail.show();
+        for (Track track : bestNetwork) {
+            track.show();
         }
     }
 
@@ -146,11 +150,19 @@ public class AirlineNetwork {
         return null;
     }
 
-    public int railsSize() {
+    /**
+     * Numero de trilho que compoem o melhor resultado composto.
+     * @return
+     */
+    public int numberOfTracks() {
         if(bestNetwork.isEmpty()) return Integer.MAX_VALUE;
         else return bestNetwork.size();
     }
 
+    /**
+     * Obtem um clone dos voos da companhia aérea indicada.
+     * @return
+     */
     public ArrayList<Flight> getFlightsClone() {
         ArrayList<Flight> cloneFlights = new ArrayList<Flight>();
 
@@ -162,10 +174,10 @@ public class AirlineNetwork {
     }
 
     public boolean validadeSolution(){
-        for (Rail rail : bestNetwork) {
-            for(int i = 1; i < rail.getFlights().size(); i++){
-                Flight first = rail.getFlights().get(i-1);
-                Flight second = rail.getFlights().get(i);
+        for (Track track : bestNetwork) {
+            for(int i = 1; i < track.getFlights().size(); i++){
+                Flight first = track.getFlights().get(i-1);
+                Flight second = track.getFlights().get(i);
 
                 if(!first.getArrivalCity().getName().equals(second.getDepartureCity().getName())){
                     System.out.println("Cidades diferentes");
@@ -184,14 +196,14 @@ public class AirlineNetwork {
         return true;
     }
 
-    public Flight getFlight(String railName, long time) {
+    public Flight getFlight(String trackName, long time) {
         long basetime = getAirlineGraphicConfigs().getBaseTime();
         time -= basetime;
         time/=60*1000;
         
-        for (Rail rail : bestNetwork) {
-            if(rail.getName().equals(railName)){
-                for (Flight flight : rail.getFlights()) {
+        for (Track track : bestNetwork) {
+            if(track.getName().equals(trackName)){
+                for (Flight flight : track.getFlights()) {
                     if(((flight.getRealDepartureTime() - flight.getGroundTime()) <= time)
                             && (flight.getRealArrivalTime() >= time)){
                         return flight;
@@ -213,14 +225,25 @@ public class AirlineNetwork {
      * @param network
      * @return
      */
-    public static int getTotalCost(ArrayList<Rail> network){
-        int totalcost = network.size()*1000;
+    public static int getTotalCost(ArrayList<Track> network){
+        int totalcost = 0;
 
-        for (Rail rail : network) {
-            totalcost += rail.getCost();
+        for (Track track : network) {
+            totalcost += track.getCost();
+
         }
 
         return totalcost;
+    }
+
+    public int getTracksInACity(String city){
+        int acumulador = 0;
+
+        for (Track track : bestNetwork) {
+            if(track.coverCity(city)) acumulador++;
+        }
+
+        return acumulador;
     }
 
 }

@@ -7,7 +7,7 @@ package graphic;
 import java.util.Date;
 import main.entities.AirlineNetwork;
 import main.entities.Flight;
-import main.entities.Rail;
+import main.entities.Track;
 import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
@@ -27,11 +27,11 @@ public class ARPDataSet extends TaskSeriesCollection {
         ARPDataSet aircraftDataSet = new ARPDataSet(airlineNetwork);
 
         for (int i = 0; i < airlineNetwork.getBestNetwork().size(); i++) {
-            Rail rail = airlineNetwork.getBestNetwork().get(i);
-            aircraftDataSet.createNewRail(rail);
+            Track track = airlineNetwork.getBestNetwork().get(i);
+            aircraftDataSet.createNewTrack(track);
 
-            for(int j = 0; j < rail.getFlights().size(); j++){
-                aircraftDataSet.addNewFlight(rail.getFlights().get(j), i);
+            for(int j = 0; j < track.getFlights().size(); j++){
+                aircraftDataSet.addNewFlight(track.getFlights().get(j), i);
             }
         }
 
@@ -54,8 +54,8 @@ public class ARPDataSet extends TaskSeriesCollection {
         add(taskSeries);
     }
 
-    public void createNewRail(Rail rail) {
-        taskSeries.add(new Task(String.format(rail.getName(), (taskSeries.getTasks().size() + 1)), maxTimePeriod));
+    public void createNewTrack(Track track) {
+        taskSeries.add(new Task(String.format(track.getName(), (taskSeries.getTasks().size() + 1)), maxTimePeriod));
     }
 
     public void addNewFlight(Flight flight, int row){

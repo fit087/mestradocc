@@ -25,7 +25,7 @@ public class Flight implements Comparable<Flight> {
     //Numero do voo
     private Integer number;
     //Numero do trilho
-    private Integer railNumber;
+    private Integer trackNumber;
     //Atraso no voo
     private Integer delay;
 
@@ -37,6 +37,7 @@ public class Flight implements Comparable<Flight> {
     private Boolean excluded;
 
     public Flight() {
+        this.name = null;
     }
 
     public Flight(String name, Integer number, City departureCity, City arrivalCity, Integer departureTime, Integer arrivalTime) {
@@ -46,7 +47,7 @@ public class Flight implements Comparable<Flight> {
         this.arrivalCity = arrivalCity;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
-        this.railNumber = -1;
+        this.trackNumber = -1;
         this.delay = 0;
         this.reposition = false;
         this.selected = false;
@@ -121,12 +122,12 @@ public class Flight implements Comparable<Flight> {
         this.number = number;
     }
 
-    public Integer getRailNumber() {
-        return railNumber;
+    public Integer getTrackNumber() {
+        return trackNumber;
     }
 
-    public void setRailNumber(Integer railNumber) {
-        this.railNumber = railNumber;
+    public void setTrackNumber(Integer trackNumber) {
+        this.trackNumber = trackNumber;
     }
 
     public Boolean getSelected() {
@@ -202,7 +203,7 @@ public class Flight implements Comparable<Flight> {
         this.departureTime = flight.getDepartureTime();
         this.arrivalTime = flight.getArrivalTime();
         this.delay = flight.getDelay();
-        this.railNumber = flight.getRailNumber();
+        this.trackNumber = flight.getTrackNumber();
         this.reposition = flight.getReposition();
     }
 
