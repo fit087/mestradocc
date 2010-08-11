@@ -5,7 +5,11 @@ import main.entities.City;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 import main.entities.AirlineNetwork;
 
 /**
@@ -76,6 +80,8 @@ public class ARPFileReader {
     private static void readFlightFromFile(File file, AirlineNetwork airlineNetwork) throws FileNotFoundException {
         ArrayList<Flight> flights = new ArrayList<Flight>();
 
+        Set<String> cities = new TreeSet<String>();
+
         Scanner scanner = new Scanner(file);
 
         while(scanner.hasNext()){
@@ -91,15 +97,26 @@ public class ARPFileReader {
             aux = scanner.next().split(":");
             int arrivalTime = arrivalDay*24*60 + (new Integer(aux[0])*60) + new Integer(aux[1]);
 
-            City departureCity = airlineNetwork.getCity(scanner.next());
+            String dCity = scanner.next();
+            String aCity = scanner.next();
 
-            City arrivalCity = airlineNetwork.getCity(scanner.next());
+            cities.add(dCity);
+            cities.add(aCity);
+
+            City departureCity = airlineNetwork.getCity(dCity);
+            City arrivalCity = airlineNetwork.getCity(aCity);
 
             flights.add(new Flight(fligthName, flights.size(), departureCity, arrivalCity, departureTime, arrivalTime));
 
         }
 
         scanner.close();
+
+        
+
+        for (String string : cities) {
+            System.out.println(string);
+        }
 
         airlineNetwork.setFlights(flights);
     }
@@ -123,6 +140,11 @@ public class ARPFileReader {
 
             City departureCity = airlineNetwork.getCity(departureCityName);
             City arrivalCity = airlineNetwork.getCity(arrivalCityName);
+
+            if(departureCity == null || arrivalCity == null) {
+                System.out.println("Cidade inexistente: " + departureCity == null ? departureCityName : arrivalCityName);
+                continue;
+            }
 
             departureCity.addCityTime(arrivalCity, time);
             arrivalCity.addCityTime(departureCity, time);

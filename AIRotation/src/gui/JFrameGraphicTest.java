@@ -54,13 +54,16 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
             int cont = 0;
 
             cont++;
-            AirlineNetwork airlineNetwork = new AirlineNetwork("instances/01");
+
+            AirlineNetwork airlineNetwork = new AirlineNetwork("instances/02");
 
             try {
                 ARPFileReader.readDataFromFile(airlineNetwork.getPathInstance(), airlineNetwork);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            System.out.println("Instancia " + airlineNetwork.getPathInstance() + " Numero de voos " + airlineNetwork.getFlights().size());
 
             GRASPConstruct gRASPConstruct = new GRASPConstruct(airlineNetwork, GRASPParameters.defaultParameters, ARPParameters.defaultParameters);
             gRASPConstruct.GRASPResolve();
