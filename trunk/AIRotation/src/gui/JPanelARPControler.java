@@ -410,6 +410,7 @@ public class JPanelARPControler extends javax.swing.JPanel {
     }
 
     public int getRealYPoint(Point point) {
+        
         return (int) (getLocationOnScreen().getY() + point.getY());
     }
 
