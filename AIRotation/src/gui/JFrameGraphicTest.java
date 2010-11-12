@@ -55,7 +55,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
             cont++;
 
-            AirlineNetwork airlineNetwork = new AirlineNetwork("instances/02");
+            AirlineNetwork airlineNetwork = new AirlineNetwork("instances/artigo");
 
             try {
                 ARPFileReader.readDataFromFile(airlineNetwork.getPathInstance(), airlineNetwork);
