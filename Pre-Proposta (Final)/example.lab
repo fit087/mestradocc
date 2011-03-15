@@ -1,0 +1,8 @@
+
+\begin{theglossary}
+  \makeatletter
+  \item [ARP] Aircraft Rotation Problem, p. \hyperpage{3}
+  \item [NP] Non-Polinomial, p. \hyperpage{2}
+  \item [PCTA] Problema de Constru\IeC {\c c}\IeC {\~a}o de Trilhos de Aeronaves, p. 
+		\hyperpage{3}
+  \end{theglossary}

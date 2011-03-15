@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  12 NOV 2010 14:07
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  26 NOV 2010 08:49
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -302,6 +302,9 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count118
 \LT@p@ftn=\toks19
 )
+(/usr/local/texlive/2010/texmf-dist/tex/latex/capt-of/capt-of.sty
+Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
+)
 (./artigoenglish.aux
 
 LaTeX Warning: Label `tabela1' multiply defined.
@@ -309,20 +312,20 @@ LaTeX Warning: Label `tabela1' multiply defined.
 )
 \openout1 = `artigoenglish.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
 \AtBeginShipoutBox=\box35
 
 
@@ -337,7 +340,7 @@ File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 )
-Package hyperref Info: Link coloring ON on input line 27.
+Package hyperref Info: Link coloring ON on input line 28.
 
 (/usr/local/texlive/2010/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -350,9 +353,9 @@ Package: gettitlestring 2009/12/18 v1.3 Cleanup title references (HO)
 )
 \c@section@level=\count119
 )
-LaTeX Info: Redefining \ref on input line 27.
-LaTeX Info: Redefining \pageref on input line 27.
-LaTeX Info: Redefining \nameref on input line 27.
+LaTeX Info: Redefining \ref on input line 28.
+LaTeX Info: Redefining \pageref on input line 28.
+LaTeX Info: Redefining \nameref on input line 28.
 
 (./artigoenglish.out) (./artigoenglish.out)
 \@outlinefile=\write3
@@ -398,31 +401,29 @@ Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
  [3]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+Missing character: There is no â in font cmr12!
+Missing character: There is no € in font cmr12!
+Missing character: There is no ™ in font cmr12!
  [4]
-Missing character: There is no â in font cmr12!
-Missing character: There is no € in font cmr12!
-Missing character: There is no ˜ in font cmr12!
-Missing character: There is no â in font cmr12!
-Missing character: There is no € in font cmr12!
-Missing character: There is no ™ in font cmr12!
-Missing character: There is no â in font cmr12!
-Missing character: There is no € in font cmr12!
-Missing character: There is no ™ in font cmr12!
-
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 144--145
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
 
  []
 
-[6] [7]
-Overfull \hbox (25.43477pt too wide) in alignment at lines 226--249
+[5] [6] <img/formacao.png, id=121, 449.68pt x 275.0275pt>
+File: img/formacao.png Graphic file (type png)
+
+<use img/formacao.png>
+Overfull \hbox (53.6789pt too wide) in paragraph at lines 219--220
+ [] 
+ []
+
+[7 <./img/formacao.png>]
+Overfull \hbox (25.43477pt too wide) in alignment at lines 232--255
  [] [] [] 
  []
 
 
-Overfull \hbox (25.43477pt too wide) in alignment at lines 249--266
+Overfull \hbox (25.43477pt too wide) in alignment at lines 255--272
  [] [] [] 
  []
 
@@ -662,17 +663,17 @@ Missing character: There is no â in font cmr8!
 Missing character: There is no € in font cmr8!
 Missing character: There is no “ in font cmr8!
  [9]
-Overfull \hbox (28.91121pt too wide) in alignment at lines 314--338
+Overfull \hbox (28.91121pt too wide) in alignment at lines 320--344
  [] [] [] 
  []
 
 
-Overfull \hbox (28.91121pt too wide) in alignment at lines 338--362
+Overfull \hbox (28.91121pt too wide) in alignment at lines 344--368
  [] [] [] 
  []
 
 
-Overfull \hbox (28.91121pt too wide) in alignment at lines 362--388
+Overfull \hbox (28.91121pt too wide) in alignment at lines 368--394
  [] [] [] 
  []
 
@@ -680,41 +681,29 @@ Overfull \hbox (28.91121pt too wide) in alignment at lines 362--388
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10]
+Underfull \vbox (badness 10000) detected at line 432
+ []
+
 [11]
-Overfull \hbox (85.32312pt too wide) in alignment at lines 402--426
- [] [] [] 
- []
-
-
-Underfull \vbox (badness 10000) detected at line 426
- []
-
-[12]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 430.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 430.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 436.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 436.
  (./artigoenglish.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 430.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 436.
+Package rerunfilecheck Info: File `artigoenglish.out' has not changed.
+(rerunfilecheck)             Checksum: 56B793F20AF1299F635EF0A18BC70082;1081.
 
-
-Package rerunfilecheck Warning: File `artigoenglish.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `artigoenglish.out':
-(rerunfilecheck)             Before: 60F148C3C649ABCE0AD1668E1761E333;1005
-(rerunfilecheck)             After:  26ADE1FB67E189800EB78A77CC39168A;1017.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5618 strings out of 493747
- 81159 string characters out of 3143546
- 165027 words of memory out of 3000000
- 8765 multiletter control sequences out of 15000+200000
+ 5634 strings out of 493747
+ 81508 string characters out of 3143546
+ 165109 words of memory out of 3000000
+ 8774 multiletter control sequences out of 15000+200000
  18996 words of font info for 77 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,6n,28p,880b,384s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,7n,28p,750b,382s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
@@ -726,10 +715,10 @@ l/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
 /texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/t
 exlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/te
 xlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on artigoenglish.pdf (12 pages, 174091 bytes).
+Output written on artigoenglish.pdf (11 pages, 244738 bytes).
 PDF statistics:
- 196 PDF objects out of 1000 (max. 8388607)
- 166 compressed objects within 2 object streams
+ 199 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
  41 named destinations out of 1000 (max. 500000)
- 129 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 142 words of extra memory for PDF output out of 10000 (max. 10000000)
 

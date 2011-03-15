@@ -1,0 +1,69 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+\newcommand{\enquote}[1]{``#1''}
+
+\bibitem[\MakeUppercase{ARGUELLO} e \MakeUppercase{BARD}(1997)ARGUELLO e
+  BARD]{arguelo1007}
+\MakeUppercase{ARGUELLO, M.~F., BARD, J.~F.}, 1997, \enquote{A GRASP for
+  Aircraft Routing in Response to Groundings and Delays}, \emph{Journal of
+  Combinatorial Optimization}, v.~5, \penalty0 pp.~211--228.
+
+\bibitem[\MakeUppercase{Beasley}(1990)Beasley]{orlibrary}
+\MakeUppercase{Beasley, J.~E.}, 1990, \enquote{OR-Library: distributing test
+  problems by electronic mail}, \emph{Journal of the Operational Research
+  Society}, v.~41, n.~11, \penalty0 pp.~1069--1072.
+
+\bibitem[\MakeUppercase{Clarkea}\emph{ et~al.}(1997)Clarkea, Johnsona,
+  Nemhausera, e Zhub]{clarke97}
+\MakeUppercase{Clarkea, L., Johnsona, E., Nemhausera, G.,
+  \MakeLowercase{et~al.}}, 1997, \enquote{The aircraft rotation problem},
+  \emph{Operations Research}, v.~69, \penalty0 pp.~33--46.
+
+\bibitem[\MakeUppercase{Cohn} e \MakeUppercase{Barnhart}(2003)Cohn e
+  Barnhart]{mainville2003}
+\MakeUppercase{Cohn, A.~M., Barnhart, C.}, 2003, \enquote{Improving crew
+  schedulingby incorporating key maintenance routing decisions},
+  \emph{Operations Research}, v.~51, n.~3 (May), \penalty0 pp.~387--396.
+
+\bibitem[\MakeUppercase{Cordeau}\emph{ et~al.}(2001)Cordeau, Stojkovic, Soumis,
+  e Desrosiers]{cordeau2001}
+\MakeUppercase{Cordeau, J.~F., Stojkovic, G., Soumis, F.,
+  \MakeLowercase{et~al.}}, 2001, \enquote{Benders Decomposition for
+  Simultaneous Aircraft Routing and Crew Scheduling}, \emph{Transportation
+  Transportation Science}, v.~35, \penalty0 pp.~375--388.
+
+\bibitem[\MakeUppercase{de~Ara{\'u}jo}(2008)de~Ara{\'u}jo]{maritan}
+\MakeUppercase{de~Ara{\'u}jo, T. M.~U.}, 2008, \emph{M{\'e}todos h{\'\i}bridos
+  baseados em metaheur{\'\i}sticas aplicados {\`a} otimiza{\c c}{\~a}o global
+  cont{\'\i}nua}.
+\newblock Tese de Mestrado, Universidade Federal da Para{\'\i}ba, Julho.
+
+\bibitem[\MakeUppercase{Klabjan}\emph{ et~al.}(2002)Klabjan, Johnson,
+  Nemhauser, Gelman, e Ramaswamy]{klabjan2002}
+\MakeUppercase{Klabjan, D., Johnson, E.~L., Nemhauser, G.~L.,
+  \MakeLowercase{et~al.}}, 2002, \enquote{Airline Crew Scheduling with Time
+  Windows and Plane-Count Constraints}, \emph{Transportation Science}, v.~36,
+  n.~3, \penalty0 pp.~337--348.
+
+\bibitem[\MakeUppercase{Lucena} e \MakeUppercase{Pontes}(2007)Lucena e
+  Pontes]{abiliolivro}
+\MakeUppercase{Lucena, A., Pontes, R.}, 2007, \emph{Avia{\c c}{\~a}o comercial
+  controlada por m{\'a}quinas inteligentes}.
+\newblock  Rio de Janeiro, e-papers.
+
+\bibitem[\MakeUppercase{Mercier} e \MakeUppercase{Soumis}(2007)Mercier e
+  Soumis]{mercier2007}
+\MakeUppercase{Mercier, A., Soumis, F.}, 2007, \enquote{An integrated aircraft
+  routing, crew scheduling and flight retiming model}, \emph{Computers and
+  Operations Research}, v.~34, \penalty0 pp.~2251--2265.
+
+\bibitem[\MakeUppercase{Souza}(2009)Souza]{notasmarcone}
+\MakeUppercase{Souza, M. J.~F.}, 2009, \emph{Intelig{\^e}ncia Computacional
+  para Otimiza{\c c}{\~a}o}.
+\newblock Relat{\'o}rio t{\'e}cnico, Universidade Federal de Ouro Preto.
+
+\end{thebibliography}

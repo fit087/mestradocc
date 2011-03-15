@@ -2,6 +2,7 @@
 \usepackage{endmmacro}
 \usepackage{graphicx}
 \usepackage{longtable}
+\usepackage{capt-of}
 
 % The following is enclosed to allow easy detection of differences in
 % ascii coding.
@@ -32,23 +33,23 @@
 
 \begin{frontmatter}
 
-\title{META-HEURISTICS GRASP AND ILS APPLIED TO THE AIRCRAFT ROTATION PROBLEM}
+\title{METAHEURISTICS GRASP AND ILS APPLIED TO THE AIRCRAFT ROTATION PROBLEM}
 
 \author{Alexander de Almeida Pinto}
-\address{LAVID\\ Federal University of Paraiba \\ Joao Pessoa, Brazil}
+\address{Laboratory for Applications of Digital Video\\ Federal University of Paraiba \\ Joao Pessoa, Brazil}
 
 \author{Daniel Goncalvez Ramos}
-\address{LAVID\\ Federal University of Paraiba \\ Joao Pessoa, Brazil}
+\address{Laboratory for Applications of Digital Video\\ Federal University of Paraiba \\ Joao Pessoa, Brazil}
 
 \author{Lucidio dos Anjos Formiga Cabral}
-\address{IT Department\\ Federal University of Paraiba \\ Joao Pessoa, Brazil}
+\address{Departament of Informatic\\ Federal University of Paraiba \\ Joao Pessoa, Brazil}
 
 \begin{abstract}
-The Aircraft Rotation Problem refers to the designation of each airplane available at airlines companies such that all planned flights are covered. This is a light constrained problem since any aircraft can be assigned to an unlimited quantity of duty work. However, there are many lower cost solutions that can be obtained by simply adjusting the time of departure of a flight, or even positioning some aircraft by executing ferry flights between two near airports. We describe an algorithm based on GRASP meta-heuristic using ILS as local search, which calculates a sub-optimal way to organize the flights. This is a good solution to large scaled problems, considering that in this case, an exact method would require some years to be applied. Some computational results are presented for a real world problem at Rio-Sul Brazilian Airline.
+The Aircraft Rotation Problem refers to the designation of each airplane available at airlines companies such that all planned flights are covered. This is a light constrained problem since any aircraft can be assigned to an unlimited quantity of duty work. However, there are many lower cost solutions that can be obtained by simply adjusting the time of departure of a flight, or even positioning some aircraft by executing ferry flights between two near airports. We describe an algorithm based on GRASP metaheuristic using ILS as local search, which is able to calculate good solution to large scaled problems. Some computational results are presented for a real world problem at Rio-Sul Brazilian Airlines.
 \end{abstract}
 
 \begin{keyword}
-Aircraft Routing, Optimization, Meta-heuristic, GRASP
+Aircraft Rotation, Optimization, Metaheuristic, GRASP, ILS
 \end{keyword}
 
 \end{frontmatter}
@@ -62,7 +63,7 @@ On the literature, there are two well-known problems associated to aircraft plan
 
 Due to the combinatorial explosion of the problems involving airlines, they should be solved separately, though each problem should be solved giving conditions to the next one be solved. 
 
-Many techniques have been used to give a solution to the ARP, some of them using exact methods, which always obtain the best result, but uses lots of CPU, and in practice is unfeasible, due to the size of real problems. Other techniques try to find a good solution, instead of the best, and try to do that in a fast way. To do so, they use meta-heuristics, a heuristic method that uses some historical knowledge of the solutions combined with some characteristic of the problem to find a good solution for big instances.
+Many techniques have been used to give a solution to the ARP, some of them using exact methods, which always obtain the best result, but uses lots of CPU, and in practice is unfeasible, due to the size of real problems. Other techniques try to find a good solution, instead of the best, and try to do that in a fast way. To do so, they use metaheuristics, exploting some historical knowledge of the solutions combined with some characteristic of the problem to find good solutions for big instances.
 
 \subsection{The ARP problem}
 
@@ -70,13 +71,13 @@ After solving the Fleet Assignment problem, the one that chooses the kind of air
 
 To solve this problem, we must be aware of some constraints involving time and space. For example, an airplane cannot leave before the arrival of the flight that precedes it, neither from a different city that it has arrived on the last flight. Though these are obvious constraints, they make the problem really hard to solve in a large scale, as we could have a very big number of combinations between the connections of the flights. There is also another constraint, related to the time that the airplane has to be on the ground before it leaves. This restriction is usually related to an airport.
 
-Considering these restrictions, we should arrange the flights looking for a cheap network. Its known that finding the cheapest is almost impossible for big instances, but finding a good one can be achieved with some meta-heuristics.
+Considering these restrictions, we should arrange the flights looking for a cheap network. Its known that finding the cheapest is almost impossible for big instances, but finding a good one can be achieved with some metaheuristics.
 
 	Another important aspect is the maintaining restrictions. It is known that a plane must have periodic checks. Opportunities to perform these tasks occur only on some connections that are potentially available. As consequence, a sequence of flights must be constructed so that these restrictions are not violated. In order to easily incorporate these constraints in our framework, we assume that the rotations are not assigned to specific types of aircraft. Thus, if an aircraft needs maintenance, is created a special flight depart and arrive from the maintenance base chosen. The time of flight is exactly the service time \cite{pimentel2005}.
 
 \section{Methodology}
 
-In order to find a good solution to the ARP problem, two meta-heuristics were implemented using java Language. On this section, it will be exposed how to represent a solution, as well as some details about the application of the meta-heuristics on the ARP problem.
+In order to find good solutions to the ARP problem, two metaheuristics were implemented using java Language. On this section, it will be exposed how to represent a solution, as well as some details about the application of the metaheuristics on the ARP problem.
 
 \subsection{Problem Concepts}
 
@@ -97,13 +98,13 @@ Each solution has the flight network, with all the connections between the fligh
 
 \subsection{Problem Solution and Representation}
 
-The generation of a solution was divided into two steps. The first one constructs a good solution and the second tries to improve the given solution with some local search algorithms.
+The generation of a solution was divided into two steps using GRASP and ILS. The first one constructs a good solution and the second tries to improve the given solution with some local search algorithms avoiding local minimums.
 
-To generate a solution, the algorithm GRASP (Greedy Randomized Adaptive Search Procedure) was applied. This algorithm utilizes a greedy heuristic, mixed with a nondeterministic choice of the next element to the solution [FONTE]. To do so, each time an element is to be added to the solution, it is chosen randomically between a fraction of the best ones, according to a greedy algorithm. The algorithm runs several times, and only the best solution goes to the next step.
+%To generate a solution, the algorithm GRASP (Greedy Randomized Adaptive Search Procedure) was applied. This algorithm use a greedy heuristic, mixed with a nondeterministic choice of the next element to the solution. To do so, each time an element is to be added to the solution, it is chosen %randomically between a fraction of the best ones, according to a greedy algorithm. The algorithm runs several times, and only the best solution goes to %the next step.
 
-The second meta-heuristic applied to the ARP is the Iterated Local Search (ILS). It takes a given solution, found on the first phase, and makes some search on different neiborghoods. With this, local minimums can be avoided [Fonte].
+%The second metaheuristic applied to the ARP is the Iterated Local Search (ILS). It takes a given solution, found on the first phase, and makes some %search on different neiborghoods. With this, local minimums can be avoided.
 
-It was developed a visual interface to show the solution found by the algorithms. It can be viewed in the results section, picture 1.
+%It was developed a visual interface to show the solution found by the algorithms. It can be viewed in the results section, Figure 1.
 
 \section{The constructive algorithm}
 
@@ -112,13 +113,13 @@ In this phase, the computer generates a good solution, following the steps:
 \subsection{Track formation}
 \subsubsection{ Initializing a track }
 
-To initialize a track, a flight is randomically chosen between the N flights that have the lower departure time and that have not been chosen by another track.
+To initialize a track, a flight is randomically chosen between the \textit{n} flights that have the lower departure time and that have not been chosen by another track.
 
 \subsubsection{ Composing and finalizing a track }
 
-After choosing the first flight, or with the previous flight, it is made the choice of the next arch k,  $ K \in \{ 1, 2, 3, 4 \} $. This choice is made with a probability associated with each arch type P1, P2, P3, P4. The next flight should obey the arch rule and should not have a departure time very far from the arrival of the last. With all the candidates, only the a\% best are chosen to be a part of the possible set. So it is randomically picked one and added to the track.
+After choosing the first flight, or with the previous flight, it is made the choice of the next arc \textit {k},  $ k \in \{ K1, K2, K3, K4 \} $, where \textit{Ki} is the set of \textit{i}-type arcs. This choice is made with a probability associated with each arch type P1, P2, P3, P4. The next flight should obey the arch rule and should not have a departure time very far from the arrival of the last. With all the candidates, only the $ \alpha $ fraction the best are chosen to be a part of the possible set. So it is randomically picked one and added to the track.
 
-The value of ‘a’ was defined as 15\%, to type 1 arches, and variable, according to the number of candidates, to the other arches.
+The value of $ \alpha $ was defined as 0.15, to type 1 arcs, and variable, according to the number of candidates, to the other arches.
 
 If the generated set don’t have any flight, then the arch type will be changed. If no arch have any possible flight, then the last flight ends the track.
 
@@ -128,65 +129,65 @@ It is generated as much tracks as all the flights are covered. The constructive 
 
 \section{The local search Algorithm}
 
-After selecting the best solution generated in construction, it is used some algorithms to try to find a way to improve the solution. It was used the swap and compaction methods and the ILS (Iterated Local Search) meta-heuristic.
+After selecting the best solution generated in construction phase, it is used some algorithms to try to find a way to improve the solution. It was used the swap and compaction methods and the ILS (Iterated Local Search) metaheuristic.
 
-There were three kinds of swaps implemented, the Swap-1, Swap-2 and the Swap 3. The swap-n procedure is done by trying to change n connected flights with 1 to n + 1 flights. The change is accepted if there is a cost reduction. The compaction method tries to merge two different tracks into one. 
+Three kinds of swaps were implemented, the Swap-1, Swap-2 and the Swap 3. The swap-\textit{n} procedure is done by trying to change \textit{n} connected flights with 1 to (\textit{n} + 1) flights. The change is accepted if there is a cost reduction. The compaction method tries to merge two different tracks into one. 
 
-The ILS algorithm was implemented in a way of disturbing the current solution, and then applying the methods described before. Forcing four Swaps-2, not considering if they improve the solution, makes this disturbance.
+The ILS algorithm was implemented in a way of perturbing the current solution, and then applying the methods described before. Forcing four Swap-2 movements, not considering if they improve the solution, makes this perturbation.
 
 
 \subsection{Computational results}
 
-To run the tests, it was used a small daily flight network from Rio-Sul airlines \cite{pimentel2005}. All data is described on Appendix A to D. With this information, any program can be tested with the same entrance, verifying its efficiency. 
+To run the tests, it was used a small daily flight network from Rio-Sul airlines \cite{pimentel2005}. All data is described on Attachment A to D. With this information, any program can be tested with the same entrance, verifying its efficiency. 
 
 All tests run on a Intel Core 2 T5300 1.73GHz, with 1GB DDR-2 RAM. The algorithm was implemented using Java, on NetBeans IDE 6.0.1.
 
-The table below shows details of the achievement of the best solution:\\
+The Table 1 shows details of the achievement of the best solution:\\
 
 
 \begin{center}
 
+\renewcommand{\arraystretch}{0.7}
 \label {tabela1}
+
 \begin{tabular}{ccc} 
 
 \hline
 
-Number of tracks & Cost & Time(seconds) \\ 
+\footnotesize Number of tracks & \footnotesize Cost & \footnotesize Time(seconds) \\ 
 
 \hline
 \hline
-21 & 21335 & 0.039 \\
-17 & 17100 & 0.113 \\
-17 & 17078 & 0.315 \\
-17 & 17074 & 0.346 \\
-17 & 17066 & 6.012 \\
-17 & 17054 & 9.612 \\
-17 & 17048 & 14.179 \\
-17 & 17040 & 15.0 \\
-17 & 17033 & 19.484 \\
+\footnotesize 21 & \footnotesize 21335 & \footnotesize 0.039 \\
+\footnotesize 17 & \footnotesize 17100 & \footnotesize 0.113 \\
+\footnotesize 17 & \footnotesize 17078 & \footnotesize 0.315 \\
+\footnotesize 17 & \footnotesize 17074 & \footnotesize 0.346 \\
+\footnotesize 17 & \footnotesize 17066 & \footnotesize 6.012 \\
+\footnotesize 17 & \footnotesize 17054 & \footnotesize 9.612 \\
+\footnotesize 17 & \footnotesize 17048 & \footnotesize 14.179 \\
+\footnotesize 17 & \footnotesize 17040 & \footnotesize 15.0 \\
+\footnotesize 17 & \footnotesize 17033 & \footnotesize 19.484 \\
 \hline
-&  & \\
 \end{tabular}
+
+{\small }Table 1 - Cost and time of solutions
 
 \end{center}
 
-Below we have a visualization of the best result obtained:
+On the attachment A we have a visualization of the best result obtained and in attachment D this result can be viewed in more detail.
 
-%\begin{center}
-%\includegraphics[]{img/formacao.png}
-%\end{center}
+In the test described was set a ground time standard for all airports, which is 20 minutes this single parameter was fixed at work. The time between two airports can be found in Attachment C.
 
-This result can be viewed in more detail in Attachment C.
+An account of less than 15 aircraft was determined using a degree of freedom of 17 minutes, as can be seen in the attachment E.
+%Foi determinado que uma conta inferior de 15 aeronaves usando uma linha de tempo
 
-In the test described was set a ground time standard for all airports, which is 20 minutes. The time between two airports can be found in Attachment B
-
-\subsection{Conclusion and Future Researches}
+\section{Conclusion and Future Researches}
 
 The aircrafts are one of the most expensive resources on aeronautics, so every flight planning should be done for a cost reduction. The ARP is one of the problems that can lead to a very high operational cost to a company, if erroneously treated or ignored.
 
 With simple time changing or creating a repositioning flight, the flight network could have a substantial improvement, decreasing aircrafts downtime and reducing the number of planes needed to cover all the defined flights.
 
-For next researches, some efforts are being made to idealize a more complete model of the ARP, leading with weekly tasks, and also solve the next problem to the ARP, the Crew Scheduling. On this next approach, not only the flights will be organized, but also all the crew will be designated to cover the network.
+For next researches, some efforts are being made to idealize a complete mathematical model of the ARP for use in a hybrid method, leading with weekly tasks.
 
 \begin{thebibliography}{10}\label{bibliography}
 
@@ -210,9 +211,14 @@ Technology (1999).
 
 \end{thebibliography}
 
-
+\newpage
 
 \appendix
+\section{Graphical Representation of the best solution}
+\begin{center}
+\includegraphics[]{img/formacao.png}
+\end{center}
+\small{Figure 1 - Graphical Representation of the best solution}
 
 \newpage
 \section{Flights Network}
@@ -389,7 +395,7 @@ Technology (1999).
 
 \end{center}
 
-\newpage
+
 \section{Colision with window}
 
 All ground time is fixed in 20 minutes.
@@ -399,14 +405,29 @@ All ground time is fixed in 20 minutes.
 \renewcommand{\arraystretch}{0.6}
 
 \label {tabela4}
-\begin{longtable}{lll} 
+\begin{longtable}{l|l} 
 
 \hline
-\scriptsize 16 Flights with up to 1 minute window & \scriptsize 15 Flights with up to 17 minute window & \scriptsize 14 Flights with up to 33 minute window \\
+\scriptsize 16 Flights with up to 1 minute window & \scriptsize 15 Flights with up to 17 minute window\\
 \hline
 \\
 
-\scriptsize 001 SL155 0 08:32 0 10:33 GYN CGH & \scriptsize 068 JH341 0 18:50 1 00:19 JPA CGH & \scriptsize 001 SL155 0 08:32 0 10:33 GYN CGH\\\scriptsize 002 SL330 0 08:34 0 09:59 CGH VIX & \scriptsize 069 SL592 0 18:54 0 20:45 CGH POA & \scriptsize 002 SL330 0 08:34 0 09:59 CGH VIX\\\scriptsize 003 SL595 0 08:40 0 11:11 POA CGH & \scriptsize 070 JH507 0 19:00 0 20:31 BSB CGH & \scriptsize 003 SL595 0 08:40 0 11:11 POA CGH\\\scriptsize 004 SL596 0 08:44 0 10:39 CGH POA & \scriptsize 072 JH550 0 19:04 0 20:35 CGH BSB & \scriptsize 004 SL596 0 08:44 0 10:39 CGH POA\\\scriptsize 005 SL533 0 08:50 0 10:01 BSB PLU & \scriptsize 073 SL537 0 19:22 0 20:33 BSB PLU & \scriptsize 	005 SL533 0 08:50 0 10:01 BSB PLU\\\scriptsize 006 SL280 0 08:52 0 09:43 CGH CWB & \scriptsize 074 SL576 0 19:26 0 20:27 CGH PLU & \scriptsize 006 SL280 0 08:52 0 09:43 CGH CWB\\\scriptsize 007 SL587 0 09:00 0 10:01 PLU CGH & \scriptsize 075 SL573 0 19:34 0 20:35 PLU CGH & \scriptsize 007 SL587 0 09:00 0 10:01 PLU CGH\\\scriptsize 008 SL520 0 09:02 0 09:47 SDU PLU & \scriptsize 076 SL599 0 19:46 0 21:41 POA CGH & \scriptsize 008 SL520 0 09:02 0 09:47 SDU PLU\\\scriptsize 009 JH559 0 09:04 0 10:35 BSB CGH & \scriptsize 077 JH547 0 20:00 0 21:31 BSB CGH & \scriptsize 009 JH559 0 09:04 0 10:35 BSB CGH\\\scriptsize 010 SL406 0 09:06 0 09:55 SDU CGH & \scriptsize 078 SL153 0 20:04 0 22:05 GYN CGH & \scriptsize 010 SL406 0 09:06 0 09:55 SDU CGH\\\scriptsize 011 SL419 0 09:16 0 11:03 FLN CGH & \scriptsize 079 SL483 0 20:08 0 20:53 CGH SDU & \scriptsize 011 SL419 0 09:16 0 11:03 FLN CGH\\\scriptsize 012 SL542 0 09:28 0 10:31 CGH PLU & \scriptsize 080 SL412 0 20:10 0 21:29 CGH FLN & \scriptsize 012 SL542 0 09:28 0 10:31 CGH PLU\\\scriptsize 013 SL408 0 09:30 0 10:21 SDU CGH & \scriptsize 081 SL529 0 20:14 0 20:59 PLU SDU & \scriptsize 013 SL408 0 09:30 0 10:21 SDU CGH\\\scriptsize 014 JH345 0 09:30 0 12:23 SSA CGH & \scriptsize 082 SL584 0 20:26 0 21:27 CGH PLU & \scriptsize 014 JH345 0 09:30 0 12:23 SSA CGH\\\scriptsize 015 SL589 0 09:58 0 11:01 PLU CGH & \scriptsize 083 SL514 0 20:30 0 21:21 CGH CWB & \\\scriptsize 016 JH502 0 10:02 0 11:33 CGH BSB & & \\
+\scriptsize 001 SL155 0 08:32 0 10:33 GYN CGH & \scriptsize 068 JH341 0 18:50 1 00:19 JPA CGH\\
+\scriptsize 002 SL330 0 08:34 0 09:59 CGH VIX & \scriptsize 069 SL592 0 18:54 0 20:45 CGH POA \\
+\scriptsize 003 SL595 0 08:40 0 11:11 POA CGH & \scriptsize 070 JH507 0 19:00 0 20:31 BSB CGH\\
+\scriptsize 004 SL596 0 08:44 0 10:39 CGH POA & \scriptsize 072 JH550 0 19:04 0 20:35 CGH BSB\\
+\scriptsize 005 SL533 0 08:50 0 10:01 BSB PLU & \scriptsize 073 SL537 0 19:22 0 20:33 BSB PLU\\
+\scriptsize 006 SL280 0 08:52 0 09:43 CGH CWB & \scriptsize 074 SL576 0 19:26 0 20:27 CGH PLU\\
+\scriptsize 007 SL587 0 09:00 0 10:01 PLU CGH & \scriptsize 075 SL573 0 19:34 0 20:35 PLU CGH\\
+\scriptsize 008 SL520 0 09:02 0 09:47 SDU PLU & \scriptsize 076 SL599 0 19:46 0 21:41 POA CGH\\
+\scriptsize 009 JH559 0 09:04 0 10:35 BSB CGH & \scriptsize 077 JH547 0 20:00 0 21:31 BSB CGH\\
+\scriptsize 010 SL406 0 09:06 0 09:55 SDU CGH & \scriptsize 078 SL153 0 20:04 0 22:05 GYN CGH\\
+\scriptsize 011 SL419 0 09:16 0 11:03 FLN CGH & \scriptsize 079 SL483 0 20:08 0 20:53 CGH SDU\\
+\scriptsize 012 SL542 0 09:28 0 10:31 CGH PLU & \scriptsize 080 SL412 0 20:10 0 21:29 CGH FLN\\
+\scriptsize 013 SL408 0 09:30 0 10:21 SDU CGH & \scriptsize 081 SL529 0 20:14 0 20:59 PLU SDU\\
+\scriptsize 014 JH345 0 09:30 0 12:23 SSA CGH & \scriptsize 082 SL584 0 20:26 0 21:27 CGH PLU\\
+\scriptsize 015 SL589 0 09:58 0 11:01 PLU CGH & \scriptsize 083 SL514 0 20:30 0 21:21 CGH CWB\\
+\scriptsize 016 JH502 0 10:02 0 11:33 CGH BSB & \\
 
 \end{longtable}
 
