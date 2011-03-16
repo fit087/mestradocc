@@ -1,0 +1,39 @@
+\begin{thebibliography}{}
+
+\bibitem[Arguello and Bard 1997]{arguelo1007}
+Arguello, M.~F. and Bard, J.~F. (1997).
+\newblock A grasp for aircraft routing in response to groundings and delays.
+\newblock {\em Journal of Combinatorial Optimization}, 5:211--228.
+
+\bibitem[Cohn and Barnhart 2003]{mainville2003}
+Cohn, A.~M. and Barnhart, C. (2003).
+\newblock Improving crew schedulingby incorporating key maintenance routing
+  decisions.
+\newblock {\em Operations Research}, 51(3):387--396.
+
+\bibitem[Cordeau et~al. 2001]{cordeau2001}
+Cordeau, J.~F., Stojkovic, G., Soumis, F., and Desrosiers, J. (2001).
+\newblock Benders decomposition for simultaneous aircraft routing and crew
+  scheduling.
+\newblock {\em Transportation Transportation Science}, 35:375--388.
+
+\bibitem[Klabjan et~al. 2002]{klabjan2002}
+Klabjan, D., Johnson, E.~L., Nemhauser, G.~L., Gelman, E., and Ramaswamy, S.
+  (2002).
+\newblock Airline crew scheduling with time windows and plane-count
+  constraints.
+\newblock {\em Transportation Science}, 36(3):337--348.
+
+\bibitem[Lucena and Pontes 2007]{abiliolivro}
+Lucena, A. and Pontes, R. (2007).
+\newblock {\em Avia{\c c}{\~a}o comercial controlada por m{\'a}quinas
+  inteligentes}.
+\newblock e-papers, Rio de Janeiro.
+
+\bibitem[Mercier and Soumis 2007]{mercier2007}
+Mercier, A. and Soumis, F. (2007).
+\newblock An integrated aircraft routing, crew scheduling and flight retiming
+  model.
+\newblock {\em Computers and Operations Research}, 34:2251--2265.
+
+\end{thebibliography}
