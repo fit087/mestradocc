@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class ARPFileReader {
      * @param airlineNetwork AirlineNetword a ser preenchida
      * @throws FileNotFoundException
      */
-    private static void readCityFromFile(File file, AirlineNetwork airlineNetwork) throws FileNotFoundException{
+    public static void readCityFromFile(File file, AirlineNetwork airlineNetwork) throws FileNotFoundException{
 
         ArrayList<City> cities = new ArrayList<City>();
 
@@ -77,7 +78,7 @@ public class ARPFileReader {
      * @param airlineNetwork AirlineNetword a ser preenchida
      * @throws FileNotFoundException
      */
-    private static void readFlightFromFile(File file, AirlineNetwork airlineNetwork) throws FileNotFoundException {
+    public static void readFlightFromFile(File file, AirlineNetwork airlineNetwork) throws FileNotFoundException {
         ArrayList<Flight> flights = new ArrayList<Flight>();
 
         Set<String> cities = new TreeSet<String>();
@@ -117,6 +118,13 @@ public class ARPFileReader {
         for (String string : cities) {
             System.out.println(string);
         }
+
+        Collections.sort(flights, new Comparator<Flight>() {
+
+            public int compare(Flight t, Flight t1) {
+                return t.getDepartureTime() - t1.getDepartureTime();
+            }
+        });
 
         airlineNetwork.setFlights(flights);
     }

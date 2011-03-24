@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  16 MAR 2011 16:44
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  19 MAR 2011 10:26
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -112,6 +112,20 @@ File: pdftex.def 2010/02/14 v0.04n Graphics/color for pdfTeX
 \Urlmuskip=\muskip10
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
+(/usr/local/texlive/2010/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2008/07/06 v3.8l The Babel package
+
+(/usr/local/texlive/2010/texmf-dist/tex/generic/babel/portuges.ldf
+Language: portuges 2008/03/18 v1.2q Portuguese support from the babel system
+
+(/usr/local/texlive/2010/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2008/07/06 v3.8l Babel common definitions
+\babel@savecnt=\count92
+\U@D=\dimen122
+)
+\l@brazil = a dialect from \language\l@portuges 
+Package babel Info: Making " an active character on input line 145.
+))
 (/usr/local/texlive/2010/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
@@ -130,46 +144,46 @@ Package: amstext 2000/06/29 v2.01
 (/usr/local/texlive/2010/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks17
-\ex@=\dimen122
+\ex@=\dimen123
 ))
 (/usr/local/texlive/2010/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
-\pmbraise@=\dimen123
+\pmbraise@=\dimen124
 )
 (/usr/local/texlive/2010/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count92
+\inf@bad=\count93
 LaTeX Info: Redefining \frac on input line 211.
-\uproot@=\count93
-\leftroot@=\count94
+\uproot@=\count94
+\leftroot@=\count95
 LaTeX Info: Redefining \overline on input line 307.
-\classnum@=\count95
-\DOTSCASE@=\count96
+\classnum@=\count96
+\DOTSCASE@=\count97
 LaTeX Info: Redefining \ldots on input line 379.
 LaTeX Info: Redefining \dots on input line 382.
 LaTeX Info: Redefining \cdots on input line 467.
 \Mathstrutbox@=\box27
 \strutbox@=\box28
-\big@size=\dimen124
+\big@size=\dimen125
 LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
-\macc@depth=\count97
-\c@MaxMatrixCols=\count98
+\macc@depth=\count98
+\c@MaxMatrixCols=\count99
 \dotsspace@=\muskip11
-\c@parentequation=\count99
-\dspbrk@lvl=\count100
+\c@parentequation=\count100
+\dspbrk@lvl=\count101
 \tag@help=\toks18
-\row@=\count101
-\column@=\count102
-\maxfields@=\count103
+\row@=\count102
+\column@=\count103
+\maxfields@=\count104
 \andhelp@=\toks19
-\eqnshift@=\dimen125
-\alignsep@=\dimen126
-\tagshift@=\dimen127
-\tagwidth@=\dimen128
-\totwidth@=\dimen129
-\lineht@=\dimen130
+\eqnshift@=\dimen126
+\alignsep@=\dimen127
+\tagshift@=\dimen128
+\tagwidth@=\dimen129
+\totwidth@=\dimen130
+\lineht@=\dimen131
 \@envbody=\toks20
 \multlinegap=\skip46
 \multlinetaggap=\skip47
@@ -494,15 +508,15 @@ File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 
 (/usr/local/texlive/2010/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count104
-\scratchdimen=\dimen131
+\scratchcounter=\count105
+\scratchdimen=\dimen132
 \scratchbox=\box29
-\nofMPsegments=\count105
-\nofMParguments=\count106
+\nofMPsegments=\count106
+\nofMParguments=\count107
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count107
-\MPscratchDim=\dimen132
-\MPnumerator=\count108
+\MPscratchCnt=\count108
+\MPscratchDim=\dimen133
+\MPnumerator=\count109
 \everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2010/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2010/04/01 v0.9 Utility functions of pdfTeX for LuaTeX (HO)
@@ -599,32 +613,46 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 File: montagemtrilhopeb.png Graphic file (type png)
 
 <use montagemtrilhopeb.png>
-LaTeX Font Info:    Try loading font information for T1+lmss on input line 70.
+LaTeX Font Info:    Try loading font information for T1+lmss on input line 72.
 
 (/usr/local/texlive/2010/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [2 <./montagemtrilhopeb.png>] (./sbc-template.bbl [3]) [4] (./sbc-template.au
-x) ) 
+) [2 <./montagemtrilhopeb.png>] <grasp.png, id=19, 541.02126pt x 174.6525pt>
+File: grasp.png Graphic file (type png)
+ <use grasp.png>
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 126.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 126.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 126.
+
+[3] [4 <./grasp.png>] (./sbc-template.bbl) [5] (./sbc-template.aux) ) 
 Here is how much of TeX's memory you used:
- 3766 strings out of 493747
- 49807 string characters out of 3143546
- 110711 words of memory out of 3000000
- 6956 multiletter control sequences out of 15000+200000
- 55133 words of font info for 45 fonts, out of 3000000 for 9000
+ 4143 strings out of 493747
+ 54342 string characters out of 3143546
+ 117642 words of memory out of 3000000
+ 7309 multiletter control sequences out of 15000+200000
+ 73148 words of font info for 62 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 38i,8n,28p,662b,319s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2010/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/loca
-l/texlive/2010/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}</usr/local/texlive/2010
-/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2010/texmf-dis
-t/fonts/type1/public/lm/lmbxi10.pfb></usr/local/texlive/2010/texmf-dist/fonts/t
-ype1/public/lm/lmr12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public
-/lm/lmr8.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/lm/lmri12.p
-fb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr
-/local/texlive/2010/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on sbc-template.pdf (4 pages, 260122 bytes).
+ 38i,8n,28p,587b,321s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/loca
+l/texlive/2010/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2010
+/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2010/texmf-dist/fo
+nts/enc/dvips/lm/lm-mathit.enc}</usr/local/texlive/2010/texmf-dist/fonts/type1/
+public/lm/lmbx12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/lm/
+lmbxi10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/lm/lmmi12.pf
+b></usr/local/texlive/2010/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/loc
+al/texlive/2010/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/
+2010/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2010/texmf-d
+ist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2010/texmf-dist/fonts/ty
+pe1/public/lm/lmri12.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public
+/lm/lmssbx10.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/lm/lmtt
+10.pfb>
+Output written on sbc-template.pdf (5 pages, 331709 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 72 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

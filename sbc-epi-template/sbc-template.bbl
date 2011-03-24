@@ -17,6 +17,11 @@ Cordeau, J.~F., Stojkovic, G., Soumis, F., and Desrosiers, J. (2001).
   scheduling.
 \newblock {\em Transportation Transportation Science}, 35:375--388.
 
+\bibitem[Feo and Resende 1995]{graspresende}
+Feo, T. and Resende, M. (1995).
+\newblock Greedy randomized adaptive search procedures.
+\newblock {\em Journal of Global Optimization}, 6:109--133.
+
 \bibitem[Klabjan et~al. 2002]{klabjan2002}
 Klabjan, D., Johnson, E.~L., Nemhauser, G.~L., Gelman, E., and Ramaswamy, S.
   (2002).
@@ -35,5 +40,11 @@ Mercier, A. and Soumis, F. (2007).
 \newblock An integrated aircraft routing, crew scheduling and flight retiming
   model.
 \newblock {\em Computers and Operations Research}, 34:2251--2265.
+
+\bibitem[Pontes et~al. 2002]{pontes2002}
+Pontes, R., Lucena, A., and Cabral, L. (2002).
+\newblock Exact and heuristic techniques for solving the aircraft rotation
+  problem.
+\newblock Technical report, DE-UFPB.
 
 \end{thebibliography}
