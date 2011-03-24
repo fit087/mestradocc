@@ -180,6 +180,13 @@ public class Flight implements Comparable<Flight> {
 
     @Override
     public String toString() {
+//        System.out.println("departureCity " + departureCity);
+//        System.out.println("arrivalCity " + arrivalCity);
+//        System.out.println("Name " + name);
+//        System.out.println("Number " + number);
+//        System.out.println("DepartureTime " + departureTime);
+//        System.out.println("arrivalTime " + arrivalTime);
+
         String r = String.format("%5s[%3d] | %4s (%4d) ->  %4s (%4d)", name, number, departureCity.getName(), departureTime, arrivalCity.getName(), arrivalTime);
         r += " [ + " + delay + " ]";
         r += "\n";

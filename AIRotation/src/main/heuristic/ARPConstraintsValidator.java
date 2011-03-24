@@ -21,6 +21,7 @@ public class ARPConstraintsValidator {
      * @return
      */
     public static boolean validateGeographicalConstraint(Flight firstFlight, Flight followFlight) {
+//        System.out.println("First " + firstFlight + " Second " + followFlight);
         return firstFlight.getArrivalCity().getName().equals(followFlight.getDepartureCity().getName());
     }
 
