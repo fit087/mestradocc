@@ -51,13 +51,13 @@ int ARPSolver::costOfArc(vector<Flight> *v, int orig, int dest, int maxDelay) {
     //exit(1);
     //Se as cidades forem iguais.
 
-    printf(">>>>>>>> %d(%d) - %d(%d) (%c - %c)\n", orig, o.GetDepartureTime(), dest, d.GetDepartureTime(), o.GetArrivalCity(), d.GetDepartureCity());
-    printf("Teste 2 %d %d\n", o.GetDepartureTime(), d.GetDepartureTime());
+    //printf(">>>>>>>> %d(%d) - %d(%d) (%c - %c)\n", orig, o.GetDepartureTime(), dest, d.GetDepartureTime(), o.GetArrivalCity(), d.GetDepartureCity());
+    //printf("Teste 2 %d %d\n", o.GetDepartureTime(), d.GetDepartureTime());
 
     if (o.GetArrivalCity() == d.GetDepartureCity()) {
         int time = (d.GetDepartureTime()) - (o.GetDepartureTime() + o.GetDuration());
 
-        printf(" TIME =  %d \n", time);
+        //printf(" TIME =  %d \n", time);
         //Se tem tempo de ligar direto (custo 0 - arco do tipo 1)
         if (time >= 0) {
             return 0;
@@ -80,9 +80,11 @@ int ARPSolver::costOfArc(vector<Flight> *v, int orig, int dest, int maxDelay) {
 }
 
 void ARPSolver::showResult(vector< vector<Flight> > *r){
-    printf("Numero de trilhos: %d\n", (int)(*r).size());
+   // printf("Numero de trilhos: %d\n", (int)(*r).size());
+    printf("%d\n", (int)(*r).size());
     for(int i = 0; i < (*r).size(); i++){
-        printf("Trilho %d = %d\n", i, (int)(*r)[i].size());
+      //  printf("Trilho %d = %d\n", i, (int)(*r)[i].size());
+      printf("%-4d",(*r)[i].size());
         for(int j = 0; j < (*r)[i].size(); j++){
             printf("%-4d ", (*r)[i][j].GetIndex());
         }
@@ -241,7 +243,7 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
                     cost[i][j] = costOfArc(v, i, j, maxDelay);
                 }
 
-                printf("ANTES(%d,%d) = %d\n", i, j, (int) cost[i][j]);
+                //printf("ANTES(%d,%d) = %d\n", i, j, (int) cost[i][j]);
             }
 
             //#########################################
@@ -286,8 +288,8 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
         env.out() << "Solution status = " << cplex.getStatus() << endl;
         env.out() << "Solution value  = " << cplex.getObjValue() << endl;
 
-        showVariables(cplex, x, n);
-        showCosts(cost, n);
+        //showVariables(cplex, x, n);
+        //showCosts(cost, n);
 
         return assembleResult(v, cplex, x, n);
 
@@ -301,6 +303,29 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
     cout << "Teste solver(list<Flight>) Finalizado" << endl;
 
     return vector< vector<Flight> >();
+}
+
+void ARPSolver::loadFile(){
+    //Direcione a entrada do arquivo <<
+    int maxDelay, n;
+    cin >>  n >> maxDelay;
+
+    vector<Flight> flights;
+    for(int i = 0; i < n; i++){
+        unsigned int departureTime, duration, departureCity, arrivalCity;
+
+        cin >> departureTime >> duration >> departureCity >> arrivalCity;
+
+        flights.push_back(Flight(i,departureTime, duration, departureCity, arrivalCity));
+    }
+
+    
+
+    vector< vector <Flight> > result = solver(&flights, maxDelay);
+
+    ARPSolver::showResult(&result);
+
+
 }
 
 void ARPSolver::test() {
