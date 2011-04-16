@@ -21,6 +21,7 @@ public:
     virtual ~ARPSolver();
     static vector< vector<Flight> > solver(vector<Flight> *v, int maxDelay);
     static void showResult(vector< vector<Flight> > *r);
+    static void loadFile();
     static void test();
     static void test2();
 private:

@@ -8,7 +8,7 @@ using namespace std;
 
 ILOSTLBEGIN
 int main(int argc, char **argv) {
-    ARPSolver::test();
+    ARPSolver::loadFile();
     return 0;
 }
 
