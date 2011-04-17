@@ -22,8 +22,18 @@ public:
     unsigned int GetDepartureCity() const;
     unsigned int GetDuration() const;
     unsigned int GetDepartureTime() const;
+    unsigned int GetRealArrivalTime();
+    void SetDelay(int delay);
+    int GetDelay() const;
+
 
     void toString();
+    
+    void SetSelected(bool selected);
+    bool IsSelected() const;
+    bool validateGeographicalConstraint(Flight *other);
+    bool validateTemporalConstraint(Flight *other, int maxDelay);
+    
     
     
 private:
@@ -32,6 +42,8 @@ private:
     unsigned int duration;
     unsigned int departureCity;
     unsigned int arrivalCity;
+    int delay;
+    bool selected;
 };
 
 #endif	/* FLIGHT_H */
