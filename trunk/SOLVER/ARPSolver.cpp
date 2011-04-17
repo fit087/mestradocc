@@ -7,10 +7,6 @@
 
 #include "ARPSolver.h"
 #include <iostream>
-#include <ilconcert/ilolinear.h>
-#include <ilconcert/iloexpression.h>
-#include <ilconcert/ilosmodel2.h>
-#include <ilconcert/iloenv.h>
 
 #define MAX_COST 9999
 
@@ -84,7 +80,7 @@ void ARPSolver::showResult(vector< vector<Flight> > *r){
     printf("%d\n", (int)(*r).size());
     for(int i = 0; i < (*r).size(); i++){
       //  printf("Trilho %d = %d\n", i, (int)(*r)[i].size());
-      printf("%-4d",(*r)[i].size());
+      printf("%-4d",(int)(*r)[i].size());
         for(int j = 0; j < (*r)[i].size(); j++){
             printf("%-4d ", (*r)[i][j].GetIndex());
         }
@@ -159,7 +155,7 @@ vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCp
 
 vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
 
-    ARPSolver::adjustTime();
+    //ARPSolver::adjustTime();
 
     if (v->empty()) {
         cout << "Lista vazia" << endl;
