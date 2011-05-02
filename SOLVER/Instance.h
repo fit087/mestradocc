@@ -18,19 +18,19 @@ using namespace std;
 
 class Instance {
 public:
-    
+
     virtual ~Instance();
     int getMaxDelay() const;
-    map<unsigned int, map<unsigned int, unsigned int> > getTimes() const;
+    map< int, map< int, int> > getTimes() const;
     vector<Flight*> getFlights() const;
-    
+
     static Instance read(istream &stream);
-    
+
 private:
-    Instance(vector<Flight*> flights, map<unsigned int, map<unsigned int, unsigned int> > times, unsigned int maxDelay);
+    Instance(vector<Flight*> flights, map< int, map< int, int> > times, unsigned int maxDelay);
     vector<Flight*> flights;
-    map<unsigned int, map<unsigned int, unsigned int> > times;
-    unsigned int maxDelay;
+    map< int, map< int, int> > times;
+    int maxDelay;
 
 };
 

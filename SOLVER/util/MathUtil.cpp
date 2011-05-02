@@ -14,11 +14,13 @@ MathUtil MathUtil::instance = MathUtil();
 
 MathUtil::MathUtil() {
     this->seed = time(NULL);
-    srandom(seed);
+    //srandom(seed);
+    srand(seed);
 }
 
 int MathUtil::nextInt(int n){
-    return random()%n;
+    //return random()%n;
+    return rand()%n;
 }
 
 MathUtil MathUtil::getInstance() {

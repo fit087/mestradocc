@@ -10,8 +10,8 @@
 
 using namespace std;
 
-Flight::Flight(unsigned int index, unsigned int departureTime, unsigned int duration,
-        unsigned int departureCity, unsigned int arrivalCity) {
+Flight::Flight(int index, int departureTime, int duration,
+        int departureCity, int arrivalCity) {
     this->index = index;
     this->departureTime = departureTime;
     this->duration = duration;
@@ -29,33 +29,38 @@ Flight::Flight(const Flight& orig) {
     this->arrivalCity = orig.GetArrivalCity();
     this->selected = orig.IsSelected();
     this->delay = orig.GetDelay();
+    this->ilogIndex = orig.GetIlogIndex();
 }
 
 Flight::~Flight() {
 }
 
-unsigned int Flight::GetIndex() const {
+int Flight::GetIndex() const {
     return index;
 }
 
-unsigned int Flight::GetArrivalCity() const {
+int Flight::GetArrivalCity() const {
     return arrivalCity;
 }
 
-unsigned int Flight::GetDepartureCity() const {
+int Flight::GetDepartureCity() const {
     return departureCity;
 }
 
-unsigned int Flight::GetDuration() const {
+int Flight::GetDuration() const {
     return duration;
 }
 
-unsigned int Flight::GetDepartureTime() const {
+int Flight::GetDepartureTime() const {
     return departureTime;
 }
 
-unsigned int Flight::GetRealArrivalTime() {
-    return GetDepartureTime() + GetDuration() + GetDelay();
+int Flight::GetRealArrivalTime() {
+    return GetRealDepartureTime() + GetDuration();
+}
+
+int Flight::GetRealDepartureTime() {
+    return GetDepartureTime() + GetDelay();
 }
 
 void Flight::SetDelay(int delay) {
@@ -74,24 +79,39 @@ bool Flight::IsSelected() const {
     return selected;
 }
 
+
 //#####################FIM DOS GETRS E SETRS#######################
 
 bool Flight::validateGeographicalConstraint(Flight *other) {
+    //cout << "TEMP " << this->GetArrivalCity() << " " << other->GetDepartureCity() << endl;
     return (this->GetArrivalCity() == other->GetDepartureCity());
 }
 
 bool Flight::validateTemporalConstraint(Flight *other, int maxDelay) {
 
 
-    int delay = (other->GetDepartureTime() - this->GetRealArrivalTime());
-
-    delay += maxDelay;
-
-    if (delay >= 0) {
+    if (requiredDelay(other) > maxDelay) {
+        return false;
+    } else {
         return true;
     }
 
-    return false;
+}
+
+int Flight::requiredDelay(Flight *other) {
+    int diff = (other->GetDepartureTime() - this->GetRealArrivalTime());
+
+    if (diff >= 0) {
+        return 0;
+    } else {
+        return -diff;
+    }
+}
+void Flight::SetIlogIndex(int ilogIndex) {
+    this->ilogIndex = ilogIndex;
+}
+int Flight::GetIlogIndex() const {
+    return ilogIndex;
 }
 
 void Flight::toString() {

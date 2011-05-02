@@ -20,8 +20,8 @@ public:
     ARPSolver(const ARPSolver& orig);
     virtual ~ARPSolver();
     static vector< vector<Flight> > solver(vector<Flight> *v, int maxDelay);
-    static void showResult(vector< vector<Flight> > *r);
-    static void loadFile();
+    static void loadFile(istream &stream);
+    static void readInput(char *file);
     static void test();
     static void test2();
 private:

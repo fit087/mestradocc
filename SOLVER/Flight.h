@@ -12,20 +12,20 @@
 
 class Flight {
 public:
-    Flight(unsigned int index, unsigned int departureTime, unsigned int duration,
-            unsigned int departureCity, unsigned int arrivalCity);
+    Flight(int index, int departureTime, int duration,
+            int departureCity, int arrivalCity);
     Flight(const Flight& orig);
     virtual ~Flight();
 
-    unsigned int GetIndex() const;
-    unsigned int GetArrivalCity() const;
-    unsigned int GetDepartureCity() const;
-    unsigned int GetDuration() const;
-    unsigned int GetDepartureTime() const;
-    unsigned int GetRealArrivalTime();
+    int GetIndex() const;
+    int GetArrivalCity() const;
+    int GetDepartureCity() const;
+    int GetDuration() const;
+    int GetDepartureTime() const;
+    int GetRealArrivalTime();
+    int GetRealDepartureTime();
     void SetDelay(int delay);
     int GetDelay() const;
-
 
     void toString();
     
@@ -33,15 +33,21 @@ public:
     bool IsSelected() const;
     bool validateGeographicalConstraint(Flight *other);
     bool validateTemporalConstraint(Flight *other, int maxDelay);
+    int requiredDelay(Flight *other);
+    void SetIlogIndex(int ilogIndex);
+    int GetIlogIndex() const;
+    
+    
     
     
     
 private:
-    unsigned int index;
-    unsigned int departureTime;
-    unsigned int duration;
-    unsigned int departureCity;
-    unsigned int arrivalCity;
+    int index;
+    int ilogIndex;
+    int departureTime;
+    int duration;
+    int departureCity;
+    int arrivalCity;
     int delay;
     bool selected;
 };
