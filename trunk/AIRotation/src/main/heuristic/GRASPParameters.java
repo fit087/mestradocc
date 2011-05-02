@@ -22,7 +22,8 @@ import main.heuristic.exceptions.ParameterInvalidException;
 @Entity
 public class GRASPParameters implements Serializable {
 
-        public transient final static GRASPParameters defaultParameters = new GRASPParameters(1000, 1000, 0.5f);
+        //public transient final static GRASPParameters defaultParameters = new GRASPParameters(1000, 1000, 0.5f);
+        public transient final static GRASPParameters defaultParameters = new GRASPParameters(100, 10, 0.5f);
         
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

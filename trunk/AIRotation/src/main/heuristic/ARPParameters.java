@@ -22,7 +22,8 @@ import main.heuristic.exceptions.ParameterInvalidException;
 @Entity
 public class ARPParameters implements Serializable {
 
-    public transient final static ARPParameters defaultParameters = new ARPParameters(15, 53, 35, 10, 2);
+    //public transient final static ARPParameters defaultParameters = new ARPParameters(15, 53, 35, 10, 2);
+    public transient final static ARPParameters defaultParameters = new ARPParameters(5, 53, 35, 10, 2);
 
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
