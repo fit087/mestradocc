@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.crypto.Cipher;
 import main.entities.AirlineNetwork;
 
 /**
@@ -67,6 +68,12 @@ public class ARPFileReader {
         }
 
         scanner.close();
+
+        Collections.sort(cities, new Comparator<City>() {
+            public int compare(City t, City t1) {
+                return t.getName().compareTo(t1.getName());
+            }
+        });
 
         airlineNetwork.setCities(cities);
     }

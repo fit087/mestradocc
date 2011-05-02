@@ -82,12 +82,12 @@ public class GRASPConstruct {
         HeuristicInformation heuristicInformation = new HeuristicInformation(gRASPParameters, aRPParameters, airlineNetwork.getPathInstance());
         heuristicInformation.setDuration((int) ((System.currentTimeMillis() - beginTime) / 1000));
         heuristicInformation.setBestValue(airlineNetwork.getBestNetworkCost());
-        HeuristicInformationJpaController heuristicInformationJpaController = HeuristicInformationJpaController.getInstance();
-        try {
-            heuristicInformationJpaController.create(heuristicInformation);
-        } catch (Exception ex) {
-            Logger.getLogger(GRASPConstruct.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        HeuristicInformationJpaController heuristicInformationJpaController = HeuristicInformationJpaController.getInstance();
+//        try {
+//            heuristicInformationJpaController.create(heuristicInformation);
+//        } catch (Exception ex) {
+//            Logger.getLogger(GRASPConstruct.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
 
         System.out.println("Solucao com custo " + airlineNetwork.getBestNetworkCost());

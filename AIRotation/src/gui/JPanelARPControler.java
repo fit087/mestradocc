@@ -71,6 +71,11 @@ public class JPanelARPControler extends javax.swing.JPanel {
         jProgressBar1.getModel().setValue(value);
     }
 
+    public AirlineNetwork getAirlineNetwork() {
+        return airlineNetwork;
+    }
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

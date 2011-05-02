@@ -4,6 +4,8 @@
  */
 package main.entities;
 
+import util.TimeUtil;
+
 /**
  *
  * Desenvolvido por: Alexander de Almeida Pinto
@@ -28,7 +30,6 @@ public class Flight implements Comparable<Flight> {
     private Integer trackNumber;
     //Atraso no voo
     private Integer delay;
-
     //É um voo de reposicionamento.
     private Boolean reposition;
     //Voo selecionado
@@ -142,7 +143,7 @@ public class Flight implements Comparable<Flight> {
      * Obtem o tempo de voo
      * @return
      */
-    public int getFlightTime(){
+    public int getFlightTime() {
         return getArrivalTime() - getDepartureTime();
     }
 
@@ -166,7 +167,7 @@ public class Flight implements Comparable<Flight> {
      * Obtem o tempo de solo desse voo.
      * @return
      */
-    public int getGroundTime(){
+    public int getGroundTime() {
         return getDepartureCity().getGroundTime();
     }
 
@@ -187,9 +188,12 @@ public class Flight implements Comparable<Flight> {
 //        System.out.println("DepartureTime " + departureTime);
 //        System.out.println("arrivalTime " + arrivalTime);
 
-        String r = String.format("%5s[%3d] | %4s (%4d) ->  %4s (%4d)", name, number, departureCity.getName(), departureTime, arrivalCity.getName(), arrivalTime);
-        r += " [ + " + delay + " ]";
-        r += "\n";
+        String r = String.format("%-6s", getName()) + " " + TimeUtil.getFormatedTime(getDepartureTime()) + " " + TimeUtil.getFormatedTime(getArrivalTime()) + " " + departureCity.getName() + " " + arrivalCity.getName();
+//        String r = String.format("%5s[%3d] | %4s (%4d) ->  %4s (%4d)", name, number, departureCity.getName(), departureTime, arrivalCity.getName(), arrivalTime);
+
+        if (getDelay() != 0) {
+            r += String.format("(%+d)", getDelay());
+        }
         return r;
 
         // return "Id: " + id + " Number:" + flightNumber + " Name:" + flightName + " Origem: " + departureCity.getName() + " Inicio: " + departureTime + " Destino: " + arrivalCity.getName() + " Fim: " + arrivalTime;
@@ -214,4 +218,7 @@ public class Flight implements Comparable<Flight> {
         this.reposition = flight.getReposition();
     }
 
+    public Integer getDuration() {
+        return getArrivalTime() - getDepartureTime();
+    }
 }

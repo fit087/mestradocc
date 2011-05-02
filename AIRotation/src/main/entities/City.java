@@ -63,7 +63,10 @@ public class City  {
             return false;
         }
         City other = (City) object;
-        
+
+
+        System.out.println("Teste " + other.getName() + " " + getName());
+
         if(other.getName().equals(getName())) {
             return true;
         }
