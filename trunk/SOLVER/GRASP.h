@@ -21,7 +21,7 @@ public:
     GRASP(Parameters p);
     
     vector< vector<Flight> > construct(vector<Flight*> flights);
-    vector< vector<Flight> > localSearch(vector< vector<Flight> > flights);
+    vector< vector<Flight> > localSearch(vector< vector<Flight> > flights, int baseTime);
     vector<Flight> cloneTrack(vector<Flight*> track);
     
     bool canBeChosen(vector< vector<Flight*> > &tracks, Flight *flightCandidate);
@@ -29,6 +29,8 @@ public:
     bool canSuccedInderect(Flight *initialFlight, Flight *finalFlight);
     void setParameters(Parameters parameters);
     Parameters getParameters() const;
+    static int calculeBaseTime(vector<Flight*> flight);
+    static int trackUtilization(int baseTime, vector<Flight> &track);
     static void readInput(char* file);
 
 private:

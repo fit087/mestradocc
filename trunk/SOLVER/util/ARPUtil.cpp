@@ -65,21 +65,21 @@ void ARPUtil::relaxDelays(vector< vector<Flight> > &r) {
 
             if (flight.GetDelay() < 0) {
                 Flight *nextFlight = (j == track.size() - 1) ? NULL : &track[j + 1];
-                
+
                 if (nextFlight == NULL) {
                     relaxedDelay += (-flight.GetDelay());
                     flight.SetDelay(0);
                 } else {
                     int minDelay = nextFlight->GetRealDepartureTime() - (flight.GetDepartureTime() + flight.GetDuration());
-                    
-                   // cout << " Size " << track.size() << " - " << j << " " << (j+1) << endl;
+
+                    // cout << " Size " << track.size() << " - " << j << " " << (j+1) << endl;
                     // cout << " Teste " << flight.GetIndex() << " " << nextFlight->GetIndex() << endl;
 
                     if (minDelay > 0) {
                         relaxedDelay += (-flight.GetDelay());
                         flight.SetDelay(0);
                     } else {
-                        if (minDelay < flight.GetDelay()){
+                        if (minDelay < flight.GetDelay()) {
                             cout << "Invalido " << minDelay << " " << flight.GetDelay() << endl;
                             exit(1); //A solucao era invalida
                         }
@@ -93,5 +93,17 @@ void ARPUtil::relaxDelays(vector< vector<Flight> > &r) {
         }
     }
 
-        //cout << "Relaxed Delays: " << relaxedDelay << endl;
+    //cout << "Relaxed Delays: " << relaxedDelay << endl;
+}
+
+void ARPUtil::removeTrack(vector< vector<Flight> > *flights, int track) {
+    vector< vector<Flight> >::iterator iRemove = flights->begin();
+    advance(iRemove, track);
+    flights->erase(iRemove);
+}
+
+void ARPUtil::copyFlights(vector<Flight> *target, vector<Flight> *source){
+    for(int i = 0; i < source->size(); i++){
+        target->push_back((*source)[i]);
+    }
 }

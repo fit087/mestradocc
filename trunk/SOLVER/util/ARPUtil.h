@@ -20,6 +20,8 @@ public:
     static void showSolution(vector< vector<Flight> > &solution);
     static int calculeCost(vector< vector<Flight> > &r);
     static void relaxDelays(vector< vector<Flight> > &r);
+    static void removeTrack(vector< vector<Flight> > *flights, int track);
+    static void copyFlights(vector<Flight> *target, vector<Flight> *source);
 private:
 
 };

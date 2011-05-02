@@ -101,7 +101,7 @@ void ARPSolver::showCosts(IloNumArray cost[], int n) {
     }
 }
 
-void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloIntVarArray vars[], int n){
+void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloIntVarArray vars[], IloNumArray cost[], int n){
     while(true){
         Flight &f = (*trail)[(*trail).size() - 1];
         int index = f.GetIlogIndex();
@@ -112,6 +112,8 @@ void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, Ilo
             IloInt v = cplex.getValue(vars[index][i]);
             if(v == 1){
                 if(i == (n-1)) return;
+                int fcost = cost[index][i];
+                (*flight)[i].SetDelay(fcost);
                 trail->push_back((*flight)[i]);
                 continue;
             }
@@ -121,7 +123,7 @@ void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, Ilo
     return;
 }
 
-vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCplex &cplex, IloIntVarArray vars[], int n){
+ vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCplex &cplex, IloIntVarArray vars[], IloNumArray cost[], int n){
 
     int sourceIndex = (n - 2);
 
@@ -134,7 +136,7 @@ vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCp
         if (v == 1) {
             vector<Flight> trail;
             trail.push_back((*flight)[i]);
-            finalizeTrail(flight, &trail, cplex, vars, n);
+            finalizeTrail(flight, &trail, cplex, vars, cost, n);
             result.push_back(trail);
             //printf("Quantidade = %d\n", (int)trail.size());
         }
@@ -145,6 +147,8 @@ vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCp
 
 vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
 
+    cout << "Solver With " << v->size() << " Flights " << endl;
+    
     for(int i = 0; i < v->size(); i++){
         (*v)[i].SetIlogIndex(i);
     }
@@ -284,7 +288,7 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
 
        // cout << "Teste solver(list<Flight>) Finalizado" << endl;
 
-        return assembleResult(v, cplex, x, n);
+        return assembleResult(v, cplex, x, cost, n);
 
     } catch (IloException& e) {
         cerr << "Concert exception caught: " << e << endl;
