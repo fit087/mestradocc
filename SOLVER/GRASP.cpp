@@ -13,6 +13,16 @@
 #include "ARPSolver.h"
 #include "util/ARPUtil.h"
 
+//################################
+
+struct sort_pred {
+
+    bool operator()(const std::pair<int, int> &left, const std::pair<int, int> &right) {
+        return left.second < right.second;
+    }
+};
+//################################
+
 GRASP::GRASP(Parameters p) {
     this->parameters = p;
 }
@@ -94,35 +104,75 @@ vector< vector<Flight> > GRASP::construct(vector<Flight*> flights) {
     return solution;
 }
 
-vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights){
+vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights, int baseTime) {
 
     vector<Flight> f;
-    vector<int> trailsToRemove;
-    int max = 100;
+    vector< pair<int /*Indice do trilho*/, int /*Utilização do trilho*/> > trackUtilizationVector; //Utilização dos trilhos
+    vector<int> removeTracks;
+    int maxSolverFlights = 150;
+
+    for (int i = 0; i < flights.size(); i++) {
+        int value = trackUtilization(baseTime, flights[i]);
+
+        trackUtilizationVector.push_back(make_pair(i, value));
+    }
+
+    sort(trackUtilizationVector.begin(), trackUtilizationVector.end(), sort_pred());
+
+//    for (int i = 0; i < trackUtilizationVector.size(); i++) {
+//        cout << trackUtilizationVector[i].first << " - " << trackUtilizationVector[i].second << endl;
+//    }
 
 
-
-    for(int i = 0; i < flights.size(); i++){
-        if(f.size() + flights[i].size() <= max){
-            for(int j = 0; j < flights[i].size(); j++){
-                f.push_back(flights[i][j]);
-            }
-            trailsToRemove.push_back(i);
+    /**
+     * Pegando apenas os voos com piores aproveitamento de trilho dão resultados melhores que
+     * mescla-los com os de melhor aproveitamento.
+     */
+    bool lowestTest = false;
+    int minIndex = 0;
+    int maxIndex = trackUtilizationVector.size() - 1;
+    //cout << " ADDED ";
+    while (true) {
+        int index = -1;
+        if (lowestTest) {
+            index = minIndex;
+            minIndex++;
+        } else {
+            index = maxIndex;
+            maxIndex--;
         }
+
+        pair<int, int> &value = trackUtilizationVector[index];
+
+        //cout << "Index " << value.first << " Utilization: " << value.second << " NFlights: " << flights[value.first].size() <<  " Total: " << (f.size() + flights[value.first].size()) <<  endl;
+        if(f.size() + flights[value.first].size() > maxSolverFlights){
+            cout << " Break 1 - maxSolverFlights " << maxSolverFlights << endl;
+            break;
+        }
+
+       // cout << value.first << " ";
+        ARPUtil::copyFlights(&f, &flights[value.first]);
+        removeTracks.push_back(value.first);
+        
+        if (minIndex > maxIndex){
+            cout << " Break 2 - last track added" << endl;
+            break;
+        }
+        //lowestTest = !lowestTest; // Descomentar para mesclar os trilhos de piores aproveitamento com os de melhores
+    }
+    //cout << endl;
+    
+    sort(removeTracks.begin(), removeTracks.end());
+
+    for(int i = 0; i < removeTracks.size(); i++){
+        ARPUtil::removeTrack(&flights, removeTracks[removeTracks.size() - 1 - i]);
     }
 
 
     
+    vector< vector<Flight> > localSolution = ARPSolver::solver(&f, (int) parameters.GetMaxDelay());
 
-    vector< vector<Flight> > localSolution = ARPSolver::solver(&f , (int)parameters.GetMaxDelay());
-
-    for(int i = 0; i < trailsToRemove.size(); i++){
-        vector< vector<Flight> >::iterator iRemove = flights.begin();
-        advance(iRemove, (trailsToRemove[i] - i));
-        flights.erase(iRemove);
-    }
-
-    for(int i = 0; i < localSolution.size(); i++){
+    for (int i = 0; i < localSolution.size(); i++) {
         flights.push_back(localSolution[i]);
     }
 
@@ -242,16 +292,16 @@ vector<Flight*> GRASP::extractAdjacentFlightArcType1(Flight* actualFlight, vecto
                 && actualFlight->validateGeographicalConstraint(candidate)
                 && actualFlight->validateTemporalConstraint(candidate, 0)) {
 
-//            int delay = candidate->GetDepartureTime() - actualFlight->GetRealArrivalTime();
-//
-//            if(delay >= parameters.GetMaxDelay()){
-//                candidate->SetDelay(-parameters.GetMaxDelay());
-//            }
-//            else{
-//                candidate->SetDelay(-delay);
-//            }
+            //            int delay = candidate->GetDepartureTime() - actualFlight->GetRealArrivalTime();
+            //
+            //            if(delay >= parameters.GetMaxDelay()){
+            //                candidate->SetDelay(-parameters.GetMaxDelay());
+            //            }
+            //            else{
+            //                candidate->SetDelay(-delay);
+            //            }
 
-            
+
             candidate->SetDelay(0);
             adjacentFlights.push_back(candidate);
 
@@ -370,6 +420,39 @@ vector<Flight> GRASP::cloneTrack(vector<Flight*> track) {
     return retorno;
 }
 
+/**
+ * Obtem o grau de utilização de um trilho.
+ * @param baseTime O tempo maximo de utilização de um trilho.
+ * @param track O trilho a ser avaliado.
+ * @return O grau de utilização do trilho, o valor estará entre [baseTime, 0);
+ */
+int GRASP::trackUtilization(int baseTime, vector<Flight> &track) {
+    for (int i = 0; i < track.size(); i++) {
+        baseTime -= track[i].GetDuration();
+    }
+
+    return baseTime;
+}
+
+int GRASP::calculeBaseTime(vector<Flight*> flights) {
+    int minTime = INT_MAX, maxTime = 0;
+
+    for (int i = 0; i < flights.size(); i++) {
+        Flight *f = flights[i];
+
+        if (f->GetDepartureTime() < minTime) {
+            minTime = f->GetDepartureTime();
+        }
+
+        if ((f->GetDepartureTime() + f->GetDuration()) > maxTime) {
+            maxTime = f->GetDepartureTime() + f->GetDuration();
+        }
+    }
+
+    return maxTime - minTime;
+
+}
+
 void GRASP::readInput(char *file) {
 
     cout << " Lendo entrada " << endl;
@@ -382,7 +465,7 @@ void GRASP::readInput(char *file) {
     cout << " Finalizado leitura de entrada " << endl;
 
     vector<Flight*> flights = inst.getFlights();
-
+    int baseTime = calculeBaseTime(flights);
     unsigned int alfa = 50;
     unsigned int probabilityArcType1 = 53;
     unsigned int probabilityArcType2 = 35;
@@ -400,38 +483,38 @@ void GRASP::readInput(char *file) {
     int bestCost = 999999;
     int bestIter = 0;
 
-    for (int i = 0; i < 100; i++) {
-//        bool valid = ARPUtil::validateSolution(bestresult);
-//
-//        if(!valid){
-//            cout << "Solucao nao valida" << endl;
-//            exit(1);
-//        }
-        
+    for (int i = 0; i < 10; i++) {
+        //        bool valid = ARPUtil::validateSolution(bestresult);
+        //
+        //        if(!valid){
+        //            cout << "Solucao nao valida" << endl;
+        //            exit(1);
+        //        }
+
         vector< vector<Flight> > result = grasp.construct(flights);
         ARPUtil::relaxDelays(result);
 
-        int costB = ARPUtil::calculeCost(result);
-
-        
-
-        int costA;
-        while(true){
-            result = grasp.localSearch(result);
-            costA = ARPUtil::calculeCost(result);
-            cout << " Custo A " << costA << " - Custo B: " << costB << endl;
-            if(costA >= costB) break;
-            costB = costA;
+        int initCost = ARPUtil::calculeCost(result);
+        int finalCost;
+        int nLocalSearch = 0;
+        while (true) {
+            nLocalSearch++;
+            result = grasp.localSearch(result, baseTime);
+            finalCost = ARPUtil::calculeCost(result);
+            cout << " InitialCost =  " << initCost << " - FinalCost: " << finalCost << endl;
+            if (finalCost >= initCost) break;
+            initCost = finalCost;
+            
         }
 
-        cout << "FIM LOCAL SEARCH " << i << endl;
+        cout << "FIM LOCAL SEARCH( " << i << "): Try "  << nLocalSearch << " times." << endl;
 
 
-        if (costA < bestCost) {
-            bestCost = costA;
+        if (finalCost < bestCost) {
+            bestCost = finalCost;
             bestresult = result;
             bestIter = i;
-            long diff = clock()/(CLOCKS_PER_SEC/1000);
+            long diff = clock() / (CLOCKS_PER_SEC / 1000);
             cout << "Best " << i << " " << bestCost << " " << diff << endl;
         }
     }
@@ -442,8 +525,6 @@ void GRASP::readInput(char *file) {
     ARPUtil::showSolution(bestresult);
 
 }
-
-
 
 /**
  * Retorna o tipo do arco sorteado de acordo com as probabilidades

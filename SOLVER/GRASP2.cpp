@@ -94,7 +94,7 @@ vector< vector<Flight> > GRASP::construct(vector<Flight*> flights) {
     return solution;
 }
 
-vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights){
+vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights, int baseTime){
 
     vector<Flight> f;
     vector<int> trailsToRemove;
