@@ -21,7 +21,9 @@ public:
     GRASP(Parameters p);
     
     vector< vector<Flight> > construct(vector<Flight*> flights);
+    vector< vector<Flight> > localSearch(vector< vector<Flight> > flights);
     vector<Flight> cloneTrack(vector<Flight*> track);
+    
     bool canBeChosen(vector< vector<Flight*> > &tracks, Flight *flightCandidate);
     bool canSucceedDirect(Flight *initialFlight, Flight *finalFlight);
     bool canSuccedInderect(Flight *initialFlight, Flight *finalFlight);
@@ -31,8 +33,17 @@ public:
 
 private:
     Parameters parameters;
-    Flight* calculateNextFlight(Flight *actualFlight);
+    Flight* calculateNextFlight(Flight *actualFlight, vector<Flight> &clonedFlights);
+    vector<Flight*> extractAdjacentFlight(Flight *actualFlight, vector<Flight> &clonedFlights, int selectedArc);
     void removeTrack(vector< vector<Flight*> > &track, int index);
+    int RCLIndex(Flight *actualFlight, vector<Flight*> candidateList, int alfa, int selectedArc);
+    int randomizingArc();
+
+    vector<Flight*> extractAdjacentFlightArcType1(Flight* actualFlight, vector<Flight> &candidateFlights);
+    vector<Flight*> extractAdjacentFlightArcType2(Flight* actualFlight, vector<Flight> &candidateFlights);
+    vector<Flight*> extractAdjacentFlightArcType3(Flight* actualFlight, vector<Flight> &candidateFlights);
+    vector<Flight*> extractAdjacentFlightArcType4(Flight* actualFlight, vector<Flight> &candidateFlights);
+
 
 };
 
