@@ -27,10 +27,10 @@ public:
 private:
     static void adjustTime();
     static int costOfArc(vector<Flight> *l, int orig, int dest, int maxDelay);
-    static void showVariables(IloCplex &model, IloIntVarArray vars[], int n);
+    static void showVariables(IloCplex &model, IloIntVarArray vars[],IloIntVar delay[], int n);
     static void showCosts(IloNumArray cost[], int n);
-    static vector< vector<Flight> > assembleResult(vector<Flight> *flight, IloCplex &cplex, IloIntVarArray vars[], IloNumArray cost[], int n);
-    static void finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloIntVarArray vars[], IloNumArray cost[], int n);
+    static vector< vector<Flight> > assembleResult(vector<Flight> *flight, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n);
+    static void finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n);
     
 };
 
