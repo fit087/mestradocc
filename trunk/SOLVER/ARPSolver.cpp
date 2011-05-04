@@ -7,9 +7,13 @@
 
 #include "ARPSolver.h"
 #include "util/ARPUtil.h"
+//#include <cmath>
 #include <iostream>
 
-#define MAX_COST 9999
+#define MAX_COST 99999
+
+#define EXTENDED false
+#define ISDEBUG false
 
 ARPSolver::ARPSolver() {
 }
@@ -59,10 +63,13 @@ int ARPSolver::costOfArc(vector<Flight> *v, int orig, int dest, int maxDelay) {
         if (time >= 0) {
             return 0;
         } else {
+            
             time += maxDelay;
             //Se tem tempo de ligar com o delay (custo 0 - arco do tipo 1)
             if (time >= 0) {
-                return maxDelay - time;
+                if(EXTENDED) return 0;
+                else return maxDelay - time;
+                return 0;
             } else { //Se nao tem tempo (CUSTO MAXIMO)
                 return MAX_COST;
             }
@@ -78,17 +85,32 @@ int ARPSolver::costOfArc(vector<Flight> *v, int orig, int dest, int maxDelay) {
 
 
 
-void ARPSolver::showVariables(IloCplex &model, IloIntVarArray vars[], int n){
-    printf("\nVariaveis\n");
+void ARPSolver::showVariables(IloCplex &model, IloIntVarArray vars[], IloIntVar delay[], int n){
+//    printf("\nVariaveis X - %d\n", n);
+//    for(int i = 0 ; i < n; i++){
+//        int qtde = 0;
+//        for(int j =0; j < n; j++){
+//
+//            IloInt v = model.getValue(vars[i][j]);
+//            if(v == 1) qtde++;
+//            printf("%-4d  ", (int)v);
+//        }
+//
+//        if(qtde != 1){
+////            printf("\n\n-----> (%d)", i);
+////            exit(1);
+//        }
+//
+//        printf("\n");
+//    }
+
+    printf("\nVariaveis Delay \n");
     for(int i = 0 ; i < n; i++){
-        for(int j =0; j < n; j++){
-            IloInt v = model.getValue(vars[i][j]);
-
-            printf("%-4d  ", (int)v);
-        }
-
-        printf("\n");
+        IloInt v = model.getValue(delay[i]);
+        if(v != 0)
+        printf("(%d) %-4d  ", i,(int)v);
     }
+    printf("\n");
 }
 
 void ARPSolver::showCosts(IloNumArray cost[], int n) {
@@ -101,29 +123,45 @@ void ARPSolver::showCosts(IloNumArray cost[], int n) {
     }
 }
 
-void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloIntVarArray vars[], IloNumArray cost[], int n){
+void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n){
     while(true){
         Flight &f = (*trail)[(*trail).size() - 1];
         int index = f.GetIlogIndex();
 
-
+        int qtde = 0;
         for(int i = 0; i < n; i++){
-            //cout << " N " << i <<  " " << index << " " << n << " " << endl;
+
+            if (ISDEBUG)
+                cout << " N " << i << " " << index << " " << n << " " << endl;
+
             IloInt v = cplex.getValue(vars[index][i]);
-            if(v == 1){
+
+            if (v == 1) {
+                qtde++;
+
                 if(i == (n-1)) return;
-                int fcost = cost[index][i];
+
+                int fcost;
+                if(EXTENDED){
+                    fcost = cplex.getValue(delay[i]);
+                }
+                else{
+                    fcost = cost[index][i];
+                }
+                
                 (*flight)[i].SetDelay(fcost);
                 trail->push_back((*flight)[i]);
                 continue;
             }
         }
+
+        //if(qtde == 0) return;
     }
     
     return;
 }
 
- vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCplex &cplex, IloIntVarArray vars[], IloNumArray cost[], int n){
+vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n) {
 
     int sourceIndex = (n - 2);
 
@@ -131,14 +169,16 @@ void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, Ilo
 
     for (int i = 0; i < n - 2; i++) {
 
-       // printf("Construção do trilho %d\n", i );
+        if (ISDEBUG)
+            printf("Construção do trilho %d\n", i);
         IloInt v = cplex.getValue(vars[sourceIndex][i]);
         if (v == 1) {
             vector<Flight> trail;
             trail.push_back((*flight)[i]);
-            finalizeTrail(flight, &trail, cplex, vars, cost, n);
+            finalizeTrail(flight, &trail, cplex, vars, cost, delay, n);
             result.push_back(trail);
-            //printf("Quantidade = %d\n", (int)trail.size());
+            if (ISDEBUG)
+                printf("Quantidade = %d\n", (int)trail.size());
         }
     }
 
@@ -170,8 +210,9 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
 
         //size + 1 e size + 2 sao os nos de origem e o de fim.
         IloInt n = v->size() + 2;
-        IloIntVarArray x[n];
-        IloNumArray cost[n];
+        IloBoolVarArray x[n];
+        IloIntArray cost[n];
+        IloIntVar delay[n];
         IloExpr objExpr = IloExpr(env);
        // IloRangeArray restrictions = IloRangeArray(env, (2 *(n - 2)));
         
@@ -179,28 +220,53 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
         IloExpr rowRestric[n - 2];
         IloExpr colRestric[n - 2];
 
+        //IloExprArray connectionFeasibility[n];
+       // IloExpr flightRestriction[n - 2];
 
-      //  cout << " CRIANDO ARRAY DE CUSTOS, VARIAVEIS X, E INICIALIZANDO A FUNCAO OBJETIVO " << endl;
+
+        cout << " CRIANDO ARRAY DE CUSTOS, VARIAVEIS X, E INICIALIZANDO A FUNCAO OBJETIVO " << endl;
         
         for (int i = 0; i < n; i++) { //Cada Linha
 
-            x[i] = IloIntVarArray(env, n, 0, 1);
-            cost[i] = IloNumArray(env, n);
             
             
+            x[i] = IloBoolVarArray(env, n);
+            cost[i] = IloIntArray(env, n);
+          //  connectionFeasibility[i] = IloExprArray(env, n);
+
+
             for (int j = 0; j < n; j++) { //Cada coluna
                 model.add(x[i][j]);
+
+
                 //Se for na primeira execucao, inicializa as restricoes.
                 if (i == 0) {
                     rowRestric[j] = IloExpr(env);
                     colRestric[j] = IloExpr(env);
+                    delay[j] = IloIntVar(env);
+                    model.add(delay[j]);
+                  //  flightRestriction[i] = IloExpr(env);
+                    //flightRestriction[i] =
+                   //         (x[i][j])*
+                   //         (((*v)[i].GetDepartureTime() +  ((*v)[i].GetDuration()) + delay[i]) - (((*v)[j].GetDepartureTime() + delay[j])))
+                   //         >= 0 ;
                 }
 
                 // A linha e a coluna dos nos ficticios nao entram nas restricoes.
                 if ((i < (n - 2)) || (j < (n - 2))) {
-                   // printf("Restriction added %d-%d\n", i,j);
+                    
                     rowRestric[j] += x[i][j];
                     colRestric[i] += x[i][j];
+                    Flight &fo = (*v)[i];
+                    Flight &fd = (*v)[j];
+
+                    if ((i < (n - 2)) && (j < (n - 2))) {
+                        if(EXTENDED ){
+                          model.add(((x[i][j])*fo.GetDepartureTime() + (x[i][j])*fo.GetDuration() - (1 - x[i][j])*MAX_COST  + delay[i])   <= (fd.GetDepartureTime() + delay[j]));
+                        }
+                          //((fo.GetDepartureTime() + fo.GetDuration() + delay[i]) - (fd.GetDepartureTime() + delay[j])) <= 0);
+                    }
+                            
                 }
 
 
@@ -238,33 +304,34 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
                 }
 
                 //printf("ANTES(%d,%d) = %d\n", i, j, (int) cost[i][j]);
+
+                objExpr += x[i][j]*(cost[i][j]);
+            }
+
+            if(EXTENDED){
+                objExpr += delay[i];
             }
 
             //#########################################
             //Cria a funcao de minimizacao.
             //printf("ANTES\n");
 
-            objExpr += IloScalProd(x[i], cost[i]);
+            //objExpr += IloScalProd(x[i], cost[i]);
             //printf("DEPOIS\n");
             //#########################################
         }
 
-       // printf("CRIACAO FINALIZADA\n");
+        printf("CRIACAO FINALIZADA\n");
 
-        IloNum limite = 1;
         for (int i = 0; i < n - 2; i++) {
-            // printf("Adicionando restricoes %d\n", i);
-            //            model.add(IloRange(env, limite, rowRestric[i] - 1 = 0, limite));
-            //            model.add(IloRange(env, limite, colRestric[i] - 1 = 0, limite));
             model.add(1 <= rowRestric[i] <= 1);
             model.add(1 <= colRestric[i] <= 1);
 
-            rowRestric[i].end();
-            colRestric[i].end();
-            //model.add(colRestric[i] - 1 = 0);
+//            rowRestric[i].end();
+//            colRestric[i].end();
         }
 
-    //    printf("Adicao de restricoes finalizada");
+        //    printf("Adicao de restricoes finalizada");
 
 
 
@@ -283,12 +350,12 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
         //env.out() << "Solution status = " << cplex.getStatus() << endl;
         //env.out() << "Solution value  = " << cplex.getObjValue() << endl;
 
-        //showVariables(cplex, x, n);
+        showVariables(cplex, x, delay, n);
         //showCosts(cost, n);
 
-       // cout << "Teste solver(list<Flight>) Finalizado" << endl;
+        cout << "Teste solver(list<Flight>) Finalizado" << endl;
 
-        return assembleResult(v, cplex, x, cost, n);
+        return assembleResult(v, cplex, x, cost, delay, n);
 
     } catch (IloException& e) {
         cerr << "Concert exception caught: " << e << endl;
@@ -302,24 +369,24 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
     return vector< vector<Flight> >();
 }
 
-void ARPSolver::readInput(char *file){
+void ARPSolver::readInput(char *file) {
     ifstream ifs(file, ifstream::in);
     loadFile(ifs);
     ifs.close();
 }
 
-void ARPSolver::loadFile(istream &stream){
+void ARPSolver::loadFile(istream &stream) {
     //Direcione a entrada do arquivo <<
     int maxDelay, n;
-    stream >>  n >> maxDelay;
+    stream >> n >> maxDelay;
 
     vector<Flight> flights;
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         int departureTime, duration, departureCity, arrivalCity;
 
         stream >> departureTime >> duration >> departureCity >> arrivalCity;
 
-        flights.push_back(Flight(i,departureTime, duration, departureCity, arrivalCity));
+        flights.push_back(Flight(i, departureTime, duration, departureCity, arrivalCity));
     }
 
     vector< vector <Flight> > result = solver(&flights, maxDelay);
