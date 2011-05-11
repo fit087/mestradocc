@@ -36,6 +36,8 @@ public:
     int requiredDelay(Flight *other);
     void SetIlogIndex(int ilogIndex);
     int GetIlogIndex() const;
+    void SetRepoFlight(bool repoFlight);
+    bool IsRepoFlight() const;
     
     
     
@@ -50,6 +52,7 @@ private:
     int arrivalCity;
     int delay;
     bool selected;
+    bool repoFlight;
 };
 
 #endif	/* FLIGHT_H */
