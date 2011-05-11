@@ -21,15 +21,16 @@ public:
 
     virtual ~Instance();
     int getMaxDelay() const;
-    map< int, map< int, int> > getTimes() const;
-    vector<Flight*> getFlights() const;
+    vector<Flight*>* getFlights();
 
     static Instance read(istream &stream);
+    void setFlights(vector<Flight*> flights);
+    map<int, map<int, int> >* getTimes() ;
 
 private:
     Instance(vector<Flight*> flights, map< int, map< int, int> > times, unsigned int maxDelay);
     vector<Flight*> flights;
-    map< int, map< int, int> > times;
+    map< int, map< int, int > > times;
     int maxDelay;
 
 };

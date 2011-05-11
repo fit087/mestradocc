@@ -12,7 +12,7 @@
 
 #define MAX_COST 99999
 
-#define EXTENDED false
+#define EXTENDED true
 #define ISDEBUG false
 
 ARPSolver::ARPSolver() {
@@ -42,7 +42,7 @@ void ARPSolver::adjustTime() {
  * @param dest Indice do voo de destino
  * @return O custo do arco ou MAX_COST caso nao seja possivel a ligacao.
  */
-int ARPSolver::costOfArc(vector<Flight> *v, int orig, int dest, int maxDelay) {
+int ARPSolver::costOfArc(vector<Flight> *v, map< int, map< int, int > > *distanceTimes, int orig, int dest, int maxDelay) {
     Flight &o = (*v)[orig];
     Flight &d = (*v)[dest];
 
@@ -56,26 +56,47 @@ int ARPSolver::costOfArc(vector<Flight> *v, int orig, int dest, int maxDelay) {
     //printf("Teste 2 %d %d\n", o.GetDepartureTime(), d.GetDepartureTime());
 
     if (o.GetArrivalCity() == d.GetDepartureCity()) {
-        int time = (d.GetDepartureTime()) - (o.GetDepartureTime() + o.GetDuration());
+        int diff = (d.GetDepartureTime()) - (o.GetDepartureTime() + o.GetDuration());
 
         //printf(" TIME =  %d \n", time);
         //Se tem tempo de ligar direto (custo 0 - arco do tipo 1)
-        if (time >= 0) {
+        if (diff >= 0) {
             return 0;
         } else {
             
-            time += maxDelay;
+            diff += maxDelay;
             //Se tem tempo de ligar com o delay (custo 0 - arco do tipo 1)
-            if (time >= 0) {
+            if (diff >= 0) {
                 if(EXTENDED) return 0;
-                else return maxDelay - time;
-                return 0;
+                else return maxDelay - diff;
             } else { //Se nao tem tempo (CUSTO MAXIMO)
                 return MAX_COST;
             }
         }
     }//Se as cidades forem diferentes.
     else {
+        int diff = (d.GetDepartureTime()) - (o.GetDepartureTime() + o.GetDuration());
+        int origIndex = o.GetArrivalCity();
+        int destIndex = d.GetDepartureCity();
+
+        if(destIndex < origIndex){
+            int temp = origIndex;
+            origIndex = destIndex;
+            destIndex = temp;
+        }
+
+        int flightTime = (*distanceTimes)[origIndex][destIndex];
+        if(diff >= flightTime){
+            return flightTime;
+        }
+        else{
+            diff += maxDelay;
+
+            if(diff >= flightTime){
+                if(EXTENDED) return flightTime;
+                else return flightTime + (maxDelay - diff);
+            }
+        }
         //FAZ O REPOSICIONAMENTO E OBTEM O CUSTO DELES.
         return MAX_COST; // Essa versao nao permite reposicionamento.
     }
@@ -161,7 +182,7 @@ void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, Ilo
     return;
 }
 
-vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n) {
+vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, Instance *instance, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n) {
 
     int sourceIndex = (n - 2);
 
@@ -173,19 +194,29 @@ vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, IloCp
             printf("Construção do trilho %d\n", i);
         IloInt v = cplex.getValue(vars[sourceIndex][i]);
         if (v == 1) {
-            vector<Flight> trail;
-            trail.push_back((*flight)[i]);
-            finalizeTrail(flight, &trail, cplex, vars, cost, delay, n);
-            result.push_back(trail);
+            vector<Flight> track;
+            track.push_back((*flight)[i]);
+            finalizeTrail(flight, &track, cplex, vars, cost, delay, n);
+            int initialCost = ARPUtil::calculeCost(track, instance);
+            int finalCost = ARPUtil::configureTrack(track, instance);
+
+            if(initialCost != finalCost){
+                printf("Erro na geração do trilho (%d) {Custo Inicial = %d | Custo Final = %d}\n", (int)result.size(), initialCost, finalCost);
+                exit(1);
+            }
+            
+            result.push_back(track);
             if (ISDEBUG)
-                printf("Quantidade = %d\n", (int)trail.size());
+                printf("Quantidade = %d\n", (int)track.size());
         }
     }
+
+
 
     return result;
 }
 
-vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
+vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, Instance *instance, int maxDelay){
 
     cout << "Solver With " << v->size() << " Flights " << endl;
     
@@ -300,7 +331,7 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
              */
                 else {
 
-                    cost[i][j] = costOfArc(v, i, j, maxDelay);
+                    cost[i][j] = costOfArc(v, instance->getTimes() ,i, j, maxDelay);
                 }
 
                 //printf("ANTES(%d,%d) = %d\n", i, j, (int) cost[i][j]);
@@ -355,7 +386,7 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
 
         cout << "Teste solver(list<Flight>) Finalizado" << endl;
 
-        return assembleResult(v, cplex, x, cost, delay, n);
+        return assembleResult(v, instance, cplex, x, cost, delay, n);
 
     } catch (IloException& e) {
         cerr << "Concert exception caught: " << e << endl;
@@ -371,28 +402,23 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, int maxDelay) {
 
 void ARPSolver::readInput(char *file) {
     ifstream ifs(file, ifstream::in);
-    loadFile(ifs);
-    ifs.close();
-}
 
-void ARPSolver::loadFile(istream &stream) {
-    //Direcione a entrada do arquivo <<
-    int maxDelay, n;
-    stream >> n >> maxDelay;
+    Instance instance = Instance::read(ifs);
+
+    ifs.close();
+
 
     vector<Flight> flights;
-    for (int i = 0; i < n; i++) {
-        int departureTime, duration, departureCity, arrivalCity;
 
-        stream >> departureTime >> duration >> departureCity >> arrivalCity;
-
-        flights.push_back(Flight(i, departureTime, duration, departureCity, arrivalCity));
+    for(int i = 0; i < (*instance.getFlights()).size(); i++){
+        Flight *f = (*instance.getFlights())[i];
+        flights.push_back(*f);
     }
 
-    vector< vector <Flight> > result = solver(&flights, maxDelay);
+
+    vector< vector <Flight> > result = solver(&flights, &instance, instance.getMaxDelay());
 
     ARPUtil::showSolution(result);
-
 }
 
 void ARPSolver::test() {
@@ -408,7 +434,7 @@ void ARPSolver::test() {
     //Trilho 3
     f.push_back(Flight(3, 0, 80, 'c', 'b'));
 
-    vector< vector<Flight> > r = solver(&f, 10);
+    //vector< vector<Flight> > r = solver(&f, 10);
     //ARPUtil::showSolution(r);
 }
 
@@ -419,7 +445,7 @@ void ARPSolver::test2() {
     v.push_back(Flight(1, 50, 40, 1, 3));
 
 
-    vector< vector <Flight> > result = ARPSolver::solver(&v, 0);
+    //vector< vector <Flight> > result = ARPSolver::solver(&v, 0);
 
     //ARPUtil::showSolution(result);
 }

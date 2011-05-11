@@ -19,6 +19,7 @@ Flight::Flight(int index, int departureTime, int duration,
     this->arrivalCity = arrivalCity;
     this->selected = false;
     this->delay = 0;
+    this->repoFlight = false;
 }
 
 Flight::Flight(const Flight& orig) {
@@ -30,6 +31,7 @@ Flight::Flight(const Flight& orig) {
     this->selected = orig.IsSelected();
     this->delay = orig.GetDelay();
     this->ilogIndex = orig.GetIlogIndex();
+    this->repoFlight = orig.IsRepoFlight();
 }
 
 Flight::~Flight() {
@@ -112,6 +114,12 @@ void Flight::SetIlogIndex(int ilogIndex) {
 }
 int Flight::GetIlogIndex() const {
     return ilogIndex;
+}
+void Flight::SetRepoFlight(bool repoFlight) {
+    this->repoFlight = repoFlight;
+}
+bool Flight::IsRepoFlight() const {
+    return repoFlight;
 }
 
 void Flight::toString() {

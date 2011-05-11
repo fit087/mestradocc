@@ -13,12 +13,13 @@
 
 #include "Flight.h"
 #include "Parameters.h"
+#include "Instance.h"
 
 using namespace std;
 
 class GRASP {
 public:
-    GRASP(Parameters p);
+    GRASP(Parameters p, Instance *instance);
     
     vector< vector<Flight> > construct(vector<Flight*> flights);
     vector< vector<Flight> > localSearch(vector< vector<Flight> > flights, int baseTime);
@@ -32,8 +33,10 @@ public:
     static int calculeBaseTime(vector<Flight*> flight);
     static int trackUtilization(int baseTime, vector<Flight> &track);
     static void readInput(char* file);
+    
 
 private:
+    Instance *instance;
     Parameters parameters;
     Flight* calculateNextFlight(Flight *actualFlight, vector<Flight> &clonedFlights);
     vector<Flight*> extractAdjacentFlight(Flight *actualFlight, vector<Flight> &clonedFlights, int selectedArc);

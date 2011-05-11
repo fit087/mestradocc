@@ -23,8 +23,9 @@ struct sort_pred {
 };
 //################################
 
-GRASP::GRASP(Parameters p) {
+GRASP::GRASP(Parameters p, Instance *instance) {
     this->parameters = p;
+    this->instance = instance;
 }
 
 void GRASP::setParameters(Parameters parameters) {
@@ -107,6 +108,7 @@ vector< vector<Flight> > GRASP::construct(vector<Flight*> flights) {
 vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights, int baseTime) {
 
     vector<Flight> f;
+    map< int, map< int, int> > *distancesTimes = this->instance->getTimes();
     vector< pair<int /*Indice do trilho*/, int /*Utilização do trilho*/> > trackUtilizationVector; //Utilização dos trilhos
     vector<int> removeTracks;
     int maxSolverFlights = 150;
@@ -169,8 +171,7 @@ vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights, in
     }
 
 
-    
-    vector< vector<Flight> > localSolution = ARPSolver::solver(&f, (int) parameters.GetMaxDelay());
+    vector< vector<Flight> > localSolution = ARPSolver::solver(&f, instance,(int) parameters.GetMaxDelay());
 
     for (int i = 0; i < localSolution.size(); i++) {
         flights.push_back(localSolution[i]);
@@ -458,26 +459,26 @@ void GRASP::readInput(char *file) {
     cout << " Lendo entrada " << endl;
     ifstream ifs(file, ifstream::in);
 
-    Instance inst = Instance::read(ifs);
+    Instance instance = Instance::read(ifs);
 
     ifs.close();
 
     cout << " Finalizado leitura de entrada " << endl;
 
-    vector<Flight*> flights = inst.getFlights();
-    int baseTime = calculeBaseTime(flights);
+    vector<Flight*> * flights = instance.getFlights();
+    int baseTime = calculeBaseTime(*flights);
     unsigned int alfa = 50;
     unsigned int probabilityArcType1 = 53;
     unsigned int probabilityArcType2 = 35;
     unsigned int probabilityArcType3 = 10;
     unsigned int probabilityArcType4 = 2;
 
-    Parameters p(inst.getMaxDelay(), probabilityArcType1,
+    Parameters p(instance.getMaxDelay(), probabilityArcType1,
             probabilityArcType2, probabilityArcType3,
             probabilityArcType4, alfa);
 
     cout << " Criado o GRASP " << endl;
-    GRASP grasp(p);
+    GRASP grasp(p, &instance);
 
     vector< vector<Flight> > bestresult;
     int bestCost = 999999;
@@ -491,16 +492,16 @@ void GRASP::readInput(char *file) {
         //            exit(1);
         //        }
 
-        vector< vector<Flight> > result = grasp.construct(flights);
+        vector< vector<Flight> > result = grasp.construct(*flights);
         ARPUtil::relaxDelays(result);
 
-        int initCost = ARPUtil::calculeCost(result);
+        int initCost = ARPUtil::calculeCost(result, &instance);
         int finalCost;
         int nLocalSearch = 0;
         while (true) {
             nLocalSearch++;
             result = grasp.localSearch(result, baseTime);
-            finalCost = ARPUtil::calculeCost(result);
+            finalCost = ARPUtil::calculeCost(result, &instance);
             cout << " InitialCost =  " << initCost << " - FinalCost: " << finalCost << endl;
             if (finalCost >= initCost) break;
             initCost = finalCost;

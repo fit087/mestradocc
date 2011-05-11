@@ -42,32 +42,31 @@ Instance Instance::read(istream &stream) {
 
     }
 
-    int nTimes;
-    map<int, map<int, int> > times;
-    /*cout << "Lendo tempos" << endl;
+    int nd;
+    map<int, map<int, int> > distanceTimes;
 
-    stream >> nTimes;
-    
+    stream >> nd;
 
-    for(int i = 0; i < nTimes; i++){
-        int orig, dest, time;
-        stream >> orig >> dest >> time;
-        cout << "TESTE " << &times[orig] << endl;
-        //this->times[orig][dest] = time;
-    }*/
-
-    return Instance(flights, times, maxDelay);
+    for(int i = 0; i < nd; i++){
+        int o, d, time;
+        stream >> o >> d >> time;
+        distanceTimes[o][d] = time;
+    }
+   
+    return Instance(flights, distanceTimes, maxDelay);
+}
+void Instance::setFlights(vector<Flight*> flights) {
+    this->flights = flights;
+}
+map<int, map<int, int> >* Instance::getTimes() {
+    return &times;
 }
 
 int Instance::getMaxDelay() const {
     return maxDelay;
 }
 
-map< int, map< int, int> > Instance::getTimes() const {
-    return times;
-}
-
-vector<Flight*> Instance::getFlights() const {
-    return flights;
+vector<Flight*> *Instance::getFlights() {
+    return &flights;
 }
 
