@@ -146,6 +146,28 @@ public class SolutionUtil {
         }
 
 
+        StringBuilder sb = new StringBuilder();
+        int cont = 0;
+        ArrayList<City> cities = airlineNetwork.getCities();
+        for(int i = 0; i < cities.size() - 1; i++){
+            City orig = cities.get(i);
+            for(int j = (i+1); j < cities.size(); j++){
+                City dest = cities.get(j);
+                Integer duration = orig.getFlightTimes().get(dest);
+                if(duration == null){
+                    duration = Integer.MAX_VALUE;
+                }
+
+
+                sb.append(i + " " + j + " " + (duration + orig.getGroundTime()) + "\n");
+                cont++;
+            }
+        }
+
+        bw.write("\n");
+        bw.write(cont + "\n");
+        bw.write("\n");
+        bw.write(sb.toString());
 
 
         bw.close();
