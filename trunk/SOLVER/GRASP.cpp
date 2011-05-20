@@ -495,13 +495,13 @@ void GRASP::readInput(char *file) {
         vector< vector<Flight> > result = grasp.construct(*flights);
         ARPUtil::relaxDelays(result);
 
-        int initCost = ARPUtil::calculeCost(result, &instance);
+        int initCost = ARPUtil::calculeCost(result);
         int finalCost;
         int nLocalSearch = 0;
         while (true) {
             nLocalSearch++;
             result = grasp.localSearch(result, baseTime);
-            finalCost = ARPUtil::calculeCost(result, &instance);
+            finalCost = ARPUtil::calculeCost(result);
             cout << " InitialCost =  " << initCost << " - FinalCost: " << finalCost << endl;
             if (finalCost >= initCost) break;
             initCost = finalCost;

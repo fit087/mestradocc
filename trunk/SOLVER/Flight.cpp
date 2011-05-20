@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <cmath>
 #include "Flight.h"
 
 using namespace std;
@@ -20,6 +21,7 @@ Flight::Flight(int index, int departureTime, int duration,
     this->selected = false;
     this->delay = 0;
     this->repoFlight = false;
+    this->cost = 0;
 }
 
 Flight::Flight(const Flight& orig) {
@@ -31,6 +33,7 @@ Flight::Flight(const Flight& orig) {
     this->selected = orig.IsSelected();
     this->delay = orig.GetDelay();
     this->ilogIndex = orig.GetIlogIndex();
+    this->cost = 0;
     this->repoFlight = orig.IsRepoFlight();
 }
 
@@ -109,17 +112,29 @@ int Flight::requiredDelay(Flight *other) {
         return -diff;
     }
 }
+
 void Flight::SetIlogIndex(int ilogIndex) {
     this->ilogIndex = ilogIndex;
 }
+
 int Flight::GetIlogIndex() const {
     return ilogIndex;
 }
+
 void Flight::SetRepoFlight(bool repoFlight) {
     this->repoFlight = repoFlight;
 }
+
 bool Flight::IsRepoFlight() const {
     return repoFlight;
+}
+
+int Flight::GetCost() {
+    return cost + abs(delay);
+}
+
+void Flight::SetCost(int cost) {
+    this->cost = cost;
 }
 
 void Flight::toString() {

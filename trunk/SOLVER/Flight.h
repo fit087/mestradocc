@@ -38,8 +38,12 @@ public:
     int GetIlogIndex() const;
     void SetRepoFlight(bool repoFlight);
     bool IsRepoFlight() const;
+    int GetCost();
+
+    void SetCost(int cost);
+
     
-    
+
     
     
     
@@ -48,6 +52,7 @@ private:
     int ilogIndex;
     int departureTime;
     int duration;
+    int cost;
     int departureCity;
     int arrivalCity;
     int delay;

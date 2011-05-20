@@ -155,15 +155,15 @@ void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, Ilo
 
                 if(i == (n-1)) return;
 
-                int fcost = 0;
-                if(EXTENDED && (i < n - 2)){
-                        fcost = cplex.getValue(delay[i]);
-                }
-                else{
-                    fcost = cost[previousIndex][i];
-                }
+//                int fcost = 0;
+//                if(EXTENDED && (i < n - 2)){
+//                        fcost = cplex.getValue(delay[i]);
+//                }
+//                else{
+//                    fcost = cost[previousIndex][i];
+//                }
                 
-                (*flight)[i].SetDelay(fcost);
+               // (*flight)[i].SetCost(fcost);
                 trail->push_back((*flight)[i]);
                 break;
             }
@@ -195,14 +195,7 @@ vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, Insta
             track.push_back((*flight)[i]);
             cout << " Finalizando trilho" << endl;
             finalizeTrail(flight, &track, cplex, x, cost, delay, n);
-            int initialCost = ARPUtil::calculeCost(track, instance);
             int finalCost = ARPUtil::configureTrack(track, instance);
-
-            if(initialCost != finalCost){
-                printf("Erro na geração do trilho (%d) {Custo Inicial = %d | Custo Final = %d}\n", (int)result.size(), initialCost, finalCost);
-              //  exit(1);
-            }
-            
             result.push_back(track);
             if (ISDEBUG)
                 printf("Quantidade = %d\n", (int)track.size());
