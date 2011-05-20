@@ -60,9 +60,20 @@ int ARPUtil::configureTrack(vector<Flight> &track, Instance *instance) {
 
         int uniqueCost = 0;
 
+//        if(first.GetIndex() == 45 && second.GetIndex() == 54){
+//            cout << "RESULT " << first.GetArrivalCity() << " | " << second.GetDepartureCity() << endl;
+//        }
+
         if (first.validateGeographicalConstraint(&second)) {
+
             int delay = first.requiredDelay(&second);
+//            if(first.GetIndex() == 45 && second.GetIndex() == 54){
+//                cout << "TIME " << first.GetRealArrivalTime() << " " << (first.GetDepartureTime() + first.GetDuration()) << endl;
+//                cout << "TIME2 " << second.GetRealArrivalTime() << " " << (second.GetDepartureTime() + second.GetDuration()) << endl;
+//                cout << "DELAY " << delay << endl;
+//            }
             second.SetDelay(delay);
+           
             cost += abs(delay);
             uniqueCost = abs(delay);
         }            //É necessário a criação de um voo de reposicionamento.
@@ -74,17 +85,21 @@ int ARPUtil::configureTrack(vector<Flight> &track, Instance *instance) {
 
 
             int flightTime = (*instance->getTimes())[origIndex][destIndex];
-            if(diff >= flightTime){
-                second.SetDelay(flightTime);
+            diff -= flightTime;
+            if(diff >= 0){
+                second.SetCost(flightTime);
                 cost += flightTime;
             }
             else{
-                second.SetDelay(flightTime + (flightTime - diff));
-                cost += flightTime + (flightTime - diff);
+
+
+                second.SetCost(flightTime);
+                second.SetDelay(-diff);
+                cost += (flightTime - diff);
             }
         }
 
-        printf(">>> configureTrack [%d][%d] = %d\n", i, i+1, uniqueCost);
+        //printf(">>> configureTrack [%d][%d] = %d\n", first.GetIndex(), second.GetIndex(), uniqueCost);
     }
     return cost;
 }
@@ -96,68 +111,31 @@ void ARPUtil::showSolution(vector< vector<Flight> > &solution) {
         cout << solution[i].size() << " ";
         for (int j = 0; j < solution[i].size(); j++) {
             cout << solution[i][j].GetIndex() << " ";
-            if (solution[i][j].GetDelay() != 0) {
-                printf("(%+2d)  ", solution[i][j].GetDelay());
+            if (solution[i][j].GetCost() != 0) {
+                printf("(%+2d)  ", solution[i][j].GetCost());
             }
         }
         cout << endl;
     }
 }
 
-int ARPUtil::calculeCost(vector<Flight> &track, Instance *instance) {
+int ARPUtil::calculeCost(vector<Flight> &track) {
     int cost = 1000;
 
-    for (int i = 0; i < track.size() - 1; i++) {
+    for (int i = 0; i < track.size() ; i++) {
         Flight &first = track[i];
-        Flight &second = track[i + 1];
-
-        int uniqueCost = 0;
-
-
-        if (first.validateGeographicalConstraint(&second)) {
-            cost += abs(second.GetDelay());
-            uniqueCost = abs(second.GetDelay());
-        } else {
-
-
-            int diff = second.GetDepartureTime() - (first.GetRealArrivalTime());
-            int flightTime = (*instance->getTimes())[first.GetArrivalCity()][second.GetDepartureCity()];
-
-            if(flightTime <= diff){
-                cost += flightTime;
-                uniqueCost += flightTime;
-            }
-            else{
-                cost += flightTime + (diff - flightTime);
-                uniqueCost += flightTime + (diff - flightTime);
-            }
-        }
-
-        printf(">>> calculateCost [%d][%d] = %d\n", i, i+1, uniqueCost);
-
+        cost += first.GetCost();
     }
 
 
     return cost;
 }
 
-int ARPUtil::calculeCost(vector< vector<Flight> > &r, Instance *instance) {
+int ARPUtil::calculeCost(vector< vector<Flight> > &r) {
     int cost = r.size()*1000;
 
     for (int i = 0; i < r.size(); i++) {
-        for (int j = 0; j < r[i].size(); j++) {
-            if(j < r[i].size() - 1){
-                Flight &fi = r[i][j];
-                Flight &ff = r[i][j+1];
-
-                if(!fi.validateGeographicalConstraint(&ff)){
-                    int flightTime = (*instance->getTimes())[fi.GetArrivalCity()][ff.GetDepartureCity()];
-                    cost += flightTime;
-                }
-
-            }
-            cost += abs(r[i][j].GetDelay());
-        }
+        cost += calculeCost(r[i]);
     }
 
     return cost;
