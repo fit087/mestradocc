@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
         exit(1);
     }
     
-    GRASP::readInput(argv[1]);
+   // GRASP::readInput(argv[1]);
     ARPSolver::readInput(argv[1]);
 
     return 0;
