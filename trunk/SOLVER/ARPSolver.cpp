@@ -142,16 +142,13 @@ void ARPSolver::showCosts(IloNumArray cost[], int n) {
 
 void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, IloCplex &cplex, IloBoolVarArray vars[], IloIntArray cost[], IloIntVar delay[], int n){
     while(true){
-        Flight &f = (*trail)[(*trail).size() - 1];
-        int index = f.GetIlogIndex();
+        Flight &previousFlight = (*trail)[(*trail).size() - 1];
+        int previousIndex = previousFlight.GetIlogIndex();
 
         int qtde = 0;
         for(int i = 0; i < n; i++){
 
-            if (ISDEBUG)
-                cout << " N " << i << " " << index << " " << n << " " << endl;
-
-            IloInt v = cplex.getValue(vars[index][i]);
+            IloInt v = cplex.getValue(vars[previousIndex][i]);
 
             if (v == 1) {
                 qtde++;
@@ -163,12 +160,12 @@ void ARPSolver::finalizeTrail(vector<Flight> *flight, vector<Flight> *trail, Ilo
                         fcost = cplex.getValue(delay[i]);
                 }
                 else{
-                    fcost = cost[index][i];
+                    fcost = cost[previousIndex][i];
                 }
                 
                 (*flight)[i].SetDelay(fcost);
                 trail->push_back((*flight)[i]);
-                continue;
+                break;
             }
         }
 

@@ -34,6 +34,7 @@ public:
     static void relaxDelays(vector< vector<Flight> > &r);
     static void removeTrack(vector< vector<Flight> > *flights, int track);
     static void copyFlights(vector<Flight> *target, vector<Flight> *source);
+    static void writeSolution(vector< vector<Flight> > * solution, ostream &saida);
 private:
 
 };
