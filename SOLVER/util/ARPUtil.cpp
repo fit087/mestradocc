@@ -216,3 +216,16 @@ void ARPUtil::copyFlights(vector<Flight> *target, vector<Flight> *source) {
         target->push_back((*source)[i]);
     }
 }
+
+void ARPUtil::writeSolution(vector< vector<Flight> > * solution, ostream &saida){
+    saida << solution->size() << endl;
+
+    for(int i = 0; i < solution->size(); i++){
+        saida << (*solution)[i].size();
+        for(int j = 0; j < (*solution)[i].size(); j++){
+            Flight &f = (*solution)[i][j];
+            saida << " " << f.GetIndex();
+        }
+        saida << endl;
+    }
+}
