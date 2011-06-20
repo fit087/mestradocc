@@ -39,7 +39,7 @@ numbers]{coppe}
 \makeloabbreviations
 
 \begin{document}
-  \title{Utilização de uma metaheurística hibrida para solução do problema de construção de trilhos de aeronaves }
+  \title{Utilização 2 de uma metaheurística hibrida para solução do problema de construção de trilhos de aeronaves }
   \foreigntitle{Using a hybrid metaheuristic for solving the aircraft rotation problem}
  \author{Alexander}{de Almeida Pinto}
   \advisor{Prof.}{Nome do Primeiro Orientador}{Sobrenome}{D.Sc.}
@@ -59,7 +59,7 @@ numbers]{coppe}
   \keyword{Metaheurística}
   \keyword{Método Exato}
   \keyword{GRASP}
-  \keyword{Rotas de Aeronáves}
+  \keyword{Rotas de Aeronaves}
   
   \maketitle
 
@@ -92,8 +92,16 @@ numbers]{coppe}
 
   \mainmatter
   \chapter{Introdução}
-
-  A indústria aeronáutica tem sido uma rica fonte de problemas no que diz respeito à pesquisa operacional, sendo confrontados diariamente com problemas de alto grau de complexidade e que possuem uma natureza combinatória explosiva. Por causa da dificuldade que é inerente a essa classe de problemas a qualidade das soluções obtidas manualmente são muito aquém da melhor solução possível. 
+  
+  	A aviação é o principal meio de transporte capaz atravessar grandes distâncias, a sua utilização é fundamental para o crescimento das empresas e também para o desenvolvimento do turismo mundial. O transporte aéreo é um serviço que oferece beneficios de ordem social e de ordem econômica. Por ser utilizado no turismo e no comercio, ele contribui para o crescimento da economia mundial e é essencial para o rápido transporte de pessoas e de mercadorias ao redor do mundo. Finalmente, o transporte aéreo melhora a qualidade de vida das pessoas proporcionando lazer e experiências com outras culturas.
+  	
+  	O uso da aviação comercial tem crescido significativamente nas últimas décadas. Esse rápido crescimento pode ser atribuído a um grande número de fatores. Primeiro, o aumento da renda e da qualidade de vida em muitas partes do mundo tem incentivado as pessoas a viajar para outras áreas e explorar novas oportunidades. Segundo, a demanda tem aumentado junto com a confiança na aviação como um meio seguro de viajar. Terceiro, o aumento da eficiência nas operações tem acirrado a competitividade e reduzido as taxas e os custos das passagens. Finalmente a globalização tem forçado a viagem de pessoas para fazer negócios em outros país e também para aperfeiçoar as relações políticas e sociais. Espera-se que os impactos desses fatores continuem a acontecer porém com intensidades diferentes.
+  	
+  	O aumento do numero de companhias aéreas tem aumentado a necessidade de obtenção de melhores benefícios, redução dos custos e aumento das receitas. Porém os problemas presentes na indústria aeronáutica são complexos envolvendo múltiplas decisões conflitantes que precisam ser otimizadas de uma só vez. Diversas técnicas são desenvolvidas e usadas para tentar melhorar o planejamento e a operação das empresas aéreas. Muitas dessas técnicas estão disponíveis na literatura e científica nos campos da pesquisa operacional e da matemática e normalmente são modelados para funcionar em sistemas computadorizados de alta capacidade com a finalidade de automatizar, ou pelo menos auxiliar, a tomada de decisões. Essas técnicas se tornam mais necessárias a medida que a empresa aérea cresce e a tomada de decisão, baseada nos julgamentos individuais e nas experiências, se tornam mais difíceis. A seguir alguns dos principais problemas presentes na indústria aeronáutica são detalhados.
+  	
+    A indústria aeronáutica apresenta uma grande quantidade de problemas inter conectados, o que torna esse campo de pesquisa bastante interessante para a pesquisa operacional. Esses problemas apresentam um alto grau de complexidade e a maioria possui uma natureza combinatória explosiva. Pode-se dizer que o problema inicial é a modelagem de mercado, que planeja os voos de cada regiao baseado na demanda. A atribuição da frota define qual o tipo de aeronave que irá atender cada um dos voos planejados. A construção de trilhos de aeronaves define o sequenciamento dos voos a partir do um conjunto de voos que tenha sido atribuído a um tipo de aeronave. A construção de dias de trabalho, parte dos trilhos gerados e define as subsequências que poderão ser operados por uma tripulação. E a criação das escalas dos tripulantes que define qual será a jornada de trabalho dos tripulantes.
+    
+    Por causa da dificuldade que é inerente a essa classe de problemas a qualidade das soluções obtidas manualmente são muito aquém da melhor solução possível. 
   
 Nos dias de hoje, no entanto, com o avanço da tecnologia e o aumento da competitividade desenvolver soluções com melhor qualidade acaba se tornando um fator decisivo para a permanência no mercado, tornando-se então necessário a obtenção de soluções de forma mais rápida, mais barata e utilizando menos recursos. Outra  característica que reforça a necessidade da obtenção de melhores soluções é o aumento do tamanho e da complexidade das instâncias trabalhadas. A partir desse cenário pode-se perceber a necessidade de utilização de técnicas de otimização, na literatura tem se observado um crescimento no número de trabalhos que se utilizam de metaheurísticas como método de resolução.
   
@@ -253,6 +261,61 @@ Para se obter um limite inferior dessas instâncias foi feita uma verificação 
   
 	Ainda é necessário a adição de outras instâncias reais para que a validação dos resultados se tornem mais práticos, para isso é necessário a colaboração de empresas de transporte aéreo uma vez que a obtenção desses dados por meios manuais se mostrou demorado e trabalhoso. 
   
+  \chapter{Modelo matemático}
+  
+Seja $D = (V,A)$ um grafo representando uma instância do PCTA, onde o conjunto de vértice $V = {v_{i}:i \in I}$ de D é indexado por $I = {1, 2, ..., n+1, n+2}$ onde $v_{n+1}$ e $v_{n+2}$, identificam, respectivamente, os nós fonte e destino. E os nós restantes referem-se ao conjunto de arcos originais, com $n$ elementos. Seja os custos ${c_{ij}:(i,j) \in A}$ introduzidos acima, estando associados com cada arco da instância.
+  
+Seja ${x_{ij}:(i,j) \in A}$ um conjunto binário 0-1 de variáveis usada para controlar a inclusão $(x_{ij} = 1)$ ou a exclusão $(x_{ij} = 0)$ de um arco (possível conexão) entre vértices (voos) $v_{i}$ e $v_{j}$. O conjunto $\overline{I}$ identifica o conjunto de nós excluindo o nó fonte $(v_{n+1})$ e o nó de destino $(v_{n+2})$. Variáveis reais $\delta_{i}$ e $\theta_{i}$, $i \in \overline{I}$ são usados para representar, respectivamente, o desvio do tempo de partida sugerido e a norma desse desvio para $v_{i}$. Essas variáveis devem no entanto obedecer $-\gamma_{i} \geq \delta_{i} \geq \gamma_{i}$ e $0 \geq \theta_{i} \geq \gamma_{i}$, onde $\gamma_{i}$ é o valor máximo de desvio permitido (em cada direção) do tempo de partida sugerido para o voo. Finalmente o tempo de partida sugerido que é dado por $s_{i}:i \in \overline{I}$.
+  
+\section{Função objetivo}
+
+\begin{equation}
+Minimizar \   \ \sum_{i \in I} \sum_{j \in I} x_{ij}c_{ij} + \sum_{i \in \overline{I}} \theta_{i}
+\end{equation}
+
+\section{Restrições}
+
+\begin{enumerate}
+
+
+\item[a)] Garantia de recobrimento dos voos \\
+\begin{equation}
+  \sum_{i \in I} = 1 \   \ \forall_{j} \in I 
+\end{equation}
+\begin{equation}
+\sum_{j \in I} = 1 \   \ \forall_{i} \in I
+\end{equation}
+
+\item[b)] Viabilidade das conexões \\
+\begin{equation}
+s_{i} + t_{i}x_{ij} - INF(1 - x_{ij}) + \delta_{i} \leq s_{j} + \delta_{j} \   \ \forall_{i,j} \in \overline{I}
+\end{equation}
+%\begin{equation}
+%\sum_{i \in I} x_{i(n+1)} = 0
+%\end{equation}
+%\begin{equation}
+%\sum_{j \in I} x_{(n+2)j} = 0
+%\end{equation}
+
+\item[c)] Modulo do desvio do tempo de partida sugerido \\
+\begin{equation}
+\theta_{i} \geq \delta_{i} \   \ \forall_{i} \in \overline{I}
+\end{equation}
+\begin{equation}
+\theta_{i} \geq -\delta_{i} \   \ \forall_{i} \in \overline{I}
+\end{equation}
+
+\item[d)] Limites das variáveis \\
+\begin{equation}
+-\gamma_{i} \geq \delta_{i} \geq \gamma_{i} \   \ \forall_{i} \in \overline{I}
+\end{equation}
+\begin{equation}
+0 \geq \theta_{i} \geq \gamma_{i} \   \ \forall{i} \in \overline{I}
+\end{equation}
+\end{enumerate}
+
+
+  		
   \chapter{Método Proposto}
   \chapter{Resultados preliminares e Discussões}
   \chapter{Conclusões}
