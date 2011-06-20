@@ -39,7 +39,7 @@ numbers]{coppe}
 \makeloabbreviations
 
 \begin{document}
-  \title{Utilização 2 de uma metaheurística hibrida para solução do problema de construção de trilhos de aeronaves }
+  \title{Utilização de uma metaheurística hibrida para solução do problema de construção de trilhos de aeronaves }
   \foreigntitle{Using a hybrid metaheuristic for solving the aircraft rotation problem}
  \author{Alexander}{de Almeida Pinto}
   \advisor{Prof.}{Nome do Primeiro Orientador}{Sobrenome}{D.Sc.}
@@ -97,7 +97,7 @@ numbers]{coppe}
   	
   	O uso da aviação comercial tem crescido significativamente nas últimas décadas. Esse rápido crescimento pode ser atribuído a um grande número de fatores. Primeiro, o aumento da renda e da qualidade de vida em muitas partes do mundo tem incentivado as pessoas a viajar para outras áreas e explorar novas oportunidades. Segundo, a demanda tem aumentado junto com a confiança na aviação como um meio seguro de viajar. Terceiro, o aumento da eficiência nas operações tem acirrado a competitividade e reduzido as taxas e os custos das passagens. Finalmente a globalização tem forçado a viagem de pessoas para fazer negócios em outros país e também para aperfeiçoar as relações políticas e sociais. Espera-se que os impactos desses fatores continuem a acontecer porém com intensidades diferentes.
   	
-  	O aumento do numero de companhias aéreas tem aumentado a necessidade de obtenção de melhores benefícios, redução dos custos e aumento das receitas. Porém os problemas presentes na indústria aeronáutica são complexos envolvendo múltiplas decisões conflitantes que precisam ser otimizadas de uma só vez. Diversas técnicas são desenvolvidas e usadas para tentar melhorar o planejamento e a operação das empresas aéreas. Muitas dessas técnicas estão disponíveis na literatura e científica nos campos da pesquisa operacional e da matemática e normalmente são modelados para funcionar em sistemas computadorizados de alta capacidade com a finalidade de automatizar, ou pelo menos auxiliar, a tomada de decisões. Essas técnicas se tornam mais necessárias a medida que a empresa aérea cresce e a tomada de decisão, baseada nos julgamentos individuais e nas experiências, se tornam mais difíceis. A seguir alguns dos principais problemas presentes na indústria aeronáutica são detalhados.
+  	O aumento do numero de companhias aéreas tem aumentado a necessidade de obtenção de melhores benefícios, redução dos custos e aumento das receitas. Porém os problemas presentes na indústria aeronáutica são complexos envolvendo múltiplas decisões conflitantes que precisam ser otimizadas de uma só vez. Diversas técnicas são desenvolvidas e usadas para tentar melhorar o planejamento e a operação das empresas aéreas. Muitas dessas técnicas estão disponíveis na literatura e científica nos campos da pesquisa operacional e da matemática e normalmente são modelados para funcionar em sistemas computadorizados de alta capacidade com a finalidade de automatizar, ou pelo menos auxiliar, a tomada de decisões. Essas técnicas se tornam mais necessárias a medida que a empresa aérea cresce e a tomada de decisão, baseada nos julgamentos individuais e nas experiências, se tornam mais difíceis \cite{ahmed2009}. A seguir alguns dos principais problemas presentes na indústria aeronáutica são detalhados.
   	
     A indústria aeronáutica apresenta uma grande quantidade de problemas inter conectados, o que torna esse campo de pesquisa bastante interessante para a pesquisa operacional. Esses problemas apresentam um alto grau de complexidade e a maioria possui uma natureza combinatória explosiva. Pode-se dizer que o problema inicial é a modelagem de mercado, que planeja os voos de cada regiao baseado na demanda. A atribuição da frota define qual o tipo de aeronave que irá atender cada um dos voos planejados. A construção de trilhos de aeronaves define o sequenciamento dos voos a partir do um conjunto de voos que tenha sido atribuído a um tipo de aeronave. A construção de dias de trabalho, parte dos trilhos gerados e define as subsequências que poderão ser operados por uma tripulação. E a criação das escalas dos tripulantes que define qual será a jornada de trabalho dos tripulantes.
     
@@ -225,18 +225,27 @@ Para melhores resultados essa etapa deve ser seguida de um refinamento.
 		Diversos problemas combinatórios tem como característica uma alta dificuldade na obtenção de soluções viáveis. Nesses casos pode se tornar interessante a geração de soluções vizinhas mesmo que elas não sejam viáveis, através da relaxação de algumas restrições e a aplicação de uma penalização a essas soluções. 
 		
 		Em geral é vantajoso a utilização de uma heurística de refinamento que pode permitir tanto a obtenção de mínimos locais da solução inicial bem como escapar de mínimos locais. Apesar dessas vantagens, dependendo das características dos algoritmos utilizados pode se ter uma quantidade grande de vizinhos a serem percorridos, por isso algumas técnicas podem ser utilizadas.
-		
 	
 		\subsection{Método da primeira descida/subida}
-		
 		\subsection{Método da primeira melhora}
 		\subsection{Método randômico de descida/subida}
 		\subsection{Método randômico não ascendente/descendente}
 		
 \section{Metaheurística}
-	\subsection{GRASP}
-	\subsection{ILS}
-\section{Programação Linear}
+
+A utilização de métodos exatos para a resolução de problemas reais envolvendo otimização combinatória é restrito. Isso acontece pois com o aumento das instâncias envolvidas, o número de soluções possíveis cresce exponencialmente, fazendo com que as operações necessárias para a sua resolução não possa feita em tempo viável com os computadores atuais.  
+
+Para contornar essa limitação e obter soluções para esses tipos de problemas, os pesquisadores desenvolveram técnicas que são capazes de guiar o procedimento de busca e assim encontrar "boas" soluções \cite{maritan2009}. Esses algoritmos, denominados heurísticas \cite{dias2006}, encontram essas soluções utilizando pouco recursos computacionais, porém não garantem a solução ótima do problema. Na prática, geralmente, uma boa solução é suficiente, já que a tomada de decisão tem que acontecer em um curto espaço de tempo.
+
+As heurísticas apresentavam a restrição de ser aplicáveis a uma classe restrita de problemas. Para contornar esse problema, foram desenvolvidas técnicas mais generalistas que foram denominadas de metaheurísticas. As metaheurísticas podem ser definidas como sendo um método heurístico para resolver de forma genérica problemas de otimização com a capacidade de escapar de ótimos locais. heurísticas de caráter geral e com capacidade de escapar de mínimos locais. A idéia utilizada, normalmente, é obtida de algum evento natural como sistemas biológicos, da física ou da inteligência artificial.
+
+As metaheurísticas podem explorar o espaço de soluções basicamente de duas formas: as metaheurísticas de busca local e as metaheurísticas de busca populacional. Nas metaheurísticas de busca local, o procedimento de busca utiliza uma solução como ponto de partida em cada iteração. As metaheurísticas GRASP, Simulated Annealing eBusca Tabu podem ser citadas como exemplos de metaheurísticas ponto-a-ponto. Nas metaheurísticas de busca populacionais, soluções de boa qualidade são combinado com o intuito de produzir soluções melhores. Podemos citar como exemplo de métodos populacionais, os Algoritmos Genéticos, Colônia de Formigas (Ant Colony System), Particle Swarm Optimization (PSO) etc \cite{maritan2009}.
+
+Nas próximas seções serão apresentados a metaheurística GRASP e o método de busca local ILS.
+
+\subsection{Greedy Randomized Adaptative Search Procedure (GRASP)}
+
+\subsection{Iterated Local Search (ILS)}
 \section{Revisão da literatura}
 		
 		O Trabalho de Argüello e Bard \citep{arguelo1007} (1997) resolve a parte de reconstrução de uma solução do PCTA que tenha sido corrompida por causa de atrasos e impedimentos de voos que ocorrem durante a execução de uma malha. Ele resolve esse problema utilizando a metaheurística GRASP, gerando vizinhos da solução atual de forma sucessiva até obter uma que seja considerada suficientemente boa.

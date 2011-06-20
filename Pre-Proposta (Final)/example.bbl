@@ -1,10 +1,16 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 \newcommand{\enquote}[1]{``#1''}
+
+\bibitem[\MakeUppercase{Abdelghany} e
+  \MakeUppercase{Abdelghany}(2009)Abdelghany e Abdelghany]{ahmed2009}
+\MakeUppercase{Abdelghany, A., Abdelghany, K.}, 2009, \emph{Modeling
+  Applications in the Airline Industry}.
+\newblock Ashgate Publishing Limited.
 
 \bibitem[\MakeUppercase{ARGUELLO} e \MakeUppercase{BARD}(1997)ARGUELLO e
   BARD]{arguelo1007}
@@ -41,6 +47,18 @@
   baseados em metaheur{\'\i}sticas aplicados {\`a} otimiza{\c c}{\~a}o global
   cont{\'\i}nua}.
 \newblock Tese de Mestrado, Universidade Federal da Para{\'\i}ba, Julho.
+
+\bibitem[\MakeUppercase{de~Ara{\'u}jo}(2009)de~Ara{\'u}jo]{maritan2009}
+\MakeUppercase{de~Ara{\'u}jo, T. M. U. D. A. T. M.~U.}, 2009, \emph{M{\'e}todos
+  h{\'\i}bridos baseados em continuous-GRASP aplicados {\`a} otimiza{\c
+  c}{\~a}o global cont{\'\i}nua}.
+\newblock Tese de Mestrado, Universidade Federal da Para{\'\i}ba.
+
+\bibitem[\MakeUppercase{Dias}(2006)Dias]{dias2006}
+\MakeUppercase{Dias, T.}, 2006, \emph{Algoritmos heur{\'\i}sticos e
+  metaheur{\'\i}sticasa h{\'\i}bridas aplicadas ao planejamento de uma rede de
+  telecomunica{\c c}{\~o}es com topologia anel-estrela.}
+\newblock Tese de Mestrado, Universidade Federal do Rio de Janeiro.
 
 \bibitem[\MakeUppercase{Klabjan}\emph{ et~al.}(2002)Klabjan, Johnson,
   Nemhauser, Gelman, e Ramaswamy]{klabjan2002}

@@ -14,15 +14,14 @@
 \contentsline {subsection}{\numberline {2.2.3}M\IeC {\'e}todo rand\IeC {\^o}mico de descida/subida}{10}{subsection.2.2.3}
 \contentsline {subsection}{\numberline {2.2.4}M\IeC {\'e}todo rand\IeC {\^o}mico n\IeC {\~a}o ascendente/descendente}{10}{subsection.2.2.4}
 \contentsline {section}{\numberline {2.3}Metaheur\IeC {\'\i }stica}{10}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}GRASP}{10}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}ILS}{10}{subsection.2.3.2}
-\contentsline {section}{\numberline {2.4}Programa\IeC {\c c}\IeC {\~a}o Linear}{10}{section.2.4}
-\contentsline {section}{\numberline {2.5}Revis\IeC {\~a}o da literatura}{10}{section.2.5}
-\contentsline {chapter}{\numberline {3}Gera\IeC {\c c}\IeC {\~a}o das inst\IeC {\^a}ncias}{11}{chapter.3}
-\contentsline {chapter}{\numberline {4}Modelo matem\IeC {\'a}tico}{13}{chapter.4}
-\contentsline {section}{\numberline {4.1}Fun\IeC {\c c}\IeC {\~a}o objetivo}{13}{section.4.1}
-\contentsline {section}{\numberline {4.2}Restri\IeC {\c c}\IeC {\~o}es}{13}{section.4.2}
-\contentsline {chapter}{\numberline {5}M\IeC {\'e}todo Proposto}{15}{chapter.5}
-\contentsline {chapter}{\numberline {6}Resultados preliminares e Discuss\IeC {\~o}es}{16}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclus\IeC {\~o}es}{17}{chapter.7}
-\contentsline {chapter}{Refer\^encias Bibliogr\'aficas}{18}{chapter*.5}
+\contentsline {subsection}{\numberline {2.3.1}Greedy Randomized Adaptative Search Procedure (GRASP)}{11}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Iterated Local Search (ILS)}{11}{subsection.2.3.2}
+\contentsline {section}{\numberline {2.4}Revis\IeC {\~a}o da literatura}{11}{section.2.4}
+\contentsline {chapter}{\numberline {3}Gera\IeC {\c c}\IeC {\~a}o das inst\IeC {\^a}ncias}{12}{chapter.3}
+\contentsline {chapter}{\numberline {4}Modelo matem\IeC {\'a}tico}{14}{chapter.4}
+\contentsline {section}{\numberline {4.1}Fun\IeC {\c c}\IeC {\~a}o objetivo}{14}{section.4.1}
+\contentsline {section}{\numberline {4.2}Restri\IeC {\c c}\IeC {\~o}es}{14}{section.4.2}
+\contentsline {chapter}{\numberline {5}M\IeC {\'e}todo Proposto}{16}{chapter.5}
+\contentsline {chapter}{\numberline {6}Resultados preliminares e Discuss\IeC {\~o}es}{17}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclus\IeC {\~o}es}{18}{chapter.7}
+\contentsline {chapter}{Refer\^encias Bibliogr\'aficas}{19}{chapter*.5}
