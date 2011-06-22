@@ -1,0 +1,112 @@
+%%
+%% This is file `example.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% coppe.dtx  (with options: `example')
+%% 
+%% This is a sample monograph which illustrates the use of `coppe' document
+%% class and `coppe-unsrt' BibTeX style.
+%% 
+%% \CheckSum{1391}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\documentclass[msc,
+pdftex,
+%doublespacing,
+numbers]{coppe}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[pt,showend]{programma}
+
+\makelosymbols
+\makeloabbreviations
+
+\begin{document}
+  \title{Utilização de uma metaheurística hibrida para solução do problema de construção de trilhos de aeronaves }
+  \foreigntitle{Using a hybrid metaheuristic for solving the aircraft rotation problem}
+ \author{Alexander}{de Almeida Pinto}
+  \advisor{Prof.}{Nome do Primeiro Orientador}{Sobrenome}{D.Sc.}
+  \advisor{Prof.}{Nome do Segundo Orientador}{Sobrenome}{Ph.D.}
+  \advisor{Prof.}{Nome do Terceiro Orientador}{Sobrenome}{D.Sc.}
+
+  \examiner{Prof.}{Nome do Primeiro Examinador Sobrenome}{D.Sc.}
+  \examiner{Prof.}{Nome do Segundo Examinador Sobrenome}{Ph.D.}
+  \examiner{Prof.}{Nome do Terceiro Examinador Sobrenome}{D.Sc.}
+  \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
+  \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
+  \department{SDI}
+  \date{1}{2011}
+
+  \keyword{Transporte}
+  \keyword{PCTA}
+  \keyword{Metaheurística}
+  \keyword{Método Exato}
+  \keyword{GRASP}
+  \keyword{Rotas de Aeronaves}
+  
+  \maketitle
+
+  \frontmatter
+  
+  \dedication{A minha família e amigos cuja valia é imensurável.}
+
+  \chapter*{Agradecimentos}
+
+  Gostaria de agradecer a todos que fizeram 
+
+  \begin{abstract}
+
+  Apresenta-se, nesta tese, ...
+
+  \end{abstract}
+
+  \begin{foreignabstract}
+
+  In this work, we present ...
+
+  \end{foreignabstract}
+
+\tableofcontents
+\listoffigures
+%\listoftables
+\printloabbreviations
+\printlosymbols
+
+\mainmatter
+  
+\include{introducao}
+\include{fundamentacao}
+\include{geracaoinstancias}
+\include{modelomatematico}
+\include{metodoproposto}  
+\include{resultados}
+\include{conclusoes}
+
+\backmatter
+  
+\bibliographystyle{coppe-plain}
+\bibliography{bibliografia}
+
+\appendix
+\include{cronograma}
+
+\end{document}
+
