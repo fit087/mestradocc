@@ -32,24 +32,22 @@ Para melhores resultados essa etapa deve ser seguida de um refinamento.
 
 A utilização de métodos exatos para a resolução de problemas reais envolvendo otimização combinatória é restrito. Isso acontece pois com o aumento das instâncias envolvidas, o número de soluções possíveis cresce exponencialmente, fazendo com que as operações necessárias para a sua resolução não possa feita em tempo viável com os computadores atuais.  
 
-Para contornar essa limitação e obter soluções para esses tipos de problemas, os pesquisadores desenvolveram técnicas que são capazes de guiar o procedimento de busca e assim encontrar "boas" soluções \cite{maritan2009}. Esses algoritmos, denominados heurísticas \cite{dias2006}, encontram essas soluções utilizando pouco recursos computacionais, porém não garantem a solução ótima do problema. Na prática, geralmente, uma boa solução é suficiente, já que a tomada de decisão tem que acontecer em um curto espaço de tempo.
+Para contornar essa limitação e obter soluções para esses tipos de problemas, os pesquisadores desenvolveram técnicas que são capazes de guiar o procedimento de busca e assim encontrar boas soluções \cite{maritan2009}. Esses algoritmos, denominados heurísticas, encontram essas soluções utilizando pouco recursos computacionais, porém não garantem a solução ótima do problema \cite{dias2006}. Na prática, geralmente, uma boa solução é suficiente, já que a tomada de decisão tem que acontecer em um curto espaço de tempo.
 
-As heurísticas apresentavam a restrição de ser aplicáveis a uma classe restrita de problemas. Para contornar esse problema, foram desenvolvidas técnicas mais generalistas que foram denominadas de metaheurísticas. As metaheurísticas podem ser definidas como sendo um método heurístico para resolver de forma genérica problemas de otimização com a capacidade de escapar de ótimos locais. heurísticas de caráter geral e com capacidade de escapar de mínimos locais. A idéia utilizada, normalmente, é obtida de algum evento natural como sistemas biológicos, da física ou da inteligência artificial.
+As heurísticas só se aplicam a uma classe restrita de problemas. Para contornar esse problema, foram desenvolvidas técnicas mais generalistas que foram denominadas de metaheurísticas. As metaheurísticas podem ser definidas como sendo um método heurístico para resolver de forma genérica problemas de otimização com a capacidade de escapar de ótimos locais. A idéia utilizada, normalmente, é obtida de algum evento natural como sistemas biológicos, da física, da inteligência artificial entre outros.
 
-As metaheurísticas podem explorar o espaço de soluções basicamente de duas formas: as metaheurísticas de busca local e as metaheurísticas de busca populacional. Nas metaheurísticas de busca local, o procedimento de busca utiliza uma solução como ponto de partida em cada iteração. As metaheurísticas GRASP, Simulated Annealing eBusca Tabu podem ser citadas como exemplos de metaheurísticas ponto-a-ponto. Nas metaheurísticas de busca populacionais, soluções de boa qualidade são combinado com o intuito de produzir soluções melhores. Podemos citar como exemplo de métodos populacionais, os Algoritmos Genéticos, Colônia de Formigas (Ant Colony System), Particle Swarm Optimization (PSO) etc \cite{maritan2009}.
+As metaheurísticas podem explorar o espaço de soluções basicamente de duas formas: as metaheurísticas de busca local e as metaheurísticas de busca populacional. Nas metaheurísticas de busca local, o procedimento de busca utiliza uma solução como ponto de partida em cada iteração. As metaheurísticas GRASP, Arrefecimento simulado (Simulated Annealing) e Busca Tabu podem ser citadas como exemplos de metaheurísticas ponto-a-ponto. Nas metaheurísticas de busca populacionais, soluções de boa qualidade são combinadas com o intuito de produzir soluções melhores. Podemos citar como exemplo de métodos populacionais, os Algoritmos Genéticos, Colônia de Formigas (Ant Colony System), Núvem de Particulas (Particle Swarm Optimization) etc \cite{maritan2009}.
 
 Nas próximas seções serão apresentados a metaheurística GRASP e o método de busca local ILS.
 
-\subsection{Greedy Randomized Adaptative Search Procedure (GRASP)}
+\subsection{GRASP}
 
-Essa seção descreve a metaheurística GRASP, que foi  desenvolvida por Feo e Rezende \cite{resende1995}, e cujos conceitos serão utilizados na metodologia proposta para resolução do PCTA.
-A metaheurística GRASP é um método iterativo do tipo \textit{multi-start} formado por duas fases: uma fase de construção de uma solução e outra de busca local. A fase de construção objetiva gerar uma solução viável para o problema proposto. E a de busca local, através de estrutura de vizinhanças, tenta melhorar essa solução. 
+Essa seção descreve a metaheurística GRASP (Greedy Randomized Adaptive Search Procedure - Procedimento de busca adaptativa gulosa e randômica) , que foi  proposto por Feo e Rezende \cite{resende1995}, e cujos conceitos serão utilizados na metodologia proposta para resolução do PCTA.
+A metaheurística GRASP é um método iterativo do tipo \textit{multi-start} formado por duas fases: uma fase de construção de uma solução e outra de busca local. A fase de construção objetiva gerar uma solução viável para o problema proposto. E a fase de busca local na qual um ótimo local na vizinhança da solução construída é pesquisado. A melhor solução encontrada ao longo de todas as iterações GRASP realizadas é retornada.
 
-O pseudocódigo do GRASP é apresentado no algoritmo \ref{alg:grasp}. Na linha 1 o custo da função objetivo da melhor solução encontrada é inicializada com $\infty$. A linha 2 repete o procedimento de construção e refinamento $GRASPMax$ vezes, por causa dessa etapa que o GRASP é considerado \textit{multi-start}.
+O pseudocódigo descrito no Algoritmo \ref{alg:grasp} ilustra um procedimento GRASP para um problema de minimização. Na linha 1 o custo da função objetivo da melhor solução encontrada é inicializada com $\infty$. A linha 2 repete o procedimento de construção e refinamento $GRASPMax$ vezes, por causa dessa etapa que o GRASP é considerado \textit{multi-start}.
 
-Na linha 3 é feita a construção 
-
-Na linha 4 é feita a busca local
+Na linha 3 e 4 são feitas respectivamente a construção e a busca local que são representadas nos Algoritmos \ref{alg:graspcons} e \ref{alg:grasplocal} e serão detalhadas mais adiante.
 
 Nas linhas 5 a 8 caso a solução obtida na busca local melhore a melhor solução obtida até o momento ($f(s) < f{*}$) então são atualizadas respectivamente a solução e o custo relativo a função objetivo dessa solução. 
 A linha 9 encerra as iterações do GRASP e a linha 10 retorna a melhor solução obtida.
@@ -111,6 +109,23 @@ O melhor ótimo local dentre todas as buscas locais é retornado como solução 
 \end{pgrm}
 
 \subsection{Iterated Local Search (ILS)}
+
+\begin{pgrm}
+\begin{programma}
+\ALGORITHM{ILS}
+\STATE $s_{0}$ \GETS Solução Inicial;
+\STATE $s$ \GETS BuscaLocal($s_{0}$);
+\WHILE{os critérios de parada não estiverem satisfeito}
+\STATE $s{'}$ \GETS Pertubação($histórico, s$);
+\STATE $s{''}$ \GETS BuscaLocal($s{'}$);
+\STATE $s$ \GETS CritérioAceitação($s, s{''}, histórico$);
+\ENDWHILE
+\STATE\RETURN $s$;
+\ENDALGORITHM
+\end{programma}
+\caption{Procedimento Iterated Local Search.}\label{alg:ils}
+\end{pgrm}
+
 \section{Revisão da literatura}
 		
 		O Trabalho de Argüello e Bard \citep{arguelo1007} (1997) resolve a parte de reconstrução de uma solução do PCTA que tenha sido corrompida por causa de atrasos e impedimentos de voos que ocorrem durante a execução de uma malha. Ele resolve esse problema utilizando a metaheurística GRASP, gerando vizinhos da solução atual de forma sucessiva até obter uma que seja considerada suficientemente boa.
