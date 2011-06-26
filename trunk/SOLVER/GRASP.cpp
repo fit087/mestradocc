@@ -171,7 +171,7 @@ vector< vector<Flight> > GRASP::localSearch(vector< vector<Flight> > flights, in
     }
 
 
-    vector< vector<Flight> > localSolution = ARPSolver::solver(&f, instance,(int) parameters.GetMaxDelay());
+    vector< vector<Flight> > localSolution = ARPSolver::solver(&f, instance);
 
     for (int i = 0; i < localSolution.size(); i++) {
         flights.push_back(localSolution[i]);
