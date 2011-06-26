@@ -106,17 +106,26 @@ int ARPUtil::configureTrack(vector<Flight> &track, Instance *instance) {
 
 void ARPUtil::showSolution(vector< vector<Flight> > &solution) {
     cout << "N Trilho: " << solution.size() << endl;
-
+    int cost = 0;
+    int delay = 0;
     for (int i = 0; i < solution.size(); i++) {
         cout << solution[i].size() << " ";
         for (int j = 0; j < solution[i].size(); j++) {
             cout << solution[i][j].GetIndex() << " ";
             if (solution[i][j].GetCost() != 0) {
-                printf("(%+2d)  ", solution[i][j].GetCost());
+                printf("(%+2d)  ", solution[i][j].GetDelay());
+                cost += solution[i][j].GetCost();
+                delay += solution[i][j].GetDelay();
             }
+
+
         }
         cout << endl;
     }
+
+    cout << " COST " << cost << endl;
+    cout << " DELAY " << delay << endl;
+
 }
 
 int ARPUtil::calculeCost(vector<Flight> &track) {
@@ -202,7 +211,7 @@ void ARPUtil::writeSolution(vector< vector<Flight> > * solution, ostream &saida)
         saida << (*solution)[i].size();
         for(int j = 0; j < (*solution)[i].size(); j++){
             Flight &f = (*solution)[i][j];
-            saida << " " << f.GetIndex();
+            saida << " " << f.GetIndex() << " " << f.GetDelay();
         }
         saida << endl;
     }
