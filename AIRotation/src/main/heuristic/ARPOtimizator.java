@@ -33,18 +33,22 @@ public class ARPOtimizator {
 
                 Flight flight = track.getFlight(i);
 
+              //  System.out.println("Actual " + flight.toString());
+
                 if (flight.getDelay() < 0) {
                     Flight nextFlight = (i == track.numberOfFlights() - 1) ? null : track.getFlight(i + 1);
                     if (nextFlight == null) {
                         relaxedDelay += (-flight.getDelay());
                         flight.setDelay(0);
                     } else {
+                //        System.out.println("NEXTFLIGHT " + nextFlight.toString());
                         int minDelay = (nextFlight.getRealDepartureTime() - nextFlight.getGroundTime()) - flight.getArrivalTime();
                         if (minDelay > 0) {
                             relaxedDelay += (-flight.getDelay());
                             flight.setDelay(0);
                         } else {
-                            if(minDelay < flight.getDelay()) System.exit(10);
+                 //           System.out.println("Min Delay " + minDelay);
+                            if(minDelay < flight.getDelay()) System.exit(98);
                             relaxedDelay += (-flight.getDelay() + minDelay);
                             flight.setDelay(minDelay);
                         }
@@ -62,7 +66,7 @@ public class ARPOtimizator {
                             relaxedDelay += flight.getDelay();
                             flight.setDelay(0);
                         } else {
-                            if(minDelay != flight.getDelay()) System.exit(1);
+                            if(minDelay != flight.getDelay()) System.exit(99);
                             relaxedDelay += (flight.getDelay() - minDelay);
                             flight.setDelay(minDelay);
                         }

@@ -155,7 +155,7 @@ public class SolutionUtil {
                 City dest = cities.get(j);
                 Integer duration = orig.getFlightTimes().get(dest);
                 if(duration == null){
-                    duration = Integer.MAX_VALUE;
+                    duration = 99999;
                 }
 
 
@@ -173,6 +173,68 @@ public class SolutionUtil {
         bw.close();
 
     }
+    
+    public static void writeFormatedAirlineNetworkForCplexWeekExtended(AirlineNetwork airlineNetwork, File output) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+
+        int numberOfDays = 7;
+        int oneday = 24*60*60;
+        
+        ArrayList<Flight> flights = airlineNetwork.getFlights();
+        ArrayList<City> citys = airlineNetwork.getCities();
+
+        for (City city : citys) {
+            System.out.println("CITY " + city.getName());
+        }
+
+
+        bw.write(flights.size()*numberOfDays + " " + 10);
+        bw.write("\n");
+        bw.write("\n");
+
+
+        //Escrece voos
+
+        for(int i = 0; i < numberOfDays; i++){
+            for (Flight flight : flights) {
+
+                Integer departureTime = flight.getDepartureTime() * i * oneday;
+                bw.write((departureTime - flight.getGroundTime()) + " " + (flight.getDuration() + flight.getGroundTime()) + " " + getCityPos(citys, flight.getDepartureCity()) + " " + getCityPos(citys, flight.getArrivalCity()));
+                bw.write("\n");
+
+            }
+        }
+
+
+        StringBuilder sb = new StringBuilder();
+        int cont = 0;
+        ArrayList<City> cities = airlineNetwork.getCities();
+        for(int i = 0; i < cities.size() - 1; i++){
+            City orig = cities.get(i);
+            for(int j = (i+1); j < cities.size(); j++){
+                City dest = cities.get(j);
+                Integer duration = orig.getFlightTimes().get(dest);
+                if(duration == null){
+                    duration = 99999;
+                }
+
+
+                sb.append(i + " " + j + " " + (duration + orig.getGroundTime()) + "\n");
+                cont++;
+            }
+        }
+
+        bw.write("\n");
+        bw.write(cont + "\n");
+        bw.write("\n");
+        bw.write(sb.toString());
+
+
+        bw.close();
+
+    }
+
+
 
     public static void writeFormatedInputAirlineNetwork(AirlineNetwork airlineNetwork, File selectedFile) throws IOException {
         ArrayList<Track> solution = airlineNetwork.getBestNetwork();

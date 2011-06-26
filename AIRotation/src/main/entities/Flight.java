@@ -37,10 +37,6 @@ public class Flight implements Comparable<Flight> {
     //Voo excluido
     private Boolean excluded;
 
-    public Flight() {
-        this.name = null;
-    }
-
     public Flight(String name, Integer number, City departureCity, City arrivalCity, Integer departureTime, Integer arrivalTime) {
         this.name = name;
         this.number = number;
@@ -54,6 +50,21 @@ public class Flight implements Comparable<Flight> {
         this.selected = false;
         this.excluded = false;
     }
+
+    public Flight(){
+        name = "NEW";
+        number = -1;
+        departureCity = null;
+        arrivalCity = null;
+        departureTime = 0;
+        arrivalTime = 0;
+        trackNumber = -1;
+        delay = 0;
+        reposition = false;
+        selected = false;
+        excluded = false;
+    }
+
 
     public String getName() {
         return name;
@@ -194,6 +205,8 @@ public class Flight implements Comparable<Flight> {
         if (getDelay() != 0) {
             r += String.format("(%+d)", getDelay());
         }
+
+        r+= " GROUND: " + getGroundTime() + " | " + getRealDepartureTime() + " " + getRealArrivalTime();
         return r;
 
         // return "Id: " + id + " Number:" + flightNumber + " Name:" + flightName + " Origem: " + departureCity.getName() + " Inicio: " + departureTime + " Destino: " + arrivalCity.getName() + " Fim: " + arrivalTime;

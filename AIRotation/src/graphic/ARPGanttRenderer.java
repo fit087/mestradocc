@@ -37,6 +37,7 @@ public class ARPGanttRenderer extends GanttRenderer {
 
     private static Color flightColorBegin = new Color(0, 56, 186); //Dark Azure ;
     private static Color flightColorBeginDelayed = Color.RED;
+    private static Color flightColorBeginRepo = Color.PINK;
     private static Color flightColorEnd = new Color(0, 0, 128);//Navi
     private static Paint groundColor = new Color(255, 186, 0); //Selective Yellow;
     private static Paint barStrokeColor = Color.BLACK;
@@ -115,43 +116,9 @@ public class ARPGanttRenderer extends GanttRenderer {
             }
 
 
-
-//            bar.setRect(bar.getMinX(), bar.getMinY() + 10, bar.getWidth(), bar.getHeight() - 10);
-//
-//            if (getShadowsVisible()) {
-//                //System.out.println("Teste " + getBarPainter().getClass());
-//                //getBarPainter().paintBarShadow(g2, this, row, column, bar,
-//                //      barBase, true);
-//                g2.setPaint(Color.GRAY);
-//                Rectangle2D shadowBar = new Rectangle2D.Double(bar.getX() + 5, bar.getY() + 5, bar.getWidth(), bar.getHeight());
-//                g2.fill(shadowBar);
-//            }
-//
-//            
-//
-//            if (flight.getDelay() != 0) {
-//                g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), Color.RED, midX, (float) bar.getMaxY(), flightColorEnd));
-//            } else {
-//                g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
-//            }
-//
-//            g2.fill(bar);
-//
-//            Rectangle2D groundBar = new Rectangle2D.Double(bar.getX(), bar.getY(), groundLength, bar.getHeight());
-//            g2.setPaint(groundColor);
-//            g2.fill(groundBar);
-//
-//            g2.setPaint(barStrokeColor);
-//            g2.setStroke(barStroke);
-//            g2.draw(bar);
-
-
-
             boolean showCities = true;
 
             ARPGanttRenderer.drawFlight(g2, bar, groundLength, true, showCities, (subinterval == count - 1), flight);
-
-
 
             if (subinterval == count - 1) {
 
@@ -194,6 +161,8 @@ public class ARPGanttRenderer extends GanttRenderer {
 
         if (flight.getDelay() != 0) {
             g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginDelayed, midX, (float) bar.getMaxY(), flightColorEnd));
+        } else if (flight.getReposition()) {
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginRepo, midX, (float) bar.getMaxY(), flightColorEnd));
         } else {
             g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
         }
@@ -212,10 +181,10 @@ public class ARPGanttRenderer extends GanttRenderer {
             g2.setPaint(Color.black);
             g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
             g2.drawString(flight.getDepartureCity().getName(), (float) bar.getMinX() - 15, (float) bar.getMinY() - 1);
-            
+
             g2.setPaint(Color.WHITE);
             g2.drawString(flight.getName(), midX, midY + 5);
-            
+
             if (lastFlight) {
                 g2.setPaint(Color.black);
                 g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
@@ -272,6 +241,4 @@ public class ARPGanttRenderer extends GanttRenderer {
     public static void setFlightColorBeginDelayed(Color flightColorBeginDelayed) {
         ARPGanttRenderer.flightColorBeginDelayed = flightColorBeginDelayed;
     }
-
-    
 }

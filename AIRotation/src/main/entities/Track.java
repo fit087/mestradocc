@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class Track {
 
     private int number;
-    
     private ArrayList<Flight> flights = new ArrayList<Flight>();
 
     /**
@@ -59,9 +58,9 @@ public class Track {
     public int getCost() {
         int cost = 1000;
 
-        if (flights.size() == 1) {
-            cost = 500;
-        }
+//        if (flights.size() == 1) {
+//            cost = 500;
+//        }
 
         for (Flight flight : flights) {
 
@@ -70,9 +69,9 @@ public class Track {
              * ( desde que ele reduza o numero de atrasos nos voos regulares )
              * então não tem sentido penaliza-lo.
              */
-            // if(flight.getReposition()){
-            //cost+=flight.getFlightTime();
-            // }
+            if (flight.getReposition()) {
+                cost += flight.getFlightTime() + flight.getGroundTime();
+            }
 
             cost += flight.getCost();
         }
@@ -146,6 +145,16 @@ public class Track {
         return false;
     }
 
+    public int getTotalDelay() {
+        int totaldelay = 0;
+
+        for (Flight flight : flights) {
+            totaldelay += Math.abs(flight.getDelay());
+        }
+
+        return totaldelay;
+    }
+
     /**
      * Mostra o trilho na saida padrão.
      */
@@ -158,5 +167,40 @@ public class Track {
 
         System.out.println("--------------------------------------------\n");
     }
-    
+
+    public int getMaxDelay() {
+        int maxdelay = 0;
+
+        for (Flight flight : flights) {
+            if (flight.getDelay() > maxdelay) {
+                maxdelay = flight.getDelay();
+            }
+        }
+
+        return maxdelay;
+    }
+
+    public int getNumberOfDelayedFlights() {
+        int numberOfDelayedFlights = 0;
+
+        for (Flight flight : flights) {
+            if (flight.getDelay() != 0) {
+                numberOfDelayedFlights++;
+            }
+        }
+
+        return numberOfDelayedFlights;
+    }
+
+    public int getNumberOfRepositions() {
+        int numberOfRepositions = 0;
+
+        for (Flight flight : flights) {
+            if (flight.getName().startsWith("REPO")) {
+                numberOfRepositions++;
+            }
+        }
+
+        return numberOfRepositions;
+    }
 }
