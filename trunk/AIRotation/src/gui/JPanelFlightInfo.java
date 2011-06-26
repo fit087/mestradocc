@@ -83,6 +83,7 @@ public class JPanelFlightInfo extends javax.swing.JPanel {
 
         g.drawString(String.format("%-7s [%d]", "Tempo de Voo", flight.getFlightTime()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 30));
         g.drawString(String.format("%-7s [%d]", "Tempo de Solo", flight.getGroundTime()), (int) bar.getMinX() - 40,(int)(bar.getMaxY() + 40));
+        g.drawString(String.format("%-7s [%d]", "Indice", flight.getNumber()), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 40));
         if(flight.getDelay() != 0) g.drawString(String.format("%-7s [%+d]", "Atraso", flight.getDelay()), (int) bar.getMaxX() - 40,(int)(bar.getMaxY() + 30));
 
     }

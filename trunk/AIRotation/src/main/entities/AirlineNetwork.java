@@ -19,6 +19,7 @@ import java.util.Comparator;
 public class AirlineNetwork {
 
 
+
     private String pathInstance;
     
     private ArrayList< Track > bestNetwork = new ArrayList< Track >();
@@ -234,6 +235,48 @@ public class AirlineNetwork {
         }
 
         return totalcost;
+    }
+
+    public static int getTotalDelay(ArrayList<Track> network){
+        int totaldelay = 0;
+
+        for (Track track : network) {
+            totaldelay += track.getTotalDelay();
+        }
+
+        return totaldelay;
+    }
+
+    public static Integer getMaxDelay(ArrayList<Track> bestNetwork) {
+        int maxDelay = 0;
+
+        for (Track track : bestNetwork) {
+            if(track.getMaxDelay() > maxDelay){
+                maxDelay = track.getMaxDelay();
+            }
+        }
+
+        return maxDelay;
+    }
+
+    public static Integer getNumberOfDelayedFlights(ArrayList<Track> bestNetwork) {
+        int numberOfDelayedFlights = 0;
+
+        for (Track track : bestNetwork) {
+            numberOfDelayedFlights += track.getNumberOfDelayedFlights();
+        }
+
+        return numberOfDelayedFlights;
+    }
+
+    public static Integer getNuberOfRepositions(ArrayList<Track> bestNetwork) {
+        int numberOfRepositions = 0;
+
+        for (Track track : bestNetwork) {
+            numberOfRepositions += track.getNumberOfRepositions();
+        }
+
+        return numberOfRepositions;
     }
 
     public int getTracksInACity(String city){

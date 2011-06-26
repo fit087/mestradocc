@@ -4,6 +4,7 @@
  */
 package main.heuristic;
 
+import main.entities.AirlineNetwork;
 import main.entities.Flight;
 
 /**
@@ -37,6 +38,20 @@ public class ARPConstraintsValidator {
         } else {
             return false;
         }
+    }
+
+    public static Flight generateRepoFlight(Flight lastFlight, Flight actualFlight, AirlineNetwork airlineNetwork) {
+        Flight repoFlight = new Flight();
+        repoFlight.setName("REPO");
+        repoFlight.setDepartureCity(lastFlight.getArrivalCity());
+        repoFlight.setArrivalCity(actualFlight.getDepartureCity());
+        repoFlight.setDepartureTime(lastFlight.getRealArrivalTime() + repoFlight.getGroundTime() );
+        repoFlight.setArrivalTime(repoFlight.getDepartureTime() + repoFlight.getDepartureCity().getFlightTimes().get(repoFlight.getArrivalCity()));
+        repoFlight.setReposition(true);
+
+
+        return repoFlight;
+
     }
     
 }
