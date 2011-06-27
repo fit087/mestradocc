@@ -24,7 +24,7 @@ import util.SolutionUtil;
  */
 public class SolverManager {
 
-    private static final String solverPath = "/Users/alexanderdealmeidapinto/Documents/Mestrado/Projeto/svn/trunk/SOLVER/";
+    private static final String solverPath = "/home/alexander/Documents/Documents/Mestrado/Projeto/svn/trunk/SOLVER";
 
     public static void executeSolver(AirlineNetwork airlineNetwork) throws IOException, InterruptedException {
         File inputFile = new File("entrada.txt");
