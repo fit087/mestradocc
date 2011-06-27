@@ -39,7 +39,7 @@ import util.TimeUtil;
 public class JFrameGraphicTest extends javax.swing.JFrame {
 
     public static JFrameGraphicTest instance;
-    JFileChooser fileChooserFormattedInstance = new JFileChooser("/Users/alexanderdealmeidapinto/Documents/Mestrado/Projeto/svn/trunk/AIRotation/instances");
+    JFileChooser fileChooserFormattedInstance = new JFileChooser("/home/alexander/Documents/Documents/Mestrado/Projeto/svn/trunk/AIRotation/instances");
     private JPanelARPControler jpac = new JPanelARPControler();
     JDialogResultInfo jDialogResultInfo = null;
     private AirlineNetwork airlineNetwork;
@@ -72,6 +72,12 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
             Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         jpac.initChart(airlineNetwork);
+    }
+
+    public void loadInstance() {
+        fileChooserFormattedInstance.showOpenDialog(null);
+        File inputFile = fileChooserFormattedInstance.getSelectedFile();
+        initSystem(inputFile);
     }
 
     public void initGraphics(boolean usingsolver) {
@@ -147,6 +153,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItemExecuteNormal = new javax.swing.JMenuItem();
         jMenuItemExecuteFromSolver = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -154,6 +161,8 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -180,6 +189,14 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItemExecuteFromSolver);
+
+        jMenuItem6.setText("Carregar Instância");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
 
         jMenuBar1.add(jMenu1);
 
@@ -227,6 +244,22 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem1);
+
+        jMenuItem8.setText("Formatar voos para o Artigo");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem8);
+
+        jMenuItem9.setText("Formatar tempos para o Artigo");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem9);
 
         jMenuBar1.add(jMenu2);
 
@@ -360,7 +393,7 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Instância extendida gerada com sucesso.\n" + outputFlights.getAbsolutePath(), "Geração de instância extendida", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao gerar Instância extendida.\n" , "Geração de instância extendida", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro ao gerar Instância extendida.\n", "Geração de instância extendida", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 bw.close();
@@ -372,6 +405,44 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        loadInstance();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+
+        JFileChooser chooser = new JFileChooser("");
+
+        chooser.showSaveDialog(null);
+
+        File seleFile = chooser.getSelectedFile();
+        try {
+            SolutionUtil.writeFormatedInputFlights(jpac.getAirlineNetwork(), seleFile);
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso");
+        } catch (IOException ex) {
+            Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+
+        JFileChooser chooser = new JFileChooser("");
+
+        chooser.showSaveDialog(null);
+
+        File seleFile = chooser.getSelectedFile();
+        try {
+            SolutionUtil.writeFormatedInputFlightsTimes(airlineNetwork, seleFile);
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso");
+        } catch (IOException ex) {
+            Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void prepareForSolver(File entrada) {
         try {
@@ -408,7 +479,10 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuItem jMenuItemExecuteFromSolver;
     private javax.swing.JMenuItem jMenuItemExecuteNormal;
     private javax.swing.JScrollPane jScrollPane1;

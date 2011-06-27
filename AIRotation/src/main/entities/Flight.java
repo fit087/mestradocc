@@ -202,11 +202,11 @@ public class Flight implements Comparable<Flight> {
         String r = String.format("%-6s", getName()) + " " + TimeUtil.getFormatedTime(getDepartureTime()) + " " + TimeUtil.getFormatedTime(getArrivalTime()) + " " + departureCity.getName() + " " + arrivalCity.getName();
 //        String r = String.format("%5s[%3d] | %4s (%4d) ->  %4s (%4d)", name, number, departureCity.getName(), departureTime, arrivalCity.getName(), arrivalTime);
 
-        if (getDelay() != 0) {
-            r += String.format("(%+d)", getDelay());
-        }
+//        if (getDelay() != 0) {
+//            r += String.format("(%+d)", getDelay());
+//        }
 
-        r+= " GROUND: " + getGroundTime() + " | " + getRealDepartureTime() + " " + getRealArrivalTime();
+        //r+= " GROUND: " + getGroundTime() + " | " + getRealDepartureTime() + " " + getRealArrivalTime();
         return r;
 
         // return "Id: " + id + " Number:" + flightNumber + " Name:" + flightName + " Origem: " + departureCity.getName() + " Inicio: " + departureTime + " Destino: " + arrivalCity.getName() + " Fim: " + arrivalTime;
