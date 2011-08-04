@@ -1,16 +1,28 @@
 \chapter{Geração das instâncias}
   
-  Atualmente existem diversas fontes na qual se podem obter instâncias para problemas de otimização combinatória sendo uma das mais conhecidas a OR-Library \footnote{ pode ser acessado em http://people.brunel.ac.uk/~mastjjb/jeb/info.html} que foi descrito inicialmente descrito em J.E.Beasley \cite{orlibrary} permitindo o acesso a centenas de conjuntos de instâncias a partir da Internet. 
+	Atualmente existem diversas fontes na qual se podem obter instâncias para problemas de otimização combinatória sendo uma das mais conhecidas a OR-Library \footnote{ A OR-Library pode ser acessado em http://people.brunel.ac.uk/~mastjjb/jeb/info.html} que foi descrito inicialmente em J.E.Beasley \cite{orlibrary} permitindo o acesso a centenas de conjuntos de instâncias a partir da Internet. 
   
-Apesar da existência dessas entidades não foi encontrado nenhuma instância que fosse compatível com o problema de construção de trilhos de aeronaves, fazendo-se então necessário a criação de um conjunto de instâncias próprias que além de permitir a conclusão desse presente trabalho ainda servirá como base para futuras propostas.
+	Apesar da existência dessas entidades não forams encontraos nenhuma instância que fosse compatível com o problema de construção de trilhos de aeronaves, fazendo-se então necessário a criação de um conjunto de instâncias próprias que além de permitir a conclusão desse presente trabalho ainda irá servir como base para futuras propostas.
   
-A obtenção de dados foi feita através da seleção manual do conjunto de voos domésticos cobertos pela empresa de transporte aéreo brasileira denominada TAM (http://www.tam.com.br/) que tinham o tempo de partida na segunda feira e se utilizava do equipamento AirBus Industrie A319. A segunda-feira foi identificada como sendo o dia 0 (zero) apenas para permitir sua utilização no algoritmo. Essa instância que foi obtida é composta por X voos e possui uma grande quantidade de ligações entre os Y aeroportos envolvidos tornando o grau de complexidade mais elevado que instâncias com a características hub-and-spoke que é mais comum nas malhas comerciais norte-americanas. Uma malha é considerada como sendo hub-and-spoke quando existe uma grande concentração de vôos em poucos aeroportos como pode ser visto na Figura K.
+ 	Atualmente estamos trabalhando com 2 instâncias. Uma é referente a uma malha diária da companhia aérea Rio-Sul, que é formada por 107 voos. Essa instância foi obtida a partir de um relatório técnico da Universidade Federal do Rio De Janeiro \cite{pontes2002} e adaptada para corresponder as características necessárias do nosso modelo. 
+ 	 	
+	A outra instância trabalhada é a da empresa de transporte aéreo brasileira denomidada TAM (http://www.tam.com.br), a obtenção desses  dados foram feitas através da seleção manual do conjunto de voos que ela operava. Foram selecionados os voos operados pelo equipamento AirBus Industrie A310 que tinham o horário de partida iniciando em uma segunda feira. A segunda-feira foi identificada como sendo o dia 0 (zero) apenas para permitir sua utilização no algoritmo. Essa instância que foi obtida é composta por 241 voos e possui uma grande quantidade de ligações entre os 31 aeroportos envolvidos tornando o grau de complexidade mais elevado que instâncias com a características hub-and-spoke que é mais comum nas malhas comerciais norte-americanas. 
+	
+	Uma malha é considerada como sendo hub-and-spoke quando existe uma grande concentração de vôos em poucos aeroportos como pode ser visto na Figura \ref{fig:hubandspoke}.
+	
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.35]{./img/hubandspoke}
+	\caption{Malha hub-and-spoke}
+	\label{fig:hubandspoke}
+\end{figure}
   
-Para se obter um limite inferior dessas instâncias foi feita uma verificação com o algoritmo do Anexo X que permite checar a quantidade mínima de vôos que colidem em uma determinada janela de tempo que é definida pelo atraso máximo permitido. (Pode-se fazer uma formula para explicar esse funcionamento). Essa quantidade é dito como sendo o limite inferior da instância e é garantido que não existe solução com uma melhor quantidade de trilhos que essa sem que nenhum vôo seja excluído.
+%	Para se obter um limite inferior dessas instâncias foi feita uma verificação com o algoritmo do Anexo X que permite checar a %quantidade mínima de vôos que colidem em uma determinada janela de tempo que é definida pelo atraso máximo permitido. (Pode-se fazer uma %formula para explicar esse funcionamento). Essa quantidade é dito como sendo o limite inferior da instância e é garantido que não existe %solução com uma melhor quantidade de trilhos que essa sem que nenhum vôo seja excluído.
   
-	A TAM tinha disponível nessa época com N aeronaves desse tipo, logo acreditamos que esse é o número de aeronaves que era necessário para atender a todos esses vôos, fazendo com que reduzir essa quantidade de vôos se tornasse um dos objetivos desse trabalho.
+%	A TAM tinha disponível nessa época com N aeronaves desse tipo, logo acreditamos que esse é o número de aeronaves que era necessário %para atender a todos esses vôos, fazendo com que reduzir essa quantidade de vôos se tornasse um dos objetivos desse trabalho.
   
-	Diversas instâncias também foram geradas a partir dessa, variando o número de voos e as características das malhas  com a finalidade de gerar instâncias com um variado grau de complexidade. Essas instâncias podem ser vistas no Anexo N e podem ser solicitadas diretamente com o autor, porém existe a intenção de adicionar esse conjunto de instâncias na OR-Library.
+	Diversas instâncias também serão geradas a partir dessa, variando o número de voos e as características das malhas com a finalidade de gerar instâncias com um variado grau de complexidade. Algum esforço também está sendo voltado para a obtenção de novas instâncias reais, porém pela falta de colaboração das empresas de transporte aéreo esse trabalho se torna demorado.
+	
+	%Essas instâncias podem ser vistas no Anexo N e podem ser solicitadas diretamente com o autor, porém existe a intenção de adicionar esse conjunto de instâncias na OR-Library.
   
-	Ainda é necessário a adição de outras instâncias reais para que a validação dos resultados se tornem mais práticos, para isso é necessário a colaboração de empresas de transporte aéreo uma vez que a obtenção desses dados por meios manuais se mostrou demorado e trabalhoso. 
   

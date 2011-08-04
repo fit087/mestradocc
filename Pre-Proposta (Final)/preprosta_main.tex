@@ -1,9 +1,11 @@
+%1http://www.scribd.com/doc/53458407/10/Estruturacao-do-relatorio-de-qualificacao
+
 %%
 %% This is file `example.tex',
-%% generated with the docstrip utility.
+	%% generated with the docstrip utility.
 %%
 %% The original source files were:
-%%
+%%1
 %% coppe.dtx  (with options: `example')
 %% 
 %% This is a sample monograph which illustrates the use of `coppe' document
@@ -16,7 +18,7 @@
 %%   Digits        \0\1\2\3\4\5\6\7\8\9
 %%   Exclamation   \!     Double quote  \"     Hash (number) \#
 %%   Dollar        \$     Percent       \%     Ampersand     \&
-%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Acute accent  \'     Left 	1paren    \(     Right paren   \)
 %%   Asterisk      \*     Plus          \+     Comma         \,
 %%   Minus         \-     Point         \.     Solidus       \/
 %%   Colon         \:     Semicolon     \;     Less than     \<
@@ -35,58 +37,73 @@ numbers]{coppe}
 \usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage[pt,showend]{programma}
-
+\usepackage{longtable}
 \makelosymbols
 \makeloabbreviations
 
 \begin{document}
-  \title{Utilização de uma metaheurística hibrida para solução do problema de construção de trilhos de aeronaves }
+  \title{Utilização de uma metaheurística híbrida para solução do problema de construção de trilhos de aeronaves }
   \foreigntitle{Using a hybrid metaheuristic for solving the aircraft rotation problem}
  \author{Alexander}{de Almeida Pinto}
-  \advisor{Prof.}{Nome do Primeiro Orientador}{Sobrenome}{D.Sc.}
-  \advisor{Prof.}{Nome do Segundo Orientador}{Sobrenome}{Ph.D.}
-  \advisor{Prof.}{Nome do Terceiro Orientador}{Sobrenome}{D.Sc.}
+  \advisor{Prof.}{Lucídio}{dos Anjos Formiga}{Dr.}
+ % \advisor{Prof.}{Nome do Segundo Orientador}{Sobrenome}{Ph.D.}
+ % \advisor{Prof.}{Nome do Terceiro Orientador}{Sobrenome}{D.Sc.}
 
-  \examiner{Prof.}{Nome do Primeiro Examinador Sobrenome}{D.Sc.}
-  \examiner{Prof.}{Nome do Segundo Examinador Sobrenome}{Ph.D.}
-  \examiner{Prof.}{Nome do Terceiro Examinador Sobrenome}{D.Sc.}
-  \examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
-  \examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
+  \examiner{Prof.}{Antonio Carlos Cavalcanti}{Dr.}
+  \examiner{Prof.}{Tatiana Aires Tavares}{Dra.}
+  %\examiner{Prof.}{Nome do Terceiro Examinador Sobrenome}{D.Sc.}
+  %\examiner{Prof.}{Nome do Quarto Examinador Sobrenome}{Ph.D.}
+  %\examiner{Prof.}{Nome do Quinto Examinador Sobrenome}{Ph.D.}
   \department{SDI}
-  \date{1}{2011}
+  \date{7}{2011}
 
   \keyword{Transporte}
-  \keyword{PCTA}
+  \keyword{Construção de trilhos de aeronaves}
   \keyword{Metaheurística}
   \keyword{Método Exato}
   \keyword{GRASP}
   \keyword{Rotas de Aeronaves}
   
-  \maketitle
+ \maketitle
+ 
+ \frontmatter
 
-  \frontmatter
-  
-  \dedication{A minha família e amigos cuja valia é imensurável.}
-
-  \chapter*{Agradecimentos}
-
-  Gostaria de agradecer a todos que fizeram 
 
   \begin{abstract}
+ 
+ Os problemas operacionais tem crescido muito em complexidade nos últimos tempos, o que tem tornado necessário o desenvolvimento de técnicas que possam agilizar a tomada de decisão. Empresas que não utilizam sistemas computadorizados com essa finalidade tem perdido espaço entre seus concorrentes.
+ 
+ A construção de trilhos de aeronaves é considerado um dos principais problemas da indústria aeronáutica e se refere ao sequênciamento dos voos de uma companhia aérea de forma que o menor número de aeronaves seja necessário para opera-las. Esse problema possui uma característica combinatória e a sua resolução fica mais difícil a medida que a quantidade de voos envolvidos cresce. Entretanto pequenas modificações nos horários de partida desses voos, ou o acréscimo de algum voo de resposicionamento entre dois aeroportos próximos podem gerar soluções de baixo custo.
+ 
+ Apresentamos uma algoritmo híbrido baseado na metaheurística GRASP, com a utilização do ILS e de programação inteira na busca local. Esse algoritmo é indicado para resolução de problemas de larga escala, pois nesse caso fica inviável a aplicação de um algoritmo puramente exato que poderia levar anos para realizar a tarefa. Os resultados preliminares tem mostrado agilidade na obtenção de boas soluções.
+ \end{abstract}
+ 
+ %\frontmatter
+  
+  %\dedication{A minha família e amigos cuja valia é imensurável.}
 
-  Apresenta-se, nesta tese, ...
+%\chapter*{Agradecimentos}
 
-  \end{abstract}
+%  Gostaria de agradecer a todos que fizeram 
 
-  \begin{foreignabstract}
+ % \begin{abstract}
 
-  In this work, we present ...
+  %Apresenta-se, nesta tese, ...
 
-  \end{foreignabstract}
+  %\end{abstract}
+
+  %\begin{foreignabstract}
+
+  %In this work, we present ...
+
+  %\end{foreignabstract}
+
+
+\chapter*{}
 
 \tableofcontents
 \listoffigures
-%\listoftables
+\listoftables
 \printloabbreviations
 \printlosymbols
 
@@ -107,7 +124,20 @@ numbers]{coppe}
 \bibliography{bibliografia}
 
 \appendix
+\renewcommand{\thechapter}{\Alph{chapter}} % Usar letras ao inves denumeros para os capitulos
+\setcounter{chapter}{0} % ressetar a contagem
+
 \include{cronograma}
+
+
+\include{instances/instance_artigo}
+\include{instances/instance_artigo_tempo}
+\include{instances/resultado_artigo}
+
+\include{instances/instance_tam}
+\include{instances/instance_tam_tempo}
+\include{instances/resultado_tam}
+
 
 \end{document}
 
