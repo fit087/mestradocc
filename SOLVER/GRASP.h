@@ -22,7 +22,7 @@ public:
     GRASP(Parameters p, Instance *instance);
     
     vector< vector<Flight> > construct(vector<Flight*> flights);
-    vector< vector<Flight> > localSearch(vector< vector<Flight> > flights, int baseTime);
+    vector< vector<Flight> > localSearch(vector< vector<Flight> > flights, int baseTime, int strategy);
     vector<Flight> cloneTrack(vector<Flight*> track);
     
     bool canBeChosen(vector< vector<Flight*> > &tracks, Flight *flightCandidate);

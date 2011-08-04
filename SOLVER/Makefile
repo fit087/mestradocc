@@ -1,5 +1,5 @@
-CPLEXDIR      = /Users/alexanderdealmeidapinto/ILOG/CPLEX_Studio_AcademicResearch122/cplex/
-CONCERTDIR    = /Users/alexanderdealmeidapinto/ILOG/CPLEX_Studio_AcademicResearch122/concert/
+CPLEXDIR      = /Users/alexander/Applications/IBM/ILOG/CPLEX_Studio_Academic123/cplex/
+CONCERTDIR    = /Users/alexander/Applications/IBM/ILOG/CPLEX_Studio_Academic123/concert/
 
 all:
 	g++ -wall -c -m64 -O -fPIC -fexceptions -DNDEBUG -DIL_STD -I$(CPLEXDIR)include -I$(CONCERTDIR)include  Main.cpp Flight.cpp ARPSolver.cpp GRASP.cpp Instance.cpp util/MathUtil.cpp util/ARPUtil.cpp Parameters.cpp
@@ -10,3 +10,4 @@ all:
 clean:
 	rm -r *.o
 	rm -r main
+
