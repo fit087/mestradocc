@@ -24,9 +24,9 @@ import util.SolutionUtil;
  */
 public class SolverManager {
 
-    private static final String solverPath = "/home/alexander/Documents/Documents/Mestrado/Projeto/svn/trunk/SOLVER";
+    private static final String solverPath = "/home/alexander/Documents/Documents/Mestrado/Projeto/svn/trunk/SOLVER/";
 
-    public static void executeSolver(AirlineNetwork airlineNetwork) throws IOException, InterruptedException {
+    public static void executeSolver(AirlineNetwork airlineNetwork, boolean useSolver) throws IOException, InterruptedException {
         File inputFile = new File("entrada.txt");
         File outputFile = new File("saida.txt");
 
@@ -38,6 +38,9 @@ public class SolverManager {
         ArrayList<String> commands = new ArrayList<String>();
         commands.add(solverPath + "main");
         commands.add(inputFile.getAbsolutePath());
+        if (useSolver) {
+            commands.add("true");
+        }
         String[] args = commands.toArray(new String[0]);
 
         System.out.println("[SolverManager.executeSolver] Command: " + commands.get(0));
