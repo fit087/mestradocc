@@ -207,31 +207,42 @@ int ARPSolver::costOfArc4(vector<Flight> *v, map< int, map< int, int > > *distan
 }
 
 void ARPSolver::showVariables(IloCplex &model, IloIntVarArray vars[], IloIntVar delay[], int n) {
-    //    printf("\nVariaveis X - %d\n", n);
-    //    for(int i = 0 ; i < n; i++){
-    //        int qtde = 0;
-    //        for(int j =0; j < n; j++){
-    //
-    //            IloInt v = model.getValue(vars[i][j]);
-    //            if(v == 1) qtde++;
-    //            printf("%-4d  ", (int)v);
-    //        }
-    //
-    //        if(qtde != 1){
-    ////            printf("\n\n-----> (%d)", i);
-    ////            exit(1);
-    //        }
-    //
-    //        printf("\n");
-    //    }
+        printf("\nVariaveis X - %d\n", n);
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                IloInt v = model.getValue(vars[i][j]);
+                printf("%4d ", (int)v);
+            }
+            printf("\n");
+        }
+        
+        
+        
+////        for(int i = 0 ; i < n; i++){
+////            int qtde = 0;
+////            for(int j =0; j < n; j++){
+////    
+////                IloInt v = model.getValue(vars[i][j]);
+////                if(v == 1) qtde++;
+////                printf("%-4d  ", (int)v);
+////            }
+////    
+////            if(qtde != 1){
+////    //            printf("\n\n-----> (%d)", i);
+////    //            exit(1);
+////            }
+////    
+////            printf("\n");
+////        }
 
-    printf("\nVariaveis Delay \n");
-    for (int i = 0; i < n - 2; i++) {
-        IloInt v = model.getValue(delay[i]);
-        if (v != 0)
-            printf("(%d) %-4d  ", i, (int) v);
-    }
-    printf("\n");
+//    printf("\nVariaveis Delay \n");
+//    for (int i = 0; i < n - 2; i++) {
+//        IloInt v = model.getValue(delay[i]);
+//        if (v != 0)
+//            printf("(%d) %-4d  ", i, (int) v);
+//    }
+//    printf("\n");
 }
 
 void ARPSolver::showCosts(IloNumArray cost[], int n) {
@@ -319,6 +330,20 @@ void ARPSolver::finalizeTrail2(vector<Flight> *flight, vector<Flight> *trail, Il
 
 vector< vector<Flight> > ARPSolver::assembleResult(vector<Flight> *flight, Instance *instance, IloCplex &cplex, IloBoolVarArray x[], IloIntArray cost[], IloIntVar delay[], int n) {
 
+    
+    if(ISDEBUG){
+    cout << "Mostrando solução"<< endl;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            IloInt v = cplex.getValue(x[i][j]);
+            printf("%4d ", (int)v);
+        }
+        printf("\n");
+    }
+    
+    
+    cout << "Montando solução " << endl;
+    }
     int sourceIndex = (n - 2);
 
     vector< vector<Flight> > result;
@@ -364,7 +389,7 @@ vector< vector<Flight> > ARPSolver::assembleResult2(vector<Flight> *flight, Inst
             int v = (int)cplex.getValue(x[sourceIndex][coluna][arc]);
 
             if (v == 1) {
-                printf("Um\n");
+               // printf("Um\n");
                 vector<Flight> track;
                 track.push_back((*flight)[coluna]);
                 if (ISDEBUG) {
@@ -426,6 +451,10 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, Instance *instance
 
             for (int coluna = 0; coluna < n; coluna++) { //Cada coluna
                 model.add(x[linha][coluna]);
+                
+                if(linha < n - 2 && coluna < n - 2 && linha > coluna){
+                    model.add(0 <= x[linha][coluna] + x[coluna][linha] <= 1);
+                }
 
                 if(ISDEBUG){
                     char name[20];
@@ -485,6 +514,7 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, Instance *instance
                 else {
 
                     cost[linha][coluna] = costOfArc(v, instance->getTimes(), linha, coluna, maxDelay);
+                    if(ISDEBUG) cout << "Custo " << linha << "," << coluna << " : " << cost[linha][coluna] << endl;
                 }
 
 
@@ -530,12 +560,14 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, Instance *instance
         IloCplex cplex(model);
         cplex.setOut(env.getNullStream());
 
-//        cplex.setParam(IloCplex::TiLim, 5);
+//         cplex.setParam(IloCplex::TiLim, 5);
 
         if(ISDEBUG){
             char saida[30] = "modelo.lp\0";
             cplex.exportModel(saida);
         }
+        
+     //   showVariables(cplex, x, delay, n);
 
         // Optimize the problem and obtain solution.
         if(ISDEBUG)
@@ -544,6 +576,9 @@ vector< vector<Flight> > ARPSolver::solver(vector<Flight> *v, Instance *instance
             env.error() << "Failed to optimize LP" << endl;
             throw (-1);
         }
+        
+        cout << "Custo final " << cplex.getObjValue() << endl;
+        
         if(ISDEBUG)
             cout << "[ARPSolver.solve()] Saiu com sucesso do solver." << endl;
         //env.out() << "Solution status = " << cplex.getStatus() << endl;
@@ -694,7 +729,7 @@ vector< vector<Flight> > ARPSolver::solver2(vector<Flight> *v, Instance *instanc
         }
 
 
-        if(ISDEBUG2)
+        if (ISDEBUG2)
             printf("CRIACAO FINALIZADA\n");
 
         for (int i = 0; i < n - 2; i++) {
@@ -712,36 +747,38 @@ vector< vector<Flight> > ARPSolver::solver2(vector<Flight> *v, Instance *instanc
 
         //        cplex.setParam(IloCplex::TiLim, 5);
 
-        if(ISDEBUG2){
+        if (ISDEBUG2) {
             char saida[30] = "modelo.lp\0";
             cplex.exportModel(saida);
         }
 
 
         // Optimize the problem and obtain solution.
-        if(ISDEBUG2)
-            cout << "[ARPSolver.solve()] Iniciando o solver" << endl;
+        // if(ISDEBUG2)
+        cout << "[ARPSolver.solve()] Iniciando o solver" << endl;
         if (!cplex.solve()) {
             env.error() << "Failed to optimize LP" << endl;
             throw (-1);
         }
 
-        if(ISDEBUG2){
+        cout << "Valor da solução " << cplex.getObjValue() << endl;
+
+        if (ISDEBUG2) {
             cout << "[ARPSolver.solve()] Saiu com sucesso do solver." << endl;
             env.out() << "Solution status = " << cplex.getStatus() << endl;
         }
 
 
-        if(ISDEBUG2)
+        if (ISDEBUG2)
             cout << "[ARPSolver.solve()] Iniciando montagem da malha" << endl;
 
         vector< vector<Flight> > result = assembleResult2(v, instance, cplex, x, cost, n);
 
-        if(ISDEBUG2){
+        if (ISDEBUG2) {
             cout << "[ARPSolver.solve()] Montagem da malha finalizada" << endl;
             env.out() << "Solution value  = " << cplex.getObjValue() << endl;
         }
-        
+
         env.end();
 
         return result;
@@ -775,8 +812,10 @@ void ARPSolver::readInput(char *file) {
     }
 
 
-    vector< vector <Flight> > result = solver2(&flights, &instance);
+    vector< vector <Flight> > result = solver(&flights, &instance);
 
+    //int cost = ARPUtil::calculeCost(flights);
+    //cout << "Custo final " << cost << endl;
     ofstream ofs("saida.txt", ofstream::out);
     ARPUtil::writeSolution(&result, ofs);
     ofs.flush();

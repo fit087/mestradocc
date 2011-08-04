@@ -26,6 +26,7 @@ public:
     static Instance read(istream &stream);
     void setFlights(vector<Flight*> flights);
     map<int, map<int, int> >* getTimes() ;
+    int getFlightTime(Flight &init, Flight &dest);
 
 private:
     Instance(vector<Flight*> flights, map< int, map< int, int> > times, unsigned int maxDelay);

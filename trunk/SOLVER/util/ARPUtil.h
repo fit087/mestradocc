@@ -11,6 +11,9 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include "../Instance.h"
 #include "../Flight.h"
 
@@ -29,8 +32,8 @@ public:
     static int configureTrack(vector<Flight> &track, Instance *instance);
     static int configureSolution(vector< vector<Flight> > &solution, Instance *instance);
     static void showSolution(vector< vector<Flight> > &solution);
-    static int calculeCost(vector< vector<Flight> > &r);
-    static int calculeCost(vector<Flight> &track);
+    static int calculeCost(vector< vector<Flight> > &r, Instance &instance);
+    static int calculeCost(vector<Flight> &track, Instance &instance);
     static void relaxDelays(vector< vector<Flight> > &r);
     static void removeTrack(vector< vector<Flight> > *flights, int track);
     static void copyFlights(vector<Flight> *target, vector<Flight> *source);

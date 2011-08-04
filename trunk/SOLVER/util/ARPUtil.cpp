@@ -6,6 +6,7 @@
  */
 
 #include "ARPUtil.h"
+#include <cmath>
 
 bool ARPUtil::validateSolution(vector< vector<Flight> > &solution) {
     for (int i = 0; i < solution.size(); i++) {
@@ -128,23 +129,32 @@ void ARPUtil::showSolution(vector< vector<Flight> > &solution) {
 
 }
 
-int ARPUtil::calculeCost(vector<Flight> &track) {
-    int cost = 1000;
+int ARPUtil::calculeCost(vector<Flight> &track, Instance &instance) {
+    int cost = 0;
 
     for (int i = 0; i < track.size() ; i++) {
         Flight &first = track[i];
-        cost += first.GetCost();
+        cost += abs(first.GetCost());
+        
+        if(i != track.size() - 1){
+            Flight &next = track[i+1];
+            if(!first.validateGeographicalConstraint(&next)){
+                cost += instance.getFlightTime(first, next);
+            }
+        }
+        
     }
 
 
     return cost;
 }
 
-int ARPUtil::calculeCost(vector< vector<Flight> > &r) {
+int ARPUtil::calculeCost(vector< vector<Flight> > &r, Instance &instance) {
     int cost = r.size()*1000;
 
+    
     for (int i = 0; i < r.size(); i++) {
-        cost += calculeCost(r[i]);
+        cost += calculeCost(r[i], instance);
     }
 
     return cost;

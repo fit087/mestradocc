@@ -70,3 +70,16 @@ vector<Flight*> *Instance::getFlights() {
     return &flights;
 }
 
+int Instance::getFlightTime(Flight &init, Flight &dest){
+    int city1 = init.GetArrivalCity();
+    int city2 = dest.GetDepartureCity();
+    
+    if(city2 < city1){ //SWAP (Menor primeiro)
+        int t = city1;
+        city1 = city2;
+        city2 = t;
+    }
+    
+    return times[city1][city2];
+}
+
