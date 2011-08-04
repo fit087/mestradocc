@@ -1,7 +1,7 @@
 LICENSE IBM ILOG Optimization Suite for Academic Initiative
-EVAL    CPLEX      12.000 01-Jul-2011 ADSC20EY0EMU any , options: e m b q 
-EVAL    OPLStudio  6.000 01-Jul-2011 8BD6G3PAC927 any , options: ide 
-EVAL    CP-Optimizer 2.000 01-Jul-2011 6GXEK11M4DJ7 any 
-EVAL    Solver     6.000 01-Jul-2011 9FKSN3D8CM18 any 
-EVAL    Scheduler  6.000 01-Jul-2011 85TCK0ZGGFSU any 
-EVAL    Dispatcher 4.000 01-Jul-2011 EW84Z0300CEA any 
+EVAL    CPLEX      12.000 01-Oct-2012 VBTWB17CMKR2 any , options: e m b q 
+EVAL    OPLStudio  6.000 01-Oct-2012 76EP50VC0HBF any , options: ide 
+EVAL    CP-Optimizer 2.000 01-Oct-2012 0BVCF0V4GZ4U any 
+EVAL    Solver     6.000 01-Oct-2012 0KD642AYS9YZ any 
+EVAL    Scheduler  6.000 01-Oct-2012 8GPAA0MS0WGN any 
+EVAL    Dispatcher 4.000 01-Oct-2012 WNMA53F4W8SD any 
