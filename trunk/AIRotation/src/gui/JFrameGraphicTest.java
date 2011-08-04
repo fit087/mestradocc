@@ -98,18 +98,29 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
         long init = System.currentTimeMillis();
 
-        if (!usingsolver) {
-            GRASPConstruct gRASPConstruct = new GRASPConstruct(airlineNetwork, GRASPParameters.defaultParameters, ARPParameters.defaultParameters);
-            gRASPConstruct.GRASPResolve();
-        } else {
-
-            try {
-                SolverManager.executeSolver(airlineNetwork);
-            } catch (Exception ex) {
-                Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        try {
+            SolverManager.executeSolver(airlineNetwork, usingsolver);
+        } catch (Exception ex) {
+            Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+//        if (!usingsolver) {
+////            GRASPConstruct gRASPConstruct = new GRASPConstruct(airlineNetwork, GRASPParameters.defaultParameters, ARPParameters.defaultParameters);
+////            gRASPConstruct.GRASPResolve();
+//            try {
+//                SolverManager.executeSolver(airlineNetwork, usingsolver);
+//            } catch (Exception ex) {
+//                Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } else {
+//
+//            try {
+//                SolverManager.executeSolver(airlineNetwork, usingsolver);
+//            } catch (Exception ex) {
+//                Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//        }
 
         long duration = System.currentTimeMillis() - init;
 
@@ -163,6 +174,8 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -262,6 +275,23 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
         jMenu2.add(jMenuItem9);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Artigo");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem10.setText("Gerar solução para o artigo");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -444,6 +474,32 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        if (fileChooserFormattedInstance.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooserFormattedInstance.getSelectedFile();
+            try {
+                SolutionUtil.writeFormatedSolutionForArticle(jpac.getAirlineNetwork().getBestNetwork(), selectedFile);
+                JOptionPane.showMessageDialog(null, "Solução gravada com sucesso no arquivo " + selectedFile.getAbsolutePath());
+            } catch (IOException ex) {
+                Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+        // TODO add your handling code here:
+        if (fileChooserFormattedInstance.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooserFormattedInstance.getSelectedFile();
+            try {
+                SolutionUtil.writeFormatedSolutionForInstance(jpac.getAirlineNetwork().getBestNetwork(), selectedFile);
+                JOptionPane.showMessageDialog(null, "Solução gravada com sucesso no arquivo " + selectedFile.getAbsolutePath());
+            } catch (IOException ex) {
+                Logger.getLogger(JFrameGraphicTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
     private void prepareForSolver(File entrada) {
         try {
             File file = new File("./solver/entrada.txt");
@@ -473,8 +529,10 @@ public class JFrameGraphicTest extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

@@ -37,13 +37,19 @@ public class SolutionUtil {
                 linhas.add(new StringBuilder());
             }
 
-            linhas.get(0).append(String.format("Rota[%02d - %d]\t\t\t\t\t\t", (i + 1), track.numberOfFlights()));
+            linhas.get(0).append(String.format("Rota[%02d - %d] ", (i + 1), track.numberOfFlights()));
+
+            if (cont == 2) {
+                //linhas.get(0).append(" \\\\");
+            } else {
+                linhas.get(0).append(" & ");
+            }
 
             for (int j = 0; j < track.getFlights().size(); j++) {
                 if (linhas.size() < (1 + (j + 1))) {
                     linhas.add(new StringBuilder());
                     for (int k = 0; k < cont; k++) {
-                        linhas.get(j + 1).append("\t\t\t\t\t\t\t");
+                        linhas.get(j + 1).append(" & ");
                     }
 
 
@@ -52,7 +58,7 @@ public class SolutionUtil {
                 Flight flight = track.getFlight(j);
 
                 if (cont > 0) {
-                    linhas.get(j + 1).append("\t\t");
+                    linhas.get(j + 1).append(" & ");
                 }
 
                 linhas.get(j + 1).append(flight.toString());
@@ -64,7 +70,7 @@ public class SolutionUtil {
             if (cont == 3) {
                 cont = 0;
                 for (int j = 0; j < linhas.size(); j++) {
-                    bw.write(linhas.get(j).toString() + "\n");
+                    bw.write(linhas.get(j).toString() + "\\\\\n");
                 }
 
                 bw.write("\n\n");
@@ -245,14 +251,15 @@ public class SolutionUtil {
                 City origCity = airlineNetwork.getCities().get(i);
                 City destCity = airlineNetwork.getCities().get(j);
                 Integer time = origCity.getFlightTimes().get(destCity);
-                
-                if(time != 99999)
-                nOfInput++;
+
+                if (time != 99999) {
+                    nOfInput++;
+                }
             }
         }
-        
-        int divPos = nOfInput/4;
-        int moreColunsIn = nOfInput%4;
+
+        int divPos = nOfInput / 4;
+        int moreColunsIn = nOfInput % 4;
         int numberOfResets = 0;
 
         for (int i = 0; i < airlineNetwork.getCities().size() - 1; i++) {
@@ -261,25 +268,26 @@ public class SolutionUtil {
                 City destCity = airlineNetwork.getCities().get(j);
                 Integer time = origCity.getFlightTimes().get(destCity);
 
-                
-                if(time == 99999) continue;
-                if(divPos <= index){
-                    
-                    if(moreColunsIn != 0){
-                        if(divPos < index){
+
+                if (time == 99999) {
+                    continue;
+                }
+                if (divPos <= index) {
+
+                    if (moreColunsIn != 0) {
+                        if (divPos < index) {
                             numberOfResets++;
-                            index =0;
+                            index = 0;
                             moreColunsIn--;
                             divided = true;
                         }
-                    }
-                    else{
+                    } else {
                         index = 0;
                         numberOfResets++;
                         divided = true;
                     }
                 }
-                
+
                 if (!divided) {
                     sb.add(new StringBuilder());
                 }
@@ -290,17 +298,17 @@ public class SolutionUtil {
 
                 sb.get(index).append(String.format("%s %s %04d", origCity.getName(), destCity.getName(), time));
 
-            
+
 
                 index++;
             }
-            
+
             BufferedWriter bw = new BufferedWriter(new FileWriter(selectedFile));
-            
+
             for (StringBuilder stringBuilder : sb) {
                 bw.write(stringBuilder + " \\\\\n");
             }
-            
+
             bw.close();
         }
     }
