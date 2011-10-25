@@ -68,6 +68,7 @@ int Flight::GetRealDepartureTime() {
     return GetDepartureTime() + GetDelay();
 }
 
+
 void Flight::SetDelay(int delay) {
     this->delay = delay;
 }

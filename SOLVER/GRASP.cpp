@@ -530,20 +530,28 @@ void GRASP::readInput(char *file) {
     int bestIter = 0;
 
     for (int i = 0; i < 1; i++) {
-        //        bool valid = ARPUtil::validateSolution(bestresult);
-        //
-        //        if(!valid){
-        //            cout << "Solucao nao valida" << endl;
-        //            exit(1);
-        //        }
-
+         
+        cout << "Construindo a solução (Iteracao " << i << ")" << endl;
+        
         vector< vector<Flight> > result = grasp.construct(*flights);
         ARPUtil::relaxDelays(result);
+        
+        cout << "Delays relaxados" << endl;
 
         int initCost = ARPUtil::calculeCost(result, instance);
         int finalCost;
         int nLocalSearch = 0;
         int strategy = 0;
+        
+        cout << "Custos calculados" << endl;
+        
+        if(true){
+            cout << "Inicinado a nova busca local" << endl;
+            LocalSearchUtil::crossOver(result);
+           // break;
+        }
+        
+        if(false)
         while (true) {
             nLocalSearch++;
             result = grasp.localSearch(result, baseTime, strategy);

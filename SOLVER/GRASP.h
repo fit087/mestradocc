@@ -14,6 +14,7 @@
 #include "Flight.h"
 #include "Parameters.h"
 #include "Instance.h"
+#include "util/LocalSearchUtil.h"
 
 using namespace std;
 

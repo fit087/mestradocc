@@ -61,23 +61,23 @@ int ARPUtil::configureTrack(vector<Flight> &track, Instance *instance) {
 
         int uniqueCost = 0;
 
-//        if(first.GetIndex() == 45 && second.GetIndex() == 54){
-//            cout << "RESULT " << first.GetArrivalCity() << " | " << second.GetDepartureCity() << endl;
-//        }
+        //        if(first.GetIndex() == 45 && second.GetIndex() == 54){
+        //            cout << "RESULT " << first.GetArrivalCity() << " | " << second.GetDepartureCity() << endl;
+        //        }
 
         if (first.validateGeographicalConstraint(&second)) {
 
             int delay = first.requiredDelay(&second);
-//            if(first.GetIndex() == 45 && second.GetIndex() == 54){
-//                cout << "TIME " << first.GetRealArrivalTime() << " " << (first.GetDepartureTime() + first.GetDuration()) << endl;
-//                cout << "TIME2 " << second.GetRealArrivalTime() << " " << (second.GetDepartureTime() + second.GetDuration()) << endl;
-//                cout << "DELAY " << delay << endl;
-//            }
+            //            if(first.GetIndex() == 45 && second.GetIndex() == 54){
+            //                cout << "TIME " << first.GetRealArrivalTime() << " " << (first.GetDepartureTime() + first.GetDuration()) << endl;
+            //                cout << "TIME2 " << second.GetRealArrivalTime() << " " << (second.GetDepartureTime() + second.GetDuration()) << endl;
+            //                cout << "DELAY " << delay << endl;
+            //            }
             second.SetDelay(delay);
-           
+
             cost += abs(delay);
             uniqueCost = abs(delay);
-        }            //É necessário a criação de um voo de reposicionamento.
+        }//É necessário a criação de um voo de reposicionamento.
         else {
 
             int diff = (second.GetDepartureTime()) - (first.GetRealDepartureTime());
@@ -87,11 +87,10 @@ int ARPUtil::configureTrack(vector<Flight> &track, Instance *instance) {
 
             int flightTime = (*instance->getTimes())[origIndex][destIndex];
             diff -= flightTime;
-            if(diff >= 0){
+            if (diff >= 0) {
                 second.SetCost(flightTime);
                 cost += flightTime;
-            }
-            else{
+            } else {
 
 
                 second.SetCost(flightTime);
@@ -103,6 +102,13 @@ int ARPUtil::configureTrack(vector<Flight> &track, Instance *instance) {
         //printf(">>> configureTrack [%d][%d] = %d\n", first.GetIndex(), second.GetIndex(), uniqueCost);
     }
     return cost;
+}
+
+void ARPUtil::showTrack(vector<Flight> &track){
+    for(int i = 0; i < track.size(); i++){
+        printf("%4d ", track[i].GetIndex());
+    }
+    printf("\n");
 }
 
 void ARPUtil::showSolution(vector< vector<Flight> > &solution) {
@@ -132,17 +138,17 @@ void ARPUtil::showSolution(vector< vector<Flight> > &solution) {
 int ARPUtil::calculeCost(vector<Flight> &track, Instance &instance) {
     int cost = 0;
 
-    for (int i = 0; i < track.size() ; i++) {
+    for (int i = 0; i < track.size(); i++) {
         Flight &first = track[i];
         cost += abs(first.GetCost());
-        
-        if(i != track.size() - 1){
-            Flight &next = track[i+1];
-            if(!first.validateGeographicalConstraint(&next)){
+
+        if (i != track.size() - 1) {
+            Flight &next = track[i + 1];
+            if (!first.validateGeographicalConstraint(&next)) {
                 cost += instance.getFlightTime(first, next);
             }
         }
-        
+
     }
 
 
@@ -152,7 +158,7 @@ int ARPUtil::calculeCost(vector<Flight> &track, Instance &instance) {
 int ARPUtil::calculeCost(vector< vector<Flight> > &r, Instance &instance) {
     int cost = r.size()*1000;
 
-    
+
     for (int i = 0; i < r.size(); i++) {
         cost += calculeCost(r[i], instance);
     }
@@ -214,15 +220,53 @@ void ARPUtil::copyFlights(vector<Flight> *target, vector<Flight> *source) {
     }
 }
 
-void ARPUtil::writeSolution(vector< vector<Flight> > * solution, ostream &saida){
+void ARPUtil::writeSolution(vector< vector<Flight> > * solution, ostream &saida) {
     saida << solution->size() << endl;
 
-    for(int i = 0; i < solution->size(); i++){
+    for (int i = 0; i < solution->size(); i++) {
         saida << (*solution)[i].size();
-        for(int j = 0; j < (*solution)[i].size(); j++){
+        for (int j = 0; j < (*solution)[i].size(); j++) {
             Flight &f = (*solution)[i][j];
             saida << " " << f.GetIndex() << " " << f.GetDelay();
         }
         saida << endl;
     }
+}
+
+void ARPUtil::removeDelays(vector< vector <Flight> > * solution) {
+
+    bool isImproving = false;
+    do {
+        
+        //Trilho de origem
+        for (int i = 0; i < solution->size() - 1; i++) {
+
+            vector<Flight> &source_track = (*solution)[i];
+
+            //Procurando voos com delays
+            for (int i_2 = 1; i_2 < source_track.size(); i_2++) {
+                //Flight &source_previous_flight = source_track[i_2 - 1];
+                Flight &source_current_flight = source_track[i_2];
+                //Flight *source_next_flight = (i_2 == (source_track.size() - 1)) ? NULL : &source_track[i_2 + 1];
+
+                if (source_current_flight.GetDelay() != 0) {
+                    
+                    //Trilho de destino
+                    for (int j = (i + 1); j < solution->size(); j++) {
+                        vector<Flight> &target_track = (*solution)[j];
+                        
+                        //Procura por um voo compatível
+                        for(int j_2 = 0; j_2 < target_track.size(); j_2++){
+                            Flight &target_current_flight = target_track[j_2];
+                            
+                       //     if()
+                        }
+                    }
+                }
+            }
+
+
+
+        }
+    } while (isImproving);
 }
