@@ -1,0 +1,133 @@
+  \chapter{Resultados preliminares e discussões}
+
+Todos os algoritmos descritos foram desenvolvidas na linguagem C++ usando a
+biblioteca CPLEX Academic 12 para implementar o mecanismo de programação
+inteira. Todos os experimentos computacionais foram feitos em um notebook com a
+seguinte especificação: Pentium T4500 2.3 Ghz com 2 GB de RAM e rodando o
+sistema operacional sistema operacional Linux Ubuntu 11.04.
+
+Foram efetuadas 10 iterações do GRASP usando um $\alpha$ de 0.5 e a busca local
+finalizava quando não conseguia melhorar o resultado. Para demonstrar a
+eficiência dos resultados foram realizadas comparações com o resultado ótimo
+obtido com um procedimento de programação inteira implementando o modelo
+descrito no capítulo \ref{cap:descprob}. A coluna $s*$ indica o valor ótimo. O
+método híbrido foi executado 20 vezes e apenas a média dos valores obtidos
+foram levados em consideração. A coluna $s$ indica a média dos valores obtidos
+com a execução do algoritmo, a coluna tempo indica a média da duração das
+execuções em segundos. A coluna final indicada por $GAP$ indica a diferença
+percentual das soluções e é calculado como segue:
+
+\[  GAP = (s* - s)/s \]
+
+Para os testes foram utilizados duas instâncias diárias, uma da Rio-Sul(107
+voos) e outra da TAM (241 voos).  Com a finalidade de permitir estimar o tempo
+computacional necessário para resolver instâncias maiores foi proposto a
+extensão da frequência dos voos da instância Rio-Sul para uma semana, dessa
+forma foi gerado uma instância com 749 voos. Para simplificar foram adotados o
+tempo de solo de 20 minutos para todos os aeroportos, tendo em vista que a
+maioria deles opera em média com esse tempo.
+
+A resolução dessas instâncias foram parametrizadas levando em consideração dois
+cenários. O cenário 1 faz o sequnciamento dos voos sem a permissão de utilizar
+nenhum atraso, essa representação é comum nas companhias que não aceitam a
+modificação do planejamento inicial. O cenário 2 se utiliza de atrasos
+permitindo assim uma maior liberdade na hora da montagem dos trilhos. Os
+parâmetros utilizados são detalhados na Tabela \ref{tab:params}.
+
+\begin{table}
+\caption{Parametrização dos cenários}\label{tab:params}
+\begin{center}
+
+
+\begin{tabular}{l|rr}
+\hline
+
+ & Cenário 1 & Cenário 2 \\
+ \hline
+ Atraso Maximo & 0 & 10 \\
+ Prob. Arc. Tipo 1 & 0.92 & 0.69\\ 
+ Prob. Arc. Tipo 2 & 0 & 0.16\\
+ Prob. Arc. Tipo 3 & 0.08 & 0.04 \\
+ Prob. Arc. Tipo 4 & 0 & 0.01 \\
+  
+\hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+ 
+%A Tabela \ref{tab:cenario1} e \ref{tab:cenario2} mostram os resultados as melhores soluções obtidas. No caso dos problemas diários e da instância da Rio Sul estendida a utilização do solver é suficiente e retorna o resultado ótimo em um tempo totalmente aceitável, dessa forma o método está sendo desenvolvido parar a resolução de problemas de grande porte. No caso de problemas reais isso iria refletir nas frotas mais comuns das companhias aéreas, que é onde se encontra a maior demanda de passageiros. Caso alguma informação extra seja necessária os anexos \ref{anx:netriosul} a \ref{anx:resulttam} apresentam a descrição completa das instâncias e das soluções que foram obtidas, 
+
+
+%Rio Sul & 17.138 & 17 & 0 & 2 & XX & XX & 0\\
+%TAM & 35.334 & 34 & 0 & 10 & XX & XX & 0 \\
+%Rio Sul Estendida & 18392 & 17 & 0 & 20 & XX & XX & 0\\
+%TAM Estendida & XX & XX & XX & XX & XX & XX & XX \\
+
+\begin{table}[ht]
+\caption{Resultados do cenário 1}\label{tab:cenario1}
+\begin{center}
+
+
+\begin{tabular}{l r r r r}
+\hline
+
+Instância & BKS & Resultado & Tempo(s) & GAP \\
+\hline
+
+Rio Sul & 17.138 & 17.138 & 4.8 & 0\\
+TAM & 35.334 & 35.348 & 37 &  0.0004\\
+Rio Sul Estendida & 18.392 & 21.911 & 525 & 0.19\\
+%TAM Estendida & XX & XX & XX & XX \\
+
+\hline
+\end{tabular}
+
+\end{center}
+\end{table}
+
+\begin{table}[ht]
+\caption{Resultados do cenário 2}\label{tab:cenario2}
+\begin{center}
+
+
+\begin{tabular}{l r r r r}
+\hline
+
+Instância & BKS & Resultado & Tempo(s) & GAP \\
+\hline
+
+Rio Sul & 16.158 & 16.158 & 5 & 0\\
+TAM & 35.015 & 35015 & 22 & 0 \\
+Rio Sul Estendida & 17.433 & 20564 & 494 & 0.18\\ 
+%TAM Estendida & XX & XX & XX & XX \\
+
+\hline
+\end{tabular}
+
+\end{center}
+\end{table}
+
+	Pode-se observar que nos dois cenários a solução ótima foi obtida para a instância da Rio-Sul. Na instância da TAM a solução ótima foi encontrada, porém, na média o cenário 1 encontrou uma solução bem próxima. Essas duas instâncias representam um horizonte de tempo de um dia. Na instância da Rio-Sul estendida que representam uma semana de operação as soluções ficaram em média 0.19 do ótimo para o cenário 1 e 0.18 no cenário 2 com um tempo aproximado de 8 minutos. Para o procedimento programação linear não foram inseridos limites previamente calculados, de modo que a ferramenta utilizou apenas a relaxação linear.
+  
+ Alguns ajustes ainda podem melhorar o modelo híbrido para que ele possa se aproximar mais da solução ótima. A modificação da estrutura a ser otimizada na busca local pode ser um ponto que ajude a melhorar os resultados, pois a literatura mostra que esse é um dos pontos mais importantes de uma heurística híbrida.
+ 
+ Uma das grandes dificuldades encontradas no trabalho foi a falta de instâncias na literatura tornando difícil a comparação de resultados com outras abordagens. Com isso existe a necessidade de geração de um conjunto de instâncias e a sua publicação para fins comparativos.
+ 
+ Existe ainda a possibilidade de uma implementação paralela que ainda está em fase de planejamento e que se demonstrar resultados interessantes em tempo hábil será adicionada a dissertação.
+ 
+
+%Com a eficiência obtida com o método exato existe uma necessidade de geração de instâncias maiores que possam ser utilizadas parar ajustar e justificar a utilização de uma abordagem mais complexa como o uso de uma metaheurística híbrida.
+
+%Atualmente o método híbrido conseguiu resolver a instância \textit{TAM Estendida} com o tempo de 60s e Custo total de 43344, que parece %ser uma boa solução tendo como base os resultados obtidos com a instância que lhe serviu de base.
+
+%Atualmente existe a necessidade de um melhor ajuste no método híbrido para que ele possa conseguir resultados mais robustos.
+
+%A utilização de uma abordagem exata em conjunto com metaheurísticas está sendo cada vez mais utilizado na literatura. Porém a escolha da estrutura a ser otimizada deve ser bem escolhida para não aumentar demasiadamente a capacidade computacional necessária para resolver o problema.
+
+
+
+%Para demonstrar a eficiência em termos de qualidade da solução da metaheurística GILS, realizamos comparações com um  procedimento exato B&B (XPRESS MP, 2004), implementando o modelo STSP apresentado por Lee (1996). Para cada instância da Tabela 1 temos as duas primeiras colunas representando as dimensões das instâncias testadas e as colunas restantes divididas em dois grupos: procedimento B&B e GILS. No caso do procedimento B&B, a coluna z* indica o valor ótimo e a coluna tempo indica o tempo computacional, em segundos, gasto na resolução da instância. Já para o grupo da metaheurística GILS as colunas adicionais, além da coluna tempo, são: iter que indica a iteração onde foi encontrada melhor solução, z que indica o valor obtido pelo GILS e, Δ (gap) que indica a diferença percentual entre as soluções:
+%Δ = [ (z – z*) / z* ] x 100.
+
