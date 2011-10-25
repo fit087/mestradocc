@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Thu Aug 04 10:42:21 BRT 2011
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=preprosta_main.tex
+outputFile=preprosta_main.pdf
+langSpell=en
+markDer=true
+srcDir=
