@@ -4,6 +4,7 @@
  */
 package main.entities;
 
+import main.heuristic.ARPParameters;
 import util.TimeUtil;
 
 /**
@@ -51,7 +52,7 @@ public class Flight implements Comparable<Flight> {
         this.excluded = false;
     }
 
-    public Flight(){
+    public Flight() {
         name = "NEW";
         number = -1;
         departureCity = null;
@@ -64,7 +65,6 @@ public class Flight implements Comparable<Flight> {
         selected = false;
         excluded = false;
     }
-
 
     public String getName() {
         return name;
@@ -233,5 +233,16 @@ public class Flight implements Comparable<Flight> {
 
     public Integer getDuration() {
         return getArrivalTime() - getDepartureTime();
+    }
+
+    public boolean hasTimeToChangeCrew(Flight second) {
+        int crewChangeTime = ARPParameters.defaultParameters.getCrewChangeTime();
+        int availableTime = (second.getRealDepartureTime() - second.getGroundTime()) - getRealArrivalTime();
+
+        if (availableTime > crewChangeTime) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

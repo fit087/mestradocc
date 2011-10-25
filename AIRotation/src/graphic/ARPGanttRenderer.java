@@ -38,6 +38,7 @@ public class ARPGanttRenderer extends GanttRenderer {
     private static Color flightColorBegin = new Color(0, 56, 186); //Dark Azure ;
     private static Color flightColorBeginDelayed = Color.RED;
     private static Color flightColorBeginRepo = Color.PINK;
+    private static Color flightColorBeginPseudo = Color.GRAY;
     private static Color flightColorEnd = new Color(0, 0, 128);//Navi
     private static Paint groundColor = new Color(255, 186, 0); //Selective Yellow;
     private static Paint barStrokeColor = Color.BLACK;
@@ -159,11 +160,16 @@ public class ARPGanttRenderer extends GanttRenderer {
         float midX = (float) ((bar.getMinX() + bar.getMaxX()) / 2.0);
         float midY = (float) ((bar.getMinY() + bar.getMaxY()) / 2.0);
 
-        if (flight.getDelay() != 0) {
-            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginDelayed, midX, (float) bar.getMaxY(), flightColorEnd));
-        } else if (flight.getReposition()) {
+        if(flight.getName().startsWith("PSEUDO")){
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginPseudo, midX, (float) bar.getMaxY(), flightColorEnd));
+        }
+        else if (flight.getReposition()) {
+            
             g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginRepo, midX, (float) bar.getMaxY(), flightColorEnd));
-        } else {
+        }
+        else if (flight.getDelay() != 0) {
+            g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBeginDelayed, midX, (float) bar.getMaxY(), flightColorEnd));
+        }  else {
             g2.setPaint(new GradientPaint(midX, (float) bar.getMinY(), flightColorBegin, midX, (float) bar.getMaxY(), flightColorEnd));
         }
 

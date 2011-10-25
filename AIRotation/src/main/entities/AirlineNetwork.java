@@ -9,6 +9,7 @@ import graphic.ARPGraphicConfigs;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  *
@@ -35,6 +36,10 @@ public class AirlineNetwork {
     public AirlineNetwork(String pathInstance) {
         this.pathInstance = pathInstance;
     }
+
+    public AirlineNetwork() {
+    }
+    
 
     public String getPathInstance() {
         return pathInstance;
@@ -63,6 +68,10 @@ public class AirlineNetwork {
 
     public ArrayList<Flight> getFlights() {
         return flights;
+    }
+    
+    public void addFlight(Flight flight){
+        flights.add(flight);
     }
 
     public ARPGraphicConfigs getAirlineGraphicConfigs() {
@@ -287,6 +296,18 @@ public class AirlineNetwork {
         }
 
         return acumulador;
+    }
+
+    public void addAllFlight(List<Flight> flights) {
+        this.flights.addAll(flights);
+    }
+
+    public Integer getFlightsOnBestResult() {
+        int result = 0;
+        for (Track track : bestNetwork) {
+            result += track.getFlights().size();
+        }
+        return result;
     }
 
 }

@@ -5,6 +5,8 @@
 package main.entities;
 
 import java.util.ArrayList;
+import java.util.List;
+import util.param.IntegerParam;
 
 /**
  *
@@ -94,6 +96,10 @@ public class Track {
     public void addFlight(Flight flight) {
         this.flights.add(flight);
     }
+    
+    public void addAllFlight(List<Flight> newFlights){
+        this.flights.addAll(newFlights);
+    }
 
     /**
      * Obtem o horario de inicio desse trilho ( leva em consideração o tempo de solo )
@@ -111,6 +117,14 @@ public class Track {
     public Integer getEndTime() {
         Flight flight = flights.get(flights.size() - 1);
         return flight.getRealArrivalTime();
+    }
+    
+    public Flight getFirstFlight(){
+        return flights.get(0);
+    } 
+    
+    public Flight getLastFlight(){
+        return flights.get(flights.size() - 1);
     }
 
     /**
@@ -202,5 +216,64 @@ public class Track {
         }
 
         return numberOfRepositions;
+    }
+    
+    /**
+     * Obtem o número de voos consecultivos, de init para tras,
+     * em que não é possível fazer a troca de tripulação
+     * @param init voo inicial a ser avaliado
+     * @return 
+     */
+    public void getNumberOfCrewFlightBehind(int init, IntegerParam numberOfCrewFlights, IntegerParam timeOfCrewFlights ) {
+        
+        int nOfCrewFlightsValue = 1;
+        int timeOfCrewFlightsValue = 0;
+        
+        for(int i = init-1; i >= 0; i--){
+            Flight first = flights.get(i+1);
+            Flight second = flights.get(i);
+            
+            timeOfCrewFlightsValue += first.getDuration();
+            
+            if(second.hasTimeToChangeCrew(first)){
+                break;
+            }
+            else{
+                nOfCrewFlightsValue++;
+            }
+        }
+        
+        timeOfCrewFlights.setValue(timeOfCrewFlightsValue);
+        numberOfCrewFlights.setValue(nOfCrewFlightsValue);
+    }
+
+    /**
+     * Obtem o número de voos consecultivos, de init para frente,
+     * em que não é possível fazer a troca de tripulação
+     * @param init voo inicial a ser avaliado
+     * @return 
+     */
+    public void getNumberOfCrewFlightAhead(int init, IntegerParam numberOfCrewFlights, IntegerParam timeOfCrewFlights ) {
+        
+        int nOfCrewFlightsValue = 1;
+        int timeOfCrewFlightsValue = 0;
+        
+        for(int i = init+1; i < flights.size(); i++){
+            Flight first = flights.get(i-1);
+            Flight second = flights.get(i);
+            
+            timeOfCrewFlightsValue += first.getDuration();
+            
+            if(first.hasTimeToChangeCrew(second)){
+                break;
+            }
+            else{
+                
+                nOfCrewFlightsValue++;
+            }
+        }
+        
+        timeOfCrewFlights.setValue(timeOfCrewFlightsValue);
+        numberOfCrewFlights.setValue(nOfCrewFlightsValue);
     }
 }

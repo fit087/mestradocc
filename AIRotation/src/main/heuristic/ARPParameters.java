@@ -23,7 +23,7 @@ import main.heuristic.exceptions.ParameterInvalidException;
 public class ARPParameters implements Serializable {
 
     //public transient final static ARPParameters defaultParameters = new ARPParameters(15, 53, 35, 10, 2);
-    public transient final static ARPParameters defaultParameters = new ARPParameters(5, 53, 35, 10, 2);
+    public transient final static ARPParameters defaultParameters = new ARPParameters(10, 5, 9*60, 40, 53, 35, 10, 2);
 
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -37,6 +37,12 @@ public class ARPParameters implements Serializable {
     private int probabilityType4Arc;
 
     private int maximumDelay;
+    
+    private int crewChangeTime;
+    
+    private int maxCrewFlights;
+    
+    private int maxCrewFlightTime;
 
     public ARPParameters() {
     }
@@ -60,7 +66,7 @@ public class ARPParameters implements Serializable {
      * @param probabilityType4Arc
      * @throws ParameterInvalidException
      */
-    public ARPParameters(int maximumDelay, int probabilityType1Arc, int probabilityType2Arc, int probabilityType3Arc, int probabilityType4Arc) throws ParameterInvalidException {
+    public ARPParameters(int maximumDelay, int crewMaxFlights, int maxCrewFlightTime, int crewChangeTime, int probabilityType1Arc, int probabilityType2Arc, int probabilityType3Arc, int probabilityType4Arc) throws ParameterInvalidException {
 
         if((probabilityType1Arc + probabilityType2Arc + probabilityType3Arc + probabilityType4Arc) != 100){
             throw new ParameterInvalidException("A soma das probabilidades dos 4 arcos devem ser igual a 100");
@@ -71,6 +77,9 @@ public class ARPParameters implements Serializable {
         this.probabilityType3Arc = probabilityType3Arc;
         this.probabilityType4Arc = probabilityType4Arc;
         this.maximumDelay = maximumDelay;
+        this.crewChangeTime = crewChangeTime;
+        this.maxCrewFlightTime = maxCrewFlightTime;
+        this.maxCrewFlights = crewMaxFlights;
 
     }
     
@@ -82,6 +91,30 @@ public class ARPParameters implements Serializable {
         this.maximumDelay = maximumDelay;
     }
 
+    public int getMaxCrewFlightTime() {
+        return maxCrewFlightTime;
+    }
+
+    public void setMaxCrewFlightTime(int maxCrewFlightTime) {
+        this.maxCrewFlightTime = maxCrewFlightTime;
+    }
+    
+    public int getMaxCrewFlights() {
+        return maxCrewFlights;
+    }
+
+    public void setMaxCrewFlights(int maxCrewFlights) {
+        this.maxCrewFlights = maxCrewFlights;
+    }
+    
+    public int getCrewChangeTime() {
+        return crewChangeTime;
+    }
+
+    public void setCrewChangeTime(int crewChangeTime) {
+        this.crewChangeTime = crewChangeTime;
+    }
+    
     public int getProbabilityType1Arc() {
         return probabilityType1Arc;
     }

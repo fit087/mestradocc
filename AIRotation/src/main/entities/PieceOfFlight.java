@@ -7,8 +7,7 @@ package main.entities;
 import java.util.ArrayList;
 
 /**
- *
- * @author alexanderdealmeidapinto
+ *  Todos os pedaços de voos devem partir e chegar no mesmo local.
  */
 public class PieceOfFlight implements Comparable<PieceOfFlight> {
 
@@ -36,6 +35,10 @@ public class PieceOfFlight implements Comparable<PieceOfFlight> {
     
     public City getArrivalCity(){
         return flights.get(flights.size() - 1).getArrivalCity();
+    }
+    
+    public int size(){
+        return flights.size();
     }
 
     public boolean isPossibleArriveBefore(PieceOfFlight pieceOfFlight){
@@ -86,8 +89,14 @@ public class PieceOfFlight implements Comparable<PieceOfFlight> {
         }
     }
 
-    public int size() {
-        return flights.size();
+    public int getTotalFlightTime() {
+        int totalFlightTime = 0;
+        
+        for (PseudoFlight pseudoFlight : flights) {
+            totalFlightTime += pseudoFlight.getDuration();
+        }
+        
+        return totalFlightTime;
     }
 
 
@@ -135,6 +144,10 @@ public class PieceOfFlight implements Comparable<PieceOfFlight> {
         @Override
         public String toString() {
             return departureCity.getName() + " " + duration + " " + arrivalCity.getName();
+        }
+
+        public Integer getGroundTime() {
+            return getDepartureCity().getGroundTime();
         }
     }
 }

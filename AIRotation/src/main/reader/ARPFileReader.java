@@ -122,9 +122,9 @@ public class ARPFileReader {
 
         
 
-        for (String string : cities) {
-            System.out.println(string);
-        }
+//        for (String string : cities) {
+//            System.out.println(string);
+//        }
 
         Collections.sort(flights, new Comparator<Flight>() {
 

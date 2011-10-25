@@ -94,7 +94,7 @@ public class ExecutionInfo {
 
     public void configure(AirlineNetwork airlineNetwork, Long executionTime){
         this.instanceName = airlineNetwork.getPathInstance();
-        this.numberOfFlights = airlineNetwork.getFlights().size();
+        this.numberOfFlights = airlineNetwork.getFlightsOnBestResult();
         this.objectiveFunctionValue = AirlineNetwork.getTotalCost(airlineNetwork.getBestNetwork());
         this.executionTime = executionTime;
         this.numberOfTracks = airlineNetwork.getBestNetwork().size();

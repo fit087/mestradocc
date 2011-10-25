@@ -24,46 +24,59 @@ import util.SolutionUtil;
  */
 public class SolverManager {
 
-    private static final String solverPath = "/home/alexander/Documents/Documents/Mestrado/Projeto/svn/trunk/SOLVER/";
+    private static final String solverPath = "/Users/alexander/Documents/Mestrado/dissertacao/trunk/SOLVER/";
+    
 
-    public static void executeSolver(AirlineNetwork airlineNetwork, boolean useSolver) throws IOException, InterruptedException {
+    public static void executeSolver(AirlineNetwork airlineNetwork, boolean useSolver, int max_delay) throws IOException, InterruptedException {
         File inputFile = new File("entrada.txt");
         File outputFile = new File("saida.txt");
 
         inputFile.delete();
         outputFile.delete();
 
-        SolutionUtil.writeFormatedAirlineNetworkForCplex(airlineNetwork, inputFile);
+        SolutionUtil.writeFormatedAirlineNetworkForCplex(airlineNetwork, inputFile, max_delay);
 
         ArrayList<String> commands = new ArrayList<String>();
         commands.add(solverPath + "main");
-        commands.add(inputFile.getAbsolutePath());
+        commands.add(inputFile.getAbsolutePath());  
         if (useSolver) {
             commands.add("true");
         }
         String[] args = commands.toArray(new String[0]);
 
-        System.out.println("[SolverManager.executeSolver] Command: " + commands.get(0));
+        System.out.println("[SolverManager.executeSolver] Comando utilizado: " + Arrays.toString(args));
         Process process = Runtime.getRuntime().exec(args);
 
-        InputStream is = process.getInputStream();
+        
+        showStream(process.getInputStream(), "-------------- Saída padrão ------------- ");
+    
+        showStream(process.getErrorStream(), "-------------- Saída de erros ------------- ");
+        
+        process.waitFor();
+        
+        
+
+        System.out.println("[SolverManager.executeSolver] Construindo a solução");
+
+        constructFromFile(airlineNetwork, outputFile);
+
+        System.out.println("[SolverManager.executeSolver] Finalizado");
+    }
+    
+    public static void showStream(InputStream is, String text) throws IOException{
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         String line;
 
-        System.out.printf("Output of running %s is:",
-                Arrays.toString(args));
+        System.out.printf("%s:\n", text);
 
         while ((line = br.readLine()) != null) {
-            System.out.println(line);
+            System.out.println("\t--" + line);
         }
-        process.waitFor();
-
-        System.out.println("[SolverManager.executeSolver] Construindo solucao gerada");
-
-        constructFromFile(airlineNetwork, outputFile);
-
-        System.out.println("[SolverManager.executeSolver] Finish");
+        
+        System.out.println("-------");
+        
+        isr.close();
     }
 
     public static void constructFromFile(AirlineNetwork airlineNetwork, File file) throws FileNotFoundException {
