@@ -129,18 +129,14 @@ public class SolutionUtil {
 
     }
 
-    public static void writeFormatedAirlineNetworkForCplex(AirlineNetwork airlineNetwork, File output) throws IOException {
+    public static void writeFormatedAirlineNetworkForCplex(AirlineNetwork airlineNetwork, File output, int max_delay) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(output));
 
         ArrayList<Flight> flights = airlineNetwork.getFlights();
         ArrayList<City> citys = airlineNetwork.getCities();
 
-        for (City city : citys) {
-            System.out.println("CITY " + city.getName());
-        }
-
-
-        bw.write(flights.size() + " " + 10);
+        System.out.println("MAX DELAY = "  + max_delay);
+        bw.write(flights.size() + " " + max_delay);
         bw.write("\n");
         bw.write("\n");
 
