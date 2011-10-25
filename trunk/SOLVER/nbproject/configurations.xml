@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="69">
-  <logicalFolder name="root" displayName="root" projectFiles="true">
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df name="ARP_FINAL" root=".">
       <df name="cplexinput">
       </df>
       <df name="util">
         <in>ARPUtil.cpp</in>
         <in>ARPUtil.h</in>
+        <in>LocalSearchUtil.cpp</in>
+        <in>LocalSearchUtil.h</in>
         <in>MathUtil.cpp</in>
         <in>MathUtil.h</in>
       </df>
@@ -38,15 +40,14 @@
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>4</platform>
       </toolsSet>
       <makefileType>
         <makeTool>
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>$(MAKE) -f Makefile</buildCommand>
-          <cleanCommand>$(MAKE) -f Makefile clean</cleanCommand>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>./main</executablePath>
           <ccTool>
             <incDir>
