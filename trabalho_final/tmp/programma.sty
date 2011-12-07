@@ -1,0 +1,516 @@
+%% programma.sty
+\NeedsTeXFormat{LaTeX2e}
+
+\ProvidesPackage{programma}[05/31/2005]
+\typeout{Programma} 
+
+\RequirePackage{ifthen}
+
+%%
+%% Dimensions
+%%
+
+% Original text paragraph indentation
+\newdimen\PG@parindent
+
+% Block indent
+\newdimen\PG@blindent
+\PG@blindent=1.5em
+
+% Total block indent (block level * block indent)
+\newdimen\PG@tblindent
+\PG@tblindent=0pt
+
+% Line number box width
+\newdimen\PG@lnowidth
+\PG@lnowidth=1.25em
+
+% Line number separation 
+% Minimum amount of space between line numbers and line contents
+\newdimen\PG@lnosep
+\PG@lnosep=.25em
+
+% Paragraph indentation of the "input" and "output" sections
+\newdimen\PG@IOparindent
+
+% Total left margin (total block indent + line number width)
+\newdimen\PG@tlm
+
+
+%%
+%% Counters
+%%
+
+% Line lumber
+\newcount\PG@line
+
+
+%%
+%% Ifs
+%%
+
+% Control display of ENDs
+\newif\ifshowend
+\showendfalse
+
+% Control display of line numbers
+\newif\ifshowlno
+\showlnotrue
+
+% Control float numbering within sections
+\newif\ifpgwithin
+\pgwithinfalse
+
+%%
+%% Package Options
+%%
+
+% Causes ENDs to be shown
+\DeclareOption{showend}{\showendtrue}
+
+% Languages
+\DeclareOption{en}{\let\@PGlang=0}
+\DeclareOption{pt}{\let\@PGlang=1}
+
+
+% Float numbering
+\DeclareOption{part}{  
+  \edef\PG@within{part}
+  \pgwithintrue
+}
+\DeclareOption{chapter}{
+  \edef\PG@within{chapter}
+  \pgwithintrue
+}
+\DeclareOption{section}{
+  \edef\PG@within{section}
+  \pgwithintrue
+}
+\DeclareOption{subsection}{
+  \edef\PG@within{subsection}
+  \pgwithintrue
+}
+\DeclareOption{subsubsection}{
+  \edef\PG@within{subsubsection}
+  \pgwithintrue
+}
+
+\ExecuteOptions{en}
+\ProcessOptions
+
+
+%%
+%% Styles
+%%
+
+% Algorithm name style
+\def\PGalgnamesty#1{{\sl #1}}
+
+% Keywords style
+\def\PGkwsty#1{{\bf #1}}
+
+% Line numbers style
+\def\PGlnsty#1{{\footnotesize\it #1}}
+
+% Comments style
+\def\PGcommentsty#1{\{{\it #1}\}}
+
+
+%%
+%% Keywords
+%%
+%% << IMPORTANT! >>
+%% IF YOU WANT TO USE THIS PACKAGE IN ANOTHER LANGUAGE, 
+%% THEN ALL YOU HAVE TO DO IS TO TRANSLATE KEYWORDS BELOW.
+%%
+% English
+\if\@PGlang0
+\def\PG@algname{Algorithm}
+\def\PG@loaname{List of \PG@algname s}
+\def\PGalgorithm{\PGkwsty{Algorithm}}
+\def\PGfunction{\PGkwsty{Function}}
+\def\PGprocedure{\PGkwsty{Procedure}}
+\def\PGbegin{\PGkwsty{begin}}
+\def\PGend{\PGkwsty{end}}
+\def\PGinput{\PGkwsty{Input}}
+\def\PGoutput{\PGkwsty{Output}}
+\def\PGif{\PGkwsty{if}}
+\def\PGthen{\PGkwsty{then}}
+\def\PGelse{\PGkwsty{else}}
+\def\PGendif{\PGend~\PGif}
+\def\PGswitch{\PGkwsty{switch}}
+\def\PGendswitch{\PGend~\PGswitch}
+\def\PGcase{\PGkwsty{case}}
+\def\PGotherwise{\PGkwsty{otherwise}}
+\def\PGfor{\PGkwsty{for}}
+\def\PGforeach{\PGfor~\PGkwsty{each}}
+\def\PGforall{\PGfor~\PGkwsty{all}}
+\def\PGin{\PGkwsty{in}~}
+\def\PGfrom{\PGkwsty{from}~}
+\def\PGto{\PGkwsty{to}~}
+\def\PGdownto{\PGkwsty{down~to}~}
+\def\PGdo{\PGkwsty{do}}
+\def\PGendfor{\PGend~\PGfor}
+\def\PGwhile{\PGkwsty{while}}
+\def\PGendwhile{\PGend~\PGwhile}
+\def\PGrepeat{\PGkwsty{repeat}}
+\def\PGuntil{\PGkwsty{until}}
+\def\PGreturn{\PGkwsty{return}~}
+\fi
+% Portugues
+\if\@PGlang1
+\def\PG@algname{Algoritmo}
+\def\PG@loaname{Lista de \PG@algname s}
+\def\PGalgorithm{\PGkwsty{Algoritmo}}
+\def\PGfunction{\PGkwsty{Fun\c{c}\~ao}}
+\def\PGprocedure{\PGkwsty{Procedimento}}
+\def\PGbegin{\PGkwsty{in\'\i cio}}
+\def\PGend{\PGkwsty{fim}}
+\def\PGinput{\PGkwsty{Entrada}}
+\def\PGoutput{\PGkwsty{Sa\'\i da}}
+\def\PGif{\PGkwsty{se}}
+\def\PGthen{\PGkwsty{ent\~ao}}
+\def\PGelse{\PGkwsty{sen\~ao}}
+\def\PGendif{\PGend~\PGif}
+\def\PGswitch{\PGkwsty{selecione}}
+\def\PGendswitch{\PGend~\PGswitch}
+\def\PGcase{\PGkwsty{caso}}
+\def\PGotherwise{\PGkwsty{caso~contr\'ario}}
+\def\PGfor{\PGkwsty{para}}
+\def\PGforeach{\PGfor~\PGkwsty{cada}}
+\def\PGforall{\PGfor~\PGkwsty{todo}}
+\def\PGin{\PGkwsty{em}~}
+\def\PGfrom{\PGkwsty{de}~}
+\def\PGto{\PGkwsty{para}~}
+\def\PGdownto{\PGkwsty{para}~}
+\def\PGdo{\PGkwsty{fa\c{c}a}}
+\def\PGendfor{\PGend~\PGfor}
+\def\PGwhile{\PGkwsty{enquanto}}
+\def\PGendwhile{\PGend~\PGwhile}
+\def\PGrepeat{\PGkwsty{repita}}
+\def\PGuntil{\PGkwsty{at\'e}}
+\def\PGreturn{\PGkwsty{devolva}~}
+\fi
+
+%%
+%% Generic "procedures"
+%%
+
+% Generates line numbers boxes
+\def\PG@lno{
+	\ifshowlno
+		\leavevmode
+		\llap{%
+			\hbox to\PG@tlm{\ignorespaces
+		  	\hbox to\PG@lnowidth{\hfil\PGlnsty{\the\PG@line}}
+		  	\hfill
+			}
+		}
+		\kern -0.255em % <-- hard-coded correction. why?????
+		\ignorespaces
+  \else
+  \fi
+}
+
+% Generic item (statement)
+\def\PG@item{%
+	\global\advance\PG@line by 1
+	\par%
+	\hangindent=\parindent
+	%\advance\hangindent by\PG@lnosep
+	\PG@lno\ignorespaces}
+
+% Generic block
+\newenvironment{PC@block}[1][\PG@blindent]
+	{\advance\PG@tblindent by#1%
+	 \PG@tlm=\PG@tblindent
+	 \ifshowlno
+ 	  \advance\PG@tlm by \PG@lnowidth 
+	 	\advance\PG@tlm by \PG@lnosep
+	 \fi
+	 \parindent=\PG@tlm 
+	 \advance\parindent by \PG@parindent
+	}{}
+
+% Cross-referencing
+\def\PGlnlabel#1{\@bsphack
+  \protected@write\@auxout{}%
+         {\string\newlabel{#1}{{\the\PG@line}{\thepage}}}%
+  \@esphack}
+%\@ifundefined{real@setref}% if using hyperref
+%{\def\PGlnref#1%
+%	{\expandafter\@setref\csname r@#1\endcsname\@firstoftwo{#1}}}
+%{\def\PGlnref#1%
+%	{\expandafter\real@setref\csname r@#1\endcsname\@firstoftwo{#1}}}
+\def\PGlnref#1%
+{\@ifundefined{real@setref}% if using hyperref
+	{\expandafter\@setref\csname r@#1\endcsname\@firstoftwo{#1}}
+	{\expandafter\real@setref\csname r@#1\endcsname\@firstoftwo{#1}}}
+	
+%%
+%% Specific internal block environments
+%%
+
+% ALGORITHM (procedure or function) environment
+\newenvironment{PC@alg}
+	{\global\PG@line=0
+ 	 \ifshowlno\begin{PC@block}[0pt]\else\begin{PC@block}\fi}
+	{\end{PC@block}}
+
+% INPUT environment
+\newenvironment{PC@input}
+	{\settowidth{\PG@IOparindent}{\PGoutput\enspace}
+	 \parindent=\PG@IOparindent
+	 \advance\parindent by\PG@parindent
+	 \par\hangindent=\parindent%
+	 \indent\llap{\hbox to\PG@IOparindent{\PGinput\enspace\hss}}\ignorespaces}
+	{\par}
+
+% OUTPUT environment
+\newenvironment{PC@output}
+	{\settowidth{\PG@IOparindent}{\PGoutput\enspace}
+	 \parindent=\PG@IOparindent
+	 \advance\parindent by\PG@parindent
+	 \par\hangindent=\parindent%
+	 \indent\llap{\hbox to\PG@IOparindent{\PGoutput\enspace\hss}}\ignorespaces}
+	{\par}
+
+% IF environemnt
+\newenvironment{PC@if}
+	{\begin{PC@block}}
+	{\end{PC@block}}
+
+% SWITCH environment
+\newenvironment{PC@switch}
+	{\begin{PC@block}}
+	{\end{PC@block}}
+
+% CASE environment
+\newenvironment{PC@case}
+	{\begin{PC@block}}
+	{\end{PC@block}}
+
+% FOR environment
+\newenvironment{PC@for}
+	{\begin{PC@block}}
+	{\end{PC@block}}
+
+% WHILE environment
+\newenvironment{PC@while}
+	{\begin{PC@block}}
+	{\end{PC@block}}
+
+% DO-WHILE environemnt
+% receives the "stop condition" as argument
+\newenvironment{PC@dowhile}[1]
+	{\def\PG@stop{#1}
+	 \PG@item\PGdo
+	 \begin{PC@block}}
+	{\end{PC@block}
+	 \PG@item\PGwhile~\PG@stop}
+
+% REPEAT environment
+\newenvironment{PC@repeat}
+	{\begin{PC@block}}
+	{\end{PC@block}}
+
+
+%%
+%% Main PROGRAMMA ENVIRONMENT
+%%
+%% arguments: 0 (default) - display line nums
+%%            1 - do not display line nums
+%%           
+
+\newenvironment{programma}[1][0]
+{
+	\def\ALGORITHM##1{%
+		\PGalgorithm~\PGalgnamesty{##1}
+		\begin{PC@alg}}
+	\def\ENDALGORITHM{%
+		\end{PC@alg}
+		\ifshowend\par\PGend\fi}
+
+	\def\PROCEDURE##1{%
+		\PGprocedure~\PGalgnamesty{##1}
+		\begin{PC@alg}}
+	\def\ENDPROCEDURE{%
+		\end{PC@alg}}
+
+	\def\FUNCTION##1{%
+		\PGfunction~\PGalgnamesty{##1}
+		\begin{PC@alg}}
+	\def\ENDFUNCTION{%
+		\end{PC@alg}}
+	
+	\def\INPUT{\begin{PC@input}}
+	\def\ENDINPUT{\end{PC@input}}
+
+	\def\OUTPUT{\begin{PC@output}}
+	\def\ENDOUTPUT{\end{PC@output}}
+	
+	\def\IF##1{%
+		\PG@item\PGif~##1\ \PGthen
+		\begin{PC@if}}
+	\def\ELSEIF##1{%
+		\end{PC@if}
+		\PG@item\PGelse~\PGif~##1\ \PGthen
+		\begin{PC@if}}
+	\def\ELSE{%
+		\end{PC@if}
+		\PG@item\PGelse
+		\begin{PC@if}}
+	\def\ENDIF{%
+		\end{PC@if}
+		\ifshowend\PG@item\PGendif\fi}
+
+	\def\SWITCH##1{%
+		\PG@item\PGswitch~##1
+		\begin{PC@switch}}
+	\def\CASE##1{%
+		\PG@item\PGcase~##1
+		\begin{PC@case}}
+	\def\ENDCASE{%
+		\end{PC@case}}
+	\def\OTHERWISE{%
+		\PG@item\PGotherwise
+		\begin{PC@case}}
+	\def\ENDOTHERWISE{%
+		\end{PC@case}}
+	\def\ENDSWITCH{%
+		\end{PC@switch}
+		\ifshowend\PG@item\PGendswitch\fi}
+
+	\def\FOR##1{%
+		\PG@item\PGfor~##1\ \PGdo
+	 	\begin{PC@for}}
+	\def\ENDFOR{%
+		\end{PC@for}
+	  \ifshowend\PG@item\PGendfor\fi}
+
+	\def\FOREACH##1{%
+		\PG@item\PGforeach~##1\ \PGdo
+	 	\begin{PC@for}}
+	\def\ENDFOR{%
+		\end{PC@for}
+	  \ifshowend\PG@item\PGendfor\fi}
+
+	\def\FORALL##1{%
+		\PG@item\PGforall~##1\ \PGdo
+	 	\begin{PC@for}}
+	\def\ENDFOR{%
+		\end{PC@for}
+	  \ifshowend\PG@item\PGendfor\fi}
+
+	\def\WHILE##1{%
+	  \PG@item\PGwhile~##1\ \PGdo
+		\begin{PC@while}}
+	\def\ENDWHILE{%
+		\end{PC@while}
+		\ifshowend\PG@item\PGendwhile\fi}
+
+	\def\DOWHILE##1{\begin{PC@dowhile}{##1}}
+	\def\ENDDO{\end{PC@dowhile}}
+
+	\def\REPEAT{%
+		\PG@item\PGrepeat
+		\begin{PC@repeat}}
+	\def\UNTIL##1{%
+		\end{PC@repeat}
+		\PG@item\PGuntil~##1}
+
+	\def\STATE{\PG@item}  
+	
+	\def\COMMENT##1{\PGcommentsty{##1}}  
+	
+	\def\CALL##1##2{\PGalgnamesty{##1}(\thinspace ##2\thinspace)}
+
+	\def\RETURN{\PGreturn}
+
+	\def\FROM{\PGfrom}
+	
+	\def\TO{\PGto}
+	
+	\def\DOWNTO{\PGdownto}
+	
+	\def\IN{\PGin}
+	
+	\def\GETS{\ensuremath{\leftarrow}}
+
+	%% Start new algorithm
+	\PG@parindent=0pt	
+	\advance\PG@parindent by\parindent
+	
+	% Control line number display
+	\newcount\n
+	\n=#1
+	\ifnum1=\n\showlnofalse\else\showlnotrue\fi
+	%\ifshowlno{}\else
+	%{
+	%	\global\PG@lnosep=0pt
+	%	\global\PG@lnowidth=0pt	
+	%}\fi
+	\medskip
+}
+{\medskip}
+
+
+
+%%
+%% Floats
+%%
+\def\pgrmname{\PG@algname}
+\newcounter{pgrm}
+
+\ifpgwithin
+  \ifthenelse{\equal{\PG@within}{part}}
+  	{\def\thepgrm
+     {\ifnum \c@part>\z@ \thepart.\fi \@arabic\c@pgrm}
+     \def\theHpgrm{\theHpart.\arabic{pgrm}}} %% Hooks for the hyperref package
+    {}
+  \ifthenelse{\equal{\PG@within}{chapter}}
+  	{\def\thepgrm
+     {\ifnum \c@chapter>\z@ \thechapter.\fi \@arabic\c@pgrm}
+     \def\theHpgrm{\theHchapter.\arabic{pgrm}}}
+    {}
+  \ifthenelse{\equal{\PG@within}{section}}
+  	{\def\thepgrm
+     {\ifnum \c@section>\z@ \thesection.\fi \@arabic\c@pgrm}
+     \def\theHpgrm{\theHsection.\arabic{pgrm}}}
+    {}
+  \ifthenelse{\equal{\PG@within}{subsection}}
+  	{\def\thepgrm
+     {\ifnum \c@subsection>\z@ \thesubsection.\fi \@arabic\c@pgrm}
+     \def\theHpgrm{\theHsubsection.\arabic{pgrm}}}
+    {}
+  \ifthenelse{\equal{\PG@within}{subsubsection}}
+  	{\def\thepgrm
+     {\ifnum \c@subsubsection>\z@ \thesubsubsection.\fi \@arabic\c@pgrm}
+     \def\theHpgrm{\theHsubsubsection.\arabic{pgrm}}}
+    {}
+\else
+  \def\thepgrm{\@arabic\c@pgrm}
+  \def\theHpgrm{\arabic{pgrm}}
+\fi
+
+\def\fps@pgrm{tbp}
+\def\ftype@pgrm{1}
+\def\ext@pgrm{lopc}
+\def\fnum@pgrm{\pgrmname\nobreakspace\thepgrm}
+\newenvironment{pgrm}
+               {\@float{pgrm}}
+               {\end@float}
+\newenvironment{pgrm*}
+               {\@dblfloat{pgrm}}
+               {\end@dblfloat}
+
+\def\listofalgorithms{
+  \@ifundefined{chapter}{\def\@tempa{\section*}}%
+    {\def\@tempa{\chapter*}}%
+  \@tempa{\PG@loaname}%
+  \@namedef{l@pgrm}{\@dottedtocline{1}{1.5em}{2.3em}}%
+	\@starttoc{\@nameuse{ext@pgrm}}}
+
+\def\@lopcchapterspace{\addtocontents{\@nameuse{ext@pgrm}}{\protect\addvspace{10\p@}}}
+
+\def\toclevel@pgrm{0}

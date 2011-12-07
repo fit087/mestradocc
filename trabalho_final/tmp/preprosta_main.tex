@@ -1,0 +1,229 @@
+
+
+%
+% Exemplo de utiliza??o do modelo pgeeltex.
+%
+% por Miguel Moreto, 2011
+%  
+% Use por sua conta e risco.
+%
+% Defini??o da classe a ser utilizada:
+\documentclass[oneside,normaltoc,espacoumemeio,PGTEXdissertacao]{pgeeltex}
+% O significado das op??es ? apresentado no manual.
+
+% Utilize tamb?m a op??o PGTEXdraft caso voc? queira gerar uma vers?o para a
+% banca examinadora em tamanho A4 e para impress?o em somente u m dos lados da
+% folha.
+% Sempre mantenha seu Tex / Miktex atualizado.
+
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[pt,showend]{programma}
+\usepackage{longtable}
+
+
+% A linha abaixo chama o pacote hyperref, configurado para usar o programa 
+% dvipdfm.exe na convers?o do .dvi para o .pdf. Se voc? utiliza outra forma de
+% gerar o pdf, altere a linha abaixo com a op??o adequada. Veja o manual do 
+% hyperref para saber as op??es dispon?veis e outras configura??es do pacote.
+
+% Sugest?o: Gere o pdf utilizando o dvipdfm.exe que converte direto
+% de dvi para pdf. Caso contr?rio, configure adequadamente o pacote hyperref.
+\usepackage[dvips,linktocpage=true,pdfauthor={Alexander de Almeida Pinto},
+pdftitle={Utilização das metaheurésticas GRASP e ILS aditivado com programção
+linear para resolução do problema de construção de trilhos de aeronaves},
+pdfsubject={PCTA},pdfcreator={LaTeX e Dvips}]{hyperref}
+\usepackage[alf,abnt-emphasize=bf,abnt-etal-text=it,bibjustif,abnt-etal-cite=2,abnt-etal-list=0,abnt-url-package=hyperref,recuo=0.5cm]{abntcite}
+ 
+% Se voc? quiser utilizar o estilo de cita??o num?rica, ex. [1], [2], comente a linha acima e use o c?digo que est? comentado nas 3 linhas abaixo:
+  %\usepackage[num,bibjustif,recuo=1cm]{abntcite} 
+  %\usepackage{colchetesrefs} % Coloca colchetes na lista de refer?ncias ao final do documento.
+  %\citebrackets{[}{]}
+% N?o esque?a do comando \bibliographystyle{abnt-num} antes the chamar o seu arquivo .bib. (\bibliography) ao final do documento para que a lista de refer?ncias tamb?m esteja no formato num?rico.
+
+\usepackage{nomencl} % Pacote necess?rio para a lista de siglas. 
+% O comando a seguir diz ao Latex para salvar as siglas em um arquivo separado:
+\fazlistasiglas[Lista de Abreviaturas e Siglas] % Par?metro opcional ? o t?tulo da lista.
+
+\usepackage[font={bf,small}]{caption}
+
+\usepackage{graphicx}
+
+
+
+%\renewcommand{\familydefault}{cmr}
+% A seguinte linha evita algumas mensagens de warning por parte do hyperref.
+% Comentar se o pacote hyperref n?o estiver sendo utilizado.
+\pdfstringdefDisableCommands{\edef\uppercase{}}
+
+
+% Os comandos a seguir ajustam o posicionamento dos floats (figures e tables).
+\renewcommand{\floatpagefraction}{0.90}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\setlength{\intextsep}{5pt}
+\setlength{\textfloatsep}{5pt}
+\setlength{\floatsep}{5pt}
+%%%%%%%%% In?cio das defini??es iniciais %%%%%%%%%
+
+
+\autor{Alexander de Almeida Pinto}
+\titulo{Utilização das metaheurísticas GRASP e ILS aditivado com
+programação linear para resolução do problema de construção de trilhos de
+aeronaves}
+\titlePGTEX{Titulo em ingles}
+% T?tulo do documento \titlePGTEX{\LaTeX ~Thesis/Dissertation Example Using the \pgeeltex} % T?tulo do documento, em ingl?s.
+
+% Nos 3 comandos abaixo o par?metro opcional entre [] pode ser preenchido para o caso de
+% alguma dessas pessoas ser mulher. Se n?o especificado, vale o valor default.
+%  Valores default: Orientador, Co-orientador e Coordenador.
+\orientadorPGTEX[Orientador]{Dr.}{Lucídio dos Anjos Formiga Cabral}
+
+%\coorientadorPGTEX[Co-orientadora]{Grau}{Nome do co-orientador}
+\coordenadorPGTEX[Coordenadora]{Dra.}{Tatiana Aires Tavares} % Coordenador do PPGEEL
+
+\areaconcentracaoPGTEX{Computação Distribuída} 
+% ?rea de concentra??o 
+\concentrationareaPGTEX{Distributed Computing} %
+% ?rea de concentra??o em ingl?s
+
+\palavraschavePGTEX{Transporte, PCTA, Metaheurística, Método Exato,GRASP, Rotas e Aeronaves}
+% Palavras chave 
+\keywordsPGTEX{Transportation, ARP,  metaheuristic, Exact Method, GRASP,Aircraft Routing}
+% Palavras chave em ingl?s
+
+% Instru??es para banca examinadora:
+%   -> O primeiro membro da banca, definido pelo comando \bancaAPGTEX ? o presidente da banca
+%      (provavelmente o orientador).
+%   -> O segundo membro ser? automaticamente o Co-orientador se ele existir e for definido pelo
+%      comando \coorientadorPGTEX
+%   -> Os demais membros da banca s?o definidos pelos comandos \bancaBPGTEX, \bancaCPGTEX, \bancaDPGTEX e
+%      \bancaEPGTEX.
+%   -> Deixando os parametros dos comandos dos membros da banca vazios (exemplo \bancaAPGTEX{}), far?
+%      com que as respectivas linhas de assinatura n?o apare?am.
+%   -> Os comandos suportam um par?metro adicional, entre colchetes, onde ? colocado o grau de titula??o
+%      do respectivo membro da banca. Se este par?metro adicional n?o for utilizado, ent?o o valor padr?o
+%      "Doutor" ? atribuido.
+
+\bancaAPGTEX[Dra.]{Tatiana Aires Tavares}
+\bancaBPGTEX[Dr., UFPB]{Antonio Carlos Cavalcanti}
+%\bancaCPGTEX{} % Como exemplo, o membro D da banca n?o vai aparecer por estar vazio.
+%\bancaDPGTEX{}
+%\bancaFPGTEX[Doutor, MIT]{Membro F da banca}
+%\bancaGPGTEX[Doutor]{Membro G da banca}
+
+\local{João Pessoa} 
+
+\mesPGTEX[Ago]{Agosto} % Mes de publica??o
+\anoPGTEX{2011} % Ano
+\datadefesaPGTEX{04/08/2011} % Data da defesa.
+
+% Dados para confec??o da capa de um trabalho de disciplina.
+% Nescess?rios somente se a op??o de classe PGTEXtrabalho for utilizada.
+\labPGTEX{LABSPOT}
+\discipPGTEX{Disciplina 1}
+
+%%%%%%%%% Fim das defini??es iniciais %%%%%%%%%
+
+\begin{document} % In?cio do documento.
+
+% Monta a capa (no novo modelo da BU, a capa ? feita separadamente, o texto inicia com a folha de rosto):
+%\capaPGTEX
+
+% Monta a folha de rosto:
+\folhaderostoPGTEX
+% Monta a folha de aprova??o:
+\folhadeaprovacaoPGTEX
+
+% DEDICAT?RIA
+%
+% Est?o dispon?veis dois tipos de dedicat?ria:
+\begin{dedicatoriaPGTEX}
+Dedico esse trabalho a minha família que me ajudou em todos os momentos
+que precisei.
+\end{dedicatoriaPGTEX}
+
+% e / ou:
+
+
+
+% EPIGRAFE (opcional).
+% Parametro obrigatorio entre {} ? o autor da epigrafe.
+\begin{epigrafePGTEX}{Bruce Calvert} 
+Acreditar é mais fácil do que pensar. Daí existem muito mais crentes do que
+pensadores.
+\end{epigrafePGTEX}
+
+
+% AGRADECIMENTOS
+\begin{agradecimentosPGTEX}
+Aqui entra os agradecimentos.
+\end{agradecimentosPGTEX}
+
+% RESUMO:
+\begin{resumoPGTEX}
+Os problemas operacionais cresceram muito em complexidade nos últimos
+tempos, o que tem tornado necessário o desenvolvimento de técnicas que possam agilizar a tomada de decisão. Empresas que não utilizam sistemas 
+computadorizados com essa finalidade tem perdido espaço entre seus concorrentes.
+ 
+ A construção de trilhos de aeronaves é considerado um dos principais problemas da indústria aeronáutica e se 
+ refere ao sequênciamento dos voos de uma companhia aérea de forma que o menor número de aeronaves seja necessário 
+ para opera-las. Esse problema possui uma característica combinatória e a sua resolução fica mais difícil a medida 
+ que a quantidade de voos envolvidos cresce. Entretanto pequenas modificações nos horários de partida desses voos, 
+ ou o acréscimo de algum voo de resposicionamento entre dois aeroportos próximos podem gerar soluções de baixo custo.
+ 
+ Apresentamos uma algoritmo híbrido baseado na metaheurística GRASP, com a utilização do ILS e de programação inteira 
+ na busca local. Esse algoritmo é indicado para resolução de problemas de larga escala, pois nesse caso fica inviável 
+ a aplicação de um algoritmo puramente exato que poderia levar anos para realizar a tarefa. Os resultados preliminares 
+ tem mostrado agilidade na obtenção de boas soluções.
+ \end{resumoPGTEX}
+
+% ABSTRACT
+\begin{abstractPGTEX}
+Write here the English version of your Resumo... 
+\end{abstractPGTEX}
+
+
+\listadefiguras
+
+\listadetabelas
+
+\listadesiglas
+
+%\listadesimbolos
+
+\sumario
+  
+\include{introducao}
+\include{fundamentacao}
+
+\include{revisaoliteratura}
+\include{descricaoproblema}
+\include{modelomatematico}
+\include{metodoproposto}  
+\include{resultados}
+%\include{conclusoes}
+
+
+ 
+% Bibliografia o arquivo
+
+
+\bibliographystyle{abnt-alf} % Estilo autor-data
+\bibliography{bibliografia}    % As referencias deste testo est?o no arquivo modelotese.bib
+\ABNTaddcontentsline{toc}{chapter}{Refer?ncias bibliogr?ficas}
+
+
+\anexo
+
+\include{instances/instance_artigo}
+\include{instances/instance_artigo_tempo}
+\include{instances/resultado_artigo}
+
+\include{instances/instance_tam}
+\include{instances/instance_tam_tempo}
+\include{instances/resultado_tam}  
+
+\end{document}
+
