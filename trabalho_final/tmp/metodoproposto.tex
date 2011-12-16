@@ -3,18 +3,18 @@
 O método proposto se utiliza do GRASP, do ILS e da abordagem exata através da
 programação linear inteira, pretendendo tirar proveito das vantagens de cada
 uma dessas técnicas. A agilidade dos métodos heurísticos e a optimalidade do
-método exáto.
+método exato.
   
 Da mesma forma que as outras abordagens heurísticas esse novo algoritmo
 consome pouco tempo computacional, em relação ao método exato e tem a capacidade
 de escapar de mínimos locais.
   
 O GRASP foi utilizado como a base do algoritmo onde a parte da construção
-seguiu a sua definição padrão, com a geração de uma lista restrita de candidados
+seguiu a sua definição padrão, com a geração de uma lista restrita de candidatos
 (LRC) e a posterior escolha aleatória entre esses elementos. A parte da busca
 local foi adaptada para executar em conjunto com o ILS modificado. Para o ILS
 foram definidos algumas estruturas de vizinhança que foram utilizadas
-na busca local e a pertubação foi feita com a utilização de um solver em uma
+na busca local e a perturbação foi feita com a utilização de um solver em uma
 parte do problema. Essa abordagem permite que o algoritmo gere boas
 soluções e escape de mínimos locais além de promover uma aceleração na obtenção
 de boas soluções através de uma intensificação em uma direção totalmente
@@ -23,10 +23,10 @@ arbitrária proporcionando assim um alto grau de convergência.
 
 O solver funciona a partir de um modelo matemático que foi desenvolvido baseado
 na proposta de \cite{pontes2002} que é aplicado a uma parte do problema cada
-vez que se deseja fazer uma pertubação. Enquanto a busca local usa o método de
+vez que se deseja fazer uma perturbação. Enquanto a busca local usa o método de
 descida, variando entre três estruturas de vizinhança, o \textit{swap-x}, o
 \textit{crossover} e a \textit{compactação}. Mais adiante serão dado mais
-detalhes sobre o modelo matemático, a forma de escolha do subproblema, da fase
+detalhes sobre o modelo matemático, a forma de escolha do sub problema, da fase
 de construção que foi implementada, da busca local e das implementações que não
 tiveram êxito.
 
@@ -35,13 +35,15 @@ tiveram êxito.
    
 A modelagem proposta por \cite{pontes2002} aborda todas as restrições do
 problema fazendo com que a quantidade de restrições geradas seja muito elevada.
-A idéia utilizada na nossa formulação é tentar reduzir ao máximo a quantidade de
-restrições necessária a partir da modelagem apenas de restrições que são
-possíveis no mundo real ou através da incorporação de restrições em outras.
+A idéia utilizada na nossa formulação é a de tentar reduzir ao máximo a
+quantidade de restrições necessárias. Isso é feito com a modelagem de apenas
+algumas restrições, aquelas que são possíveis no mundo real. Ela também
+é feita através da incorporação de restrições em outras.
 
 Primeiro se percebeu que não há necessidade de modelar os 4 tipos de arcos para
 cada voo, uma vez que dado dois voos só pode vir a ocorrer dois tipos de arcos
-possíveis entre eles como é ilustrado na Figura \ref{fig:modelagem_arcos}.
+possíveis entre eles. Essa situação é ilustrada na Figura
+\ref{fig:modelagem_arcos}.
 
 \begin{figure}[ht]
 	\centering
@@ -55,8 +57,9 @@ Em a) os voos respeitam a restrição geográfica, dessa forma apenas os arcos d
 tipo 1 e 2 precisam ser modelados uma vez que não teria sentido fazer um voo de
 reposicionamento nessa situação. Em b) os aeroportos em questão são diferentes,
 sendo necessário apenas a modelagem dos arcos do tipo 3 e 4, perceba que não
-teria outra saída se não efetuar um voo de reposicionamento.
+teria outra alternativa se não efetuar um voo de reposicionamento.
 
+\subsection{Definição}
 
 Seja $D = (V,A)$ um grafo representando uma instância do PCTA, onde o conjunto
 de vértice $V = {v_{i}:i \in I}$ de D é indexado por $I = {1, 2, ..., n+1,
@@ -69,18 +72,22 @@ Seja ${x_{ij}:(i,j) \in A}$ um conjunto binário 0-1 de variáveis usada para
 controlar a inclusão $(x_{ij} = 1)$ ou a exclusão $(x_{ij} = 0)$ de um arco
 (possível conexão) entre vértices (voos) $v_{i}$ e $v_{j}$. O conjunto
 $\overline{I}$ identifica o conjunto de nós excluindo o nó fonte $(v_{n+1})$ e
-o nó de destino $(v_{n+2})$. Variáveis reais $\delta_{i}$ e $\theta_{i}$, $i
-\in \overline{I}$ são usados para representar, respectivamente, o desvio do
-tempo de partida sugerido e a norma desse desvio para $v_{i}$. Essas variáveis
-devem no entanto obedecer $-\gamma_{i} \geq \delta_{i} \geq \gamma_{i}$ e $0
-\geq \theta_{i} \geq \gamma_{i}$, onde $\gamma_{i}$ é o valor máximo de desvio
-permitido (em cada direção) do tempo de partida sugerido para o voo. Finalmente
-o tempo de partida sugerido que é dado por $s_{i}:i \in \overline{I}$.
+o nó de destino $(v_{n+2})$. A função objetiva foi dividida para facilitar o
+entendimento de como é feito o custo de adicionar um trilho. Variáveis reais
+$\delta_{i}$ e $\theta_{i}$, $i \in \overline{I}$ são usados para representar,
+respectivamente, o desvio do tempo de partida sugerido e a norma desse desvio
+para $v_{i}$. Essas variáveis devem no entanto obedecer $-\gamma_{i} \geq
+\delta_{i} \geq \gamma_{i}$ e $0 \geq \theta_{i} \geq \gamma_{i}$, onde
+$\gamma_{i}$ é o valor máximo de desvio permitido (em cada direção) do tempo de
+partida sugerido para o voo. Finalmente o tempo de partida sugerido que é dado
+por $s_{i}:i \in \overline{I}$.
   
 \section{Função objetivo}
 
 \begin{equation}
-Minimizar \   \ \sum_{i \in I} \sum_{j \in I} x_{ij}c_{ij} + \sum_{i \in \overline{I}} \theta_{i}
+Minimizar \  \ \sum_{j \in \overline{I}} x_{v_{n+1}j}(CUSTO\_TRILHO) + \sum_{i \in
+\overline{I}} \sum_{j \in I} x_{ij}c_{ij} + \sum_{i \in
+\overline{I}} \theta_{i}
 \end{equation}
 
 \section{Restrições}
@@ -130,12 +137,12 @@ s_{i} + t_{i}x_{ij} - INF(1 - x_{ij}) + \delta_{i} \leq s_{j} + \delta_{j} \   \
 
 \clearpage
 
-Pode-se perceber que o modelo matemático não faz menção ao tempo de solo ($g$),
-isso ocorre porque esse tempo é incorporado ao voo como demonstrado na Figura
+Pode-se perceber que o modelo matemático não faz menção ao tempo de solo ($g$).
+Isso ocorre pois esse tempo é incorporado ao voo como demonstrado na Figura
 \ref{fig:conversion}, ou seja o tempo de partida sugerido $s$ passa a ter o
 valor $s - g$ e a duração $t$ do voo passa a ter o valor $t + g$. Uma vantagem
-de usar essa abordagem que integra o tempo de solo ao voo é que a quantidade de
-restrições é reduzida.
+de usar essa abordagem que integra o tempo de solo ao voo é a redução da
+quantidade de restrições do problema.
 
 \begin{figure}[ht]
 	\centering
@@ -161,53 +168,57 @@ caso de arcos que deverão ser evitados um custo elevado é atribuído.
   
 \section{Fase de construção}
   
-  A construção da solução é feita elemento a elemento utilizando o
-  GRASP. A primeira coisa a se fazer é ordenar o conjunto de voos a partir do
-  seu tempo de partida sugerido. O algoritmo só termina quando todos os voos já
-  foram alocados em algum trilho.
+A construção da solução é feita elemento a elemento utilizando o
+GRASP. Inicialmente é feita a ordenação do conjunto de voos a partir do seu
+tempo de partida sugerido. O algoritmo só termina quando todos os voos já
+foram alocados em algum trilho.
   
-  Existe duas formas de fazer a montagem da solução, uma seria a montagem
-  trilho a trilho, onde um novo trilho só poderia ser criado quando o anterior
-  já estivesse saturado. A outra forma é a montagem de trilhos de forma
-  paralela, que, a priori, provocaria uma melhor distribuição dos voos. Na
-  prática a primeira abordagem é adotada, pois, nas instâncias disponíveis ela
-  apresentou, sempre, soluções de melhores qualidades. Uma maior quantidade de
-  testes ainda é necessário para decidir qual a abordagem deverá ser utilizada
-  ou se deverá, por exemplo, ser feita uma alteração na estratégia escolhida de
-  acordo com alguma característica da instância.
+Existe duas formas de fazer a montagem da solução, uma seria a montagem de
+trilhos de forma sequencial, onde um novo trilho só é iniciado quando o anterior
+se encontra saturado. A outra forma é a montagem de trilhos de forma paralela,
+que, a priori, provocaria uma melhor distribuição dos voos. Na prática a
+primeira abordagem foi adotada, pois, nas instâncias disponíveis ela apresentou,
+sempre, soluções de melhor qualidade. 
+
+Pode ser que para instâncias com alguma característica específica a
+estratégia de montagem dos trilhos de forma paralela pode apresentar melhores
+resultados.
   
 \subsection{Formação dos trilhos de forma sequencial}
 
 Quando se pensa na escolha do primeiro voo do trilho a decisão imediata é a
 escolha do voo que contenha o menor horário de partida sugerido. Porém essa
-escolha reduz a quantidade de soluções que podem ser geradas, pois a escolha
-dos voos restantes do trilho é diretamente influenciada pela escolha do voo
-inicial.
+escolha reduz a quantidade de soluções que podem ser geradas, isso ocorre pois o
+primeiro voo tem uma grande influência nas possíveis soluções que um trilho pode
+assumir. Para evitar isso a escolha do primeiro voo de um trilho é feita
+baseando-se nos 5 voos com menor horário de partida que ainda não esteja
+alocado a nenhum outro trilho. 
 
-A abordagem utilizada para a escolha do primeiro voo inicia com a criação de
-uma lista de candidatos iniciais (LCI) que é formada pelos 5 voos com os menores
-horários de partida sugerido que ainda não foram alocados em nenhum outro
-trilho. A escolha do voo inicial é feita de forma aleatória entre os elementos da LCI.
-
+Esses voos são adicionados a lista de candidatos iniciais (LCI) e a escolha do
+voo é feita de forma aleatória utilizando o GRASP, para evitar a escolha de
+candidatos que estejam muito distantes do voo de menor horário de partida.
 
 \subsection{Formação dos trilhos de forma paralela}
-  
-Essa estratégia monta uma conjunto de trilhos e constroi eles de forma
-paralela. Em cada iteração o trilho corrente é escolhido a partir desse
-conjunto de forma aleatória. O passo seguinte é a adição de um voo a esse
-trilho ou a sua remoção do conjunto de trilhos que estão em construção, esse
-segundo caso ocorre quando a lista de candidatos para esse trilho é vazia.
+ 
+Nessa estratégia um trilho é iniciado sempre que existe um voo que não pode ser
+inserido em nenhum dos trilhos que estejam sendo montados, mantendo-se assim um
+conjunto de trilhos disponíveis (CTD).
+
+Em cada iteração o trilho corrente (TC) é escolhido a partir do CTD de forma
+aleatória. Feito adiciona-se um voo a esse trilho. Caso não exista voos
+candidatos para adição no TC este é removido da CTD e uma nova iteração é
+iniciada.
   
 \subsection{Escolha dos voos de um trilho}
 
 A escolha do primeiro voo de um trilho é feita como explicado nas seções
-anteriores. A escolha dos demais voos é feita com base no tipo de arco e na
-lista restrita de candidatos.
+anteriores enquanto os demais voos são escolhidos tendo como base um tipo de
+arco e uma lisat restrita de candidatos (CLR).
  
 Os tipos de arcos foram definidos no Capítulo \ref{cap:descprob}, porém nessa
 etapa apenas 4 tipos são considerados, o   $A_{1},A_{2},A_{3},A_{4}$ que
 representam formas de ligações entre os voos. Os arcos do tipo 5 e 6 só são
-utilizados apenas na modelagem matemática. Os arcos do tipo 1 permitem a
+utilizados na modelagem matemática. Os arcos do tipo 1 permitem a
 ligação de voos sem a utilização de atrasos e/ou reposicionamentos. Os arcos do
 tipo 2 utilizam atrasos mas não o reposicionamento. Os arcos do tipo 3 permitem
 o sequenciamento com a utilização de um voo de reposicionamento mas sem inserir
@@ -216,12 +227,18 @@ e de um voo de reposicionamento para fazer a ligação entre dois voos. Os arcos
 do tipo 5 pargem do nó \textit{source} e servem para modelar o inicio de um
 trilho. Os arcos do tipo 6 tem chegam ao nó \textit{sink} e indicam o fim de um
 trilho.
- 
-O primeiro passo na escolha de um voo é a definição do tipo de arco que irá ser
-utilizado. Essa escolha é feita tendo como base as probabilidades 0.79, 0.16,
-0.04, 0.01 quer representam respectivamente os arcos do tipo 1 a 4. Esses
-valores foram obtidos a partir da porcentagem dos tipos de arcos presentes em
-uma solução ótima de um problema real.
+
+Primeiramente é feita a escolha do tipo de arco que será utilizado para efetuar
+a ligação do ultimo voo do trilho corrente. Essa escolha é feita tendo
+como base as probabilidades de cada um desses arcos acontecer em uma solução
+ótima de um problema real. Nos levamos em consideração a instância da Rio Sul em
+que a solução ótima apresentou as probabilidades
+$P(A_{1})=0.79,P(A_{2})=0.16,P(A_{3})=0.04,P(A_{4})=0.01$. Esses valores são
+empíricos e para determinadas instâncias podem gerar melhores soluções se
+alterados.
+
+%%----------------------------------------------
+%Continuar daqui.
  
 De posse do tipo de arco, é feita então a formação da lista de candidatos. Essa
 lista é ordenada de acordo com o seu horário de partida sugerido, caso o arco
