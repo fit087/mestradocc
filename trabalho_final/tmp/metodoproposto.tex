@@ -1,4 +1,4 @@
-\chapter{Método Proposto}
+\chapter{Método Proposto} \label{cap:metodoprop}
   
 O método proposto se utiliza do GRASP, do ILS e da abordagem exata através da
 programação linear inteira, pretendendo tirar proveito das vantagens de cada
@@ -30,7 +30,7 @@ detalhes sobre o modelo matemático, a forma de escolha do sub problema, da fase
 de construção que foi implementada, da busca local e das implementações que não
 tiveram êxito.
 
-\section{Modelo matemática}
+\section{Modelo matemática} \label{sec:modelomat}
 
    
 A modelagem proposta por \cite{pontes2002} aborda todas as restrições do
@@ -145,7 +145,6 @@ de usar essa abordagem que integra o tempo de solo ao voo é a redução da
 quantidade de restrições do problema.
 
 \begin{figure}[ht]
-	\centering
 	\caption{Conversão de um voo para ser utilizado no
 	solver. \mbox{Fonte: (Própria)}}\label{fig:conversion}
 	\includegraphics[scale=0.4]{./img/conversion}
@@ -165,8 +164,13 @@ viáveis recebem os valores referentes ao seu tipo, por exemplo, no caso de um
 arco originário do nó source, arco do tipo 6, um custo 1000 é atribuído. No
 caso de arcos que deverão ser evitados um custo elevado é atribuído.
   	
+  	
+%\section{Pré-processmanto da instância}
+
+%No caso da instância possuir mais de um dia de operação então pode-se quebra-la
+%em dias se houver tempo vago entre os dias dessa instância.
   
-\section{Fase de construção}
+\section{Fase de construção do GRASP}
   
 A construção da solução é feita elemento a elemento utilizando o
 GRASP. Inicialmente é feita a ordenação do conjunto de voos a partir do seu
@@ -230,62 +234,83 @@ trilho.
 
 Primeiramente é feita a escolha do tipo de arco que será utilizado para efetuar
 a ligação do ultimo voo do trilho corrente. Essa escolha é feita tendo
-como base as probabilidades de cada um desses arcos acontecer em uma solução
-ótima de um problema real. Nos levamos em consideração a instância da Rio Sul em
-que a solução ótima apresentou as probabilidades
-$P(A_{1})=0.79,P(A_{2})=0.16,P(A_{3})=0.04,P(A_{4})=0.01$. Esses valores são
-empíricos e para determinadas instâncias podem gerar melhores soluções se
+como base as probabilidades de cada um desses arcos acontecer. Essa
+probabilidade foi definida como sendo
+$P(A_{1})=0.79,P(A_{2})=0.16,P(A_{3})=0.04,P(A_{4})=0.01$ pois a solução ótima
+do problema real da Rio Sul apresentava essas características. Esses valores
+são empíricos e para determinadas instâncias podem gerar melhores soluções se
 alterados.
 
-%%----------------------------------------------
-%Continuar daqui.
- 
 De posse do tipo de arco, é feita então a formação da lista de candidatos. Essa
 lista é ordenada de acordo com o seu horário de partida sugerido, caso o arco
 seja do tipo $A_{1}$, ou pelo custo associado a sua escolha para os demais
 tipos de arco. No caso da lista de candidatos não possuir nenhum voo, então
-outro tipo de arco é sorteado, até que não seja possível acrescentar nenhum voo
-ao trilho. Quando isso ocorre a construção desse trilho é finalizada.
+outro tipo de arco é sorteado, até que não seja possível acrescentar voos ao
+trilho de nenhuma forma, quando isso ocorrer a construção
+desse trilho é finalizada.
  
 Caso seja possível a obtenção de uma lista de candidatos então ela é reduzida
-tendo como base o passo 4 a 6 do algoritmo \ref{alg:graspcons}. Como está lista
-se encontra ordenada, então, o elemento de menor impacto ($v_{menor}$) na
-solução é o primeiro e o de maior impacto ($v_{maior}$) é o último. Dessa forma
-o elemento escolhido poderá ter o seu valor de impacto na solução de até
-$valor_{menor} + \alpha*(valor_{maior} + valor_{menor})$. O valor de $\alpha$
-ainda é objeto de estudo, mas bons resultados tem sido obtido para $\alpha$
-igual a 0.5.
+tendo como base o passo 4 a 6 do algoritmo \ref{alg:graspcons} formando assim a
+lista de candidatos restrita (LCR), essa redução remove os candidatos que estão
+muito afastado do melhor candidato da lista. Como está lista se encontra
+ordenada, então, o elemento de menor impacto ($v_{menor}$) na solução é o
+primeiro e o de maior impacto ($v_{maior}$) é o último. A LCR contém os
+candidatos que tenha o valor de impacto na solução de até $valor_{menor} +
+\alpha*(valor_{maior} + valor_{menor})$, onde $\alpha$ é o grau de
+gulosidade do GRASP. O candidato deve ser escolhido de forma aleatória entre os
+elementos da LCR.
  
- \section{Fase de busca local}
+ \section{Fase de busca local do GRASP}
+
+Com a finalização da etapa anterior tem-se uma solução do problema. A fase de busca
+local efetua modificações nessa solução com a finalidade de obter outras
+melhores que estejam próximos a ela, isso é feito através da aplicação das
+estruturas de vizinhanças. No método proposto essa fase foi implementada através
+da utilização da metaheurística ILS que alterna busca local com pertubações
+conseguindo assim escapar de mínimos locais quando não consegue mais melhorar a
+solução, ou seja, primeiro são aplicados as estruturas de vizinhança, visando
+obter o valor ótimo local da solução, depois é feita uma perturbação que
+diversifica melhorando o valor da função objetivo através da aplicação do
+modelo matemático que foi desenvolvido em uma parte do problema. Quando nenhuma
+das duas estratégias consegue melhorar a solução então a busca local encerra e
+uma nova iteração do GRASP pode ser iniciada.
  
-A fase de busca local recebe uma solução e tem como objetivo melhora-la. No
-método proposto essa fase foi substituída pelo ILS. Ou seja primeiro são
-aplicados as estruturas de vizinhança, visando obter o valor ótimo local da
-solução. Depois é feita uma perturbação que diversifica melhorando o valor da
-função objetivo. Quando nenhuma das duas estratégias consegue melhorar a
-solução então a busca local encerra e uma nova iteração do GRASP pode ser
-iniciada.
+\subsection{Estruturas de vizinhança}
  
- \subsection{Vizinhança}
- 
-Foram definidas 3 estruturas de vizinhança, o Swap-X e o Cross-Over, que tem o
-objetivo de remover modificações nos horários de partida sugeridos dos voos, e
-a Compactação, que promove a redução do número de trilhos. Abaixo essa
-estruturas são explicadas.
+Foram definidas três estruturas de vizinhança para serem utilizadas na busca
+local, o Swap-X e o Cross-Over, que tem o objetivo de remover modificações nos
+horários de partida sugeridos dos voos, e a Compactação, que promove a redução
+do número de trilhos. Abaixo essa estruturas são explicadas.
  
 \subsubsection{Swap-X}
 
 Esse operador efetua a troca de X voos de um trilho por um conjunto de voos de
-outro trilho. No método proposto apenas os movimentos do tipo Swap-1 e Swap-2
-são utilizados, pois essa vizinhança é considerada grande. Na Figura X um caso
-de melhoria no custo dos trilhos é exemplificada.
+outro trilho. Dessa forma pode-se conseguir remover os atrasos que foram criados
+na etapa de construção. No método proposto apenas os movimentos do tipo Swap-1
+e Swap-2 são utilizados, pois essa vizinhança é considerada grande. Na Figura
+\ref{fig:swap1} um caso de melhoria no custo dos trilhos é exemplificada.
+
+\begin{figure}[ht]
+	\caption{Estrutura de vizinhança Swap-1. \mbox{Fonte:
+	(Própria)}}\label{fig:swap1}
+	\includegraphics[scale=0.4]{./img/swap-1}
+	
+\end{figure}
  
  \subsubsection{Cross-Over}
  
 A ideia do operador $crossover$ é a de efetuar troca entre dois segmentos de
 trilhos com a finalidade de gerar novos trilhos com menos modificações no
-horário de partida. A Figura X ilustra uma melhoria causada por um movimento
-desse tipo.
+horário de partida. A Figura \ref{fig:crossover} ilustra uma melhoria causada por um
+movimento desse tipo.
+
+
+\begin{figure}[ht]
+	\caption{Estrutura de vizinhança CrossOver. \mbox{Fonte:
+	(Própria)}}\label{fig:crossover}
+	\includegraphics[scale=0.4]{./img/crossover}
+	
+\end{figure}
  
  \subsubsection{Compactação}
  
@@ -295,43 +320,61 @@ reduzir a quantidade de trilhos da solução final.
 Isso ocorre porque ela consegue, insere um trilho em outro de forma direta ou
 com a utilização de um voo de reposicionamento.
  
-A figura X mostra a redução de um trilho com a utilização desse movimento.
+A figura \ref{fig:compactacao} mostra a redução de um trilho com a utilização
+desse movimento.
+
+\begin{figure}[ht] 
+	\caption{Estrutura de vizinhança Compactação. \mbox{Fonte:
+	(Própria)}}\label{fig:compactacao}
+	\includegraphics[scale=0.4]{./img/compactacao}
+	
+\end{figure}
  
  \subsection{Perturbação usando o método exato}
    
 A perturbação normalmente é utilizada quando as estruturas de vizinhança não
-conseguem melhorar a solução. Quando isso ocorre pode-se dizer que a solução
-corrente é a ótima local com relação a vizinhança definida.
+conseguem melhorar a solução, quando isso ocorre, pode-se dizer que a
+solução corrente é a ótima local com relação a vizinhança que foi definida.
  
 Para tentar encontrar outros mínimos locais aplica-se uma modificação na
-estrutura da solução, mesmo que isso provoque uma piora na sua qualidade, e
-depois procura-se melhora-la aplicando novamente uma busca local.
+estrutura da solução, mesmo que isso provoque uma piora na sua qualidade. Isso
+se mostra interessante para o algoritmo pois ele irá efetuar busca de melhorias
+em outros locais no espaço de soluções através da sua busca local.
  
 O método de perturbação utilizado aqui difere do que normalmente é aplicado
-pois a solução, apesar de ter sua estrutura modificada, ainda consegue melhorar
-a sua qualidade.
- 
-A sua utilização ocorre com a seleção de um conjunto de trilhos, que juntos
-definem um subproblema, e a posterior aplicação de um método exato no conjunto
-de voos que os formam. O método exato irá retornar a configuração ótima desses
-voos, que serão agrupados novamente a solução antiga. A seleção dos trilhos é
-feita com base no seu \textit{grau de compactação}. O grau de compactação é
-definido como sendo a porcentagem de utilização efetiva de um trilho com
-relação ao tempo de partida do primeiro voo e o tempo de chegada do ultimo voo
-da instância. O calculo do grau de compactação não leva em consideração os voos
-de reposicionamento, pois eles não são passados para o modelo.
+pois a solução tem a sua estrutura modificada e ainda consegue melhorar a sua
+qualidade. Isso é feito através da aplicação do modelo matemático em uma
+parte do problema. A sua utilização ocorre com a seleção de um conjunto de
+trilhos, e sua a posterior aplicação no solver com o modelo desenvolvido
+configurado para o conjunto de voos da seleção.
+
+O método exato retorna a configuração ótima desses voos, que
+são agrupados novamente a solução antiga. O solver tem um tempo máximo
+estabelecido e se não retornar nenhuma solução considera-se que não houve
+melhora sua aplicação.
+
+A seleção dos trilhos é feita com base no seu
+\textit{grau de compactação} que é definido como sendo porcentagem de
+utilização efetiva de um trilho com relação ao tempo de partida do primeiro voo
+e o tempo de chegada do último voo da instância, ou seja, quanto maior o tempo
+que a aeronave, que opera um determinado trilho, permanece voando maior será o
+seu grau de compactação. O calculo do grau de compactação não leva em
+consideração os voos de reposicionamento, pois eles não estão no planejamento
+inicial e por sua vez não são passados para o modelo.
+
+Existe três formas de fazer a seleção dos trilhos que serão aplicados no solver,
+pode-se adicionar os trilhos que possuem o maior grau de compactação, pode-se
+adicionar os trilhos que possuem o menor grau de compactação ou pode-se alternar
+entre a escolha de um trilho com o maior grau de compactação e um de menor grau
+de compactação.
+
+Na prática adotou-se a segunda abordagem, selecionando os trilhos de menor grau
+de compactação, pois os resultados foram melhores.
  
 Os trilhos são adicionados a solução até o limite de 80 voos, pois o solver
-consegue, de forma imediata, resolver um problema desse porte.
-	
-Foram estudadas 3 formas de adicionar os trilhos ao solver:
-	
-	\begin{itemize}
-\item Adição dos trilhos com maior grau de compactação.
-\item Adição dos trilhos com menor grau de compactação.
-\item Alternar entre a adição de um trilho com maior grau de compactação e outro com o menor grau de compactação.
-\end{itemize}
- 
- A utilização da segunda abordagem proporcionou melhores resultados.
+conseguiu em nossos experimentos resolver um problema desse porte de forma
+imediata. 
+
+
  
  

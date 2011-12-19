@@ -1,4 +1,4 @@
-  \chapter{Resultados preliminares e discussões}
+  \chapter{Resultados}
 
 %	Para se obter um limite inferior dessas instâncias foi feita uma verificação
 %com o algoritmo do Anexo X que permite checar a %quantidade mínima de voos que
@@ -8,39 +8,62 @@
 %não existe %solução com uma melhor quantidade de trilhos que essa sem que
 %nenhum vôo seja excluído.
 
-Todos os algoritmos descritos foram desenvolvidas na linguagem C++ usando a
-biblioteca CPLEX Academic 12 para implementar o mecanismo de programação
-inteira. Todos os experimentos computacionais foram feitos em um notebook com a
-seguinte especificação: Pentium T4500 2.3 Ghz com 2 GB de RAM e rodando o
-sistema operacional sistema operacional Linux Ubuntu 11.04.
+Todos os algoritmos descritos foram desenvolvidas na linguagem C++ usando o
+solver CPLEX Academic 12 da IBM que implementa técnicas de resolução de
+programação inteira. Todos os experimentos computacionais foram feitos em um
+notebook com processador Pentium T4500 2.3 Ghz, 2 GBytes de memória RAM (2x1 GB)
+e com o sistema operacional operacional Linux Ubuntu 11.04 de 32 bits.
 
-Foram efetuadas 10 iterações do GRASP usando um $\alpha$ de 0.5 e a busca local
-finalizava quando não conseguia melhorar o resultado. Para demonstrar a
-eficiência dos resultados foram realizadas comparações com o resultado ótimo
-obtido com um procedimento de programação inteira implementando o modelo
-descrito no capítulo \ref{cap:descprob}. A coluna $s*$ indica o valor ótimo. O
-método híbrido foi executado 20 vezes e apenas a média dos valores obtidos
-foram levados em consideração. A coluna $s$ indica a média dos valores obtidos
-com a execução do algoritmo, a coluna tempo indica a média da duração das
-execuções em segundos. A coluna final indicada por $GAP$ indica a diferença
-percentual das soluções e é calculado como segue:
+O GRASP foi configurado com 10 iterações completas do GRASP utilizando um
+$\alpha$ de 0.5. Esses valores foram obtidos de forma empírica a partir
+dos testes que foram feitos no decorrer do trabalho. A busca local é exaustiva
+e finaliza quando não consegue melhorar o valor objetivo da solução,
+a maior utilização do poder de processamento do CPU é gasto executando essa
+etapa, cerca de 98\% do tempo.
 
-\[  GAP = (s* - s)/s \]
+%pode-se colocar uma tabela comparando os valores obtidos para diferentes tipos
+% de alpha. Para assim justificar essa escolha. Essa comparação pode ser feita
+% com um grafico de convergência em relação a iteração do GRASP (0.25 - 0.5 -
+% 0.75) p/ 1 ou 2 instancias
 
-Para os testes foram utilizados duas instâncias diárias, uma da Rio-Sul(107
-voos) e outra da TAM (241 voos).  Com a finalidade de permitir estimar o tempo
-computacional necessário para resolver instâncias maiores foi proposto a
-extensão da frequência dos voos da instância Rio-Sul para uma semana, dessa
-forma foi gerado uma instância com 749 voos. Para simplificar foram adotados o
-tempo de solo de 20 minutos para todos os aeroportos, tendo em vista que a
-maioria deles opera em média com esse tempo.
+A demonstração da eficiência do algoritimo foi feita baseado na solução ótima
+dos problemas que foram obtidas a partir da utilização do modelo
+matemático descrito no Capítulo \ref{cap:metodoprop} nas instâncias. A única
+instância em que isso não foi possível foi na da TAM estendida onde em um
+período de 36 horas (115200 segundos) não foi possível obter nenhuma solução
+inteira para o problema. Essa foi a maior instância utilizada no trabalho.
+
+Nesse capítulo $s*$ indica o valor ótimo de uma solução, $s_{m}$ indica a média
+dos valores obtidos com todas as execuções do algoritmo, $t_{s*}$ é o
+tempo de execução do solver e $t_{s}$ representa o tempo médio de execução do
+algoritmo. Por fim $\Delta \%$ (GAP) representa a diferencia em percentual da
+média dos valores das soluções obtidas em relação ao valor ótimo da instância,
+o seu cálculo é feito com a forma abaixo:
+
+\[  \Delta \% (GAP) = (s - s*)/s* \]
+
+Para os testes foram utilizados duas instâncias diárias, uma da Rio-Sul com 107
+voos e outra da TAM com 241 voos. A instância da Rio-Sul foi obtida a partir do
+trabalho de \cite{pontes2002} e a da TAM foi obtida através da seleção manual
+dos voos através do $site$ da companhia aérea. Com o desenvolvimento do trabalho
+essas instâncias passaram a ser resolvidas facilmente pelo sistema. Com a
+finalidade de gerar instâncias mais difíceis foi proposto a extensão da
+frequência dos voos da instância Rio-Sul e da TAM para uma semana, dessa forma
+foi gerado uma instância com 749 voos e outra de 1687. 
+
+Por causa da grande dificuldade de comunicação com as companhias aéreas foi
+utilizado um tempo de solo fictício de 20 minutos para todos os aeroportos esse
+valor foi escolhido para menter a compatibilidade dos resultados com o trabalho
+de \cite{pontes2002}
 
 A resolução dessas instâncias foram parametrizadas levando em consideração dois
-cenários. O cenário 1 faz o sequnciamento dos voos sem a permissão de utilizar
+cenários. O cenário 1 faz o sequenciamento dos voos sem a permissão de utilizar
 nenhum atraso, essa representação é comum nas companhias que não aceitam a
 modificação do planejamento inicial. O cenário 2 se utiliza de atrasos
-permitindo assim uma maior liberdade na hora da montagem dos trilhos. Os
-parâmetros utilizados são detalhados na Tabela \ref{tab:params}.
+permitindo assim uma maior liberdade na hora da montagem dos trilhos obtendo
+assim um melhor aproveitamento da utilização das aeronáves. Os parâmetros
+utilizados são detalhados na Tabela \ref{tab:params}.
+
 
 \begin{table}
 \caption{Parametrização dos cenários}\label{tab:params}
@@ -64,66 +87,86 @@ parâmetros utilizados são detalhados na Tabela \ref{tab:params}.
 \end{center}
 \end{table}
 
- 
-%A Tabela \ref{tab:cenario1} e \ref{tab:cenario2} mostram os resultados as melhores soluções obtidas. No caso dos problemas diários e da instância da Rio Sul estendida a utilização do solver é suficiente e retorna o resultado ótimo em um tempo totalmente aceitável, dessa forma o método está sendo desenvolvido parar a resolução de problemas de grande porte. No caso de problemas reais isso iria refletir nas frotas mais comuns das companhias aéreas, que é onde se encontra a maior demanda de passageiros. Caso alguma informação extra seja necessária os anexos \ref{anx:netriosul} a \ref{anx:resulttam} apresentam a descrição completa das instâncias e das soluções que foram obtidas, 
 
 
-%Rio Sul & 17.138 & 17 & 0 & 2 & XX & XX & 0\\
-%TAM & 35.334 & 34 & 0 & 10 & XX & XX & 0 \\
-%Rio Sul Estendida & 18392 & 17 & 0 & 20 & XX & XX & 0\\
-%TAM Estendida & XX & XX & XX & XX & XX & XX & XX \\
+
+O algoritmo proposto foi executado 100 vezes e apenas a média dos valores da
+solução e do tempo foram levados em consideração. As Tabelas \ref{tab:cenario1}
+e \ref{tab:cenario2} mostram os resultados obtidos. Para instâncias pequenas a
+utilização do solver é suficiente porém percebeu-se que com o aumento do tamanho
+da instância o solver leva muito tempo para resolver e uma estratégia híbrida
+pode ser o caminho para obter boas soluções em um curto espaço de tempo.
 
 \begin{table}[ht]
 \caption{Resultados do cenário 1}\label{tab:cenario1}
-\begin{center}
 
 
-\begin{tabular}{l r r r r}
+\begin{tabular}{l r r r r r}
 \hline
 
-Instância & BKS & Resultado & Tempo(s) & GAP \\
+Instância 			& $s*$ (trilhos) & $t_{s*}(s)$ & $s_{m}$ (trilhos) & $t_{s}(s)$ &
+$\Delta\%$
+\\
 \hline
 
-Rio Sul & 17.138 & 17.138 & 4.8 & 0\\
-TAM & 35.334 & 35.348 & 37 &  0.0004\\
-Rio Sul Estendida & 18.392 & 21.911 & 525 & 0.19\\
-%TAM Estendida & XX & XX & XX & XX \\
+Rio Sul 			& 17.138 (17) & 4 s		 	& 17.138 (17) 	& 7 s 		 & 0\\
+TAM     			& 35.334 (34) & 26 s	 	& 35.334 (34)	& 36 s 		 & 0\\
+Rio Sul Estendida 	& 18.392 (17) & 24192 s	 	& 18.392 (17)	& 64 s 		 & 0\\
+TAM Estendida 		& - 		  & 115200 s 	& 49.857 (35)	& 154 s		 & -\\
 
 \hline
 \end{tabular}
 
-\end{center}
 \end{table}
+
 
 \begin{table}[ht]
 \caption{Resultados do cenário 2}\label{tab:cenario2}
-\begin{center}
 
 
-\begin{tabular}{l r r r r}
+\begin{tabular}{l r r r r r}
 \hline
 
-Instância & BKS & Resultado & Tempo(s) & GAP \\
+Instância 			& $s*$ (trilhos) & $t_{s*}(s)$ & $s_{m}$ (trilhos) & $t_{s}(s)$ &
+$\Delta\%$
+\\
 \hline
 
-Rio Sul & 16.158 & 16.158 & 5 & 0\\
-TAM & 35.015 & 35015 & 22 & 0 \\
-Rio Sul Estendida & 17.433 & 20564 & 494 & 0.18\\ 
-%TAM Estendida & XX & XX & XX & XX \\
+Rio Sul 			& 16.158 (16) & 4 s		 	& 16.158 (16) 	& 7 s 		 & 0\\
+TAM     			& 35.015 (34) & 27 s	 	& 35.015 (34)	& 36 s 		 & 0\\
+Rio Sul Est. 	& 17.433 (16) & 33001 s	 	& 17.532 (16)	& 65 s 		 &$<$0.01\\ 
+TAM Estendida 		& - 		  & 115200 s 	& 48.803 (35)	& 159 s		 & -\\
 
 \hline
 \end{tabular}
 
-\end{center}
 \end{table}
 
-	Pode-se observar que nos dois cenários a solução ótima foi obtida para a instância da Rio-Sul. Na instância da TAM a solução ótima foi encontrada, porém, na média o cenário 1 encontrou uma solução bem próxima. Essas duas instâncias representam um horizonte de tempo de um dia. Na instância da Rio-Sul estendida que representam uma semana de operação as soluções ficaram em média 0.19 do ótimo para o cenário 1 e 0.18 no cenário 2 com um tempo aproximado de 8 minutos. Para o procedimento programação linear não foram inseridos limites previamente calculados, de modo que a ferramenta utilizou apenas a relaxação linear.
+
+Pode-se observar que nos dois cenários a solução ótima foi obtida para a
+instância da Rio-Sul. Na instância da TAM a solução ótima foi encontrada,
+porém, na média o cenário 1 encontrou uma solução bem próxima. Essas duas
+instâncias representam um horizonte de tempo de um dia. Na instância da Rio-Sul
+estendida que representam uma semana de operação as soluções ficaram em média
+0.19 do ótimo para o cenário 1 e 0.18 no cenário 2 com um tempo aproximado de 8
+minutos. Para o procedimento programação linear não foram inseridos limites
+previamente calculados, de modo que a ferramenta utilizou apenas a relaxação
+linear.
   
- Alguns ajustes ainda podem melhorar o modelo híbrido para que ele possa se aproximar mais da solução ótima. A modificação da estrutura a ser otimizada na busca local pode ser um ponto que ajude a melhorar os resultados, pois a literatura mostra que esse é um dos pontos mais importantes de uma heurística híbrida.
+Alguns ajustes ainda podem melhorar o modelo híbrido para que ele possa se
+aproximar mais da solução ótima. A modificação da estrutura a ser otimizada na
+busca local pode ser um ponto que ajude a melhorar os resultados, pois a
+literatura mostra que esse é um dos pontos mais importantes de uma heurística
+híbrida.
  
- Uma das grandes dificuldades encontradas no trabalho foi a falta de instâncias na literatura tornando difícil a comparação de resultados com outras abordagens. Com isso existe a necessidade de geração de um conjunto de instâncias e a sua publicação para fins comparativos.
+Uma das grandes dificuldades encontradas no trabalho foi a falta de instâncias
+na literatura tornando difícil a comparação de resultados com outras
+abordagens. Com isso existe a necessidade de geração de um conjunto de
+instâncias e a sua publicação para fins comparativos.
  
- Existe ainda a possibilidade de uma implementação paralela que ainda está em fase de planejamento e que se demonstrar resultados interessantes em tempo hábil será adicionada a dissertação.
+Existe ainda a possibilidade de uma implementação paralela que ainda está em
+fase de planejamento e que se demonstrar resultados interessantes em tempo
+hábil será adicionada a dissertação.
  
 
 %Com a eficiência obtida com o método exato existe uma necessidade de geração de instâncias maiores que possam ser utilizadas parar ajustar e justificar a utilização de uma abordagem mais complexa como o uso de uma metaheurística híbrida.
