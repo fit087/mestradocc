@@ -69,8 +69,7 @@ pdfsubject={PCTA},pdfcreator={LaTeX e Dvips}]{hyperref}
 
 
 \autor{Alexander de Almeida Pinto}
-\titulo{Utilização das metaheurísticas GRASP e ILS aditivado com
-programação linear para resolução do problema de construção de trilhos de
+\titulo{Utilização das metaheurísticas GRASP e ILS com busca local exata para resolução do problema de construção de trilhos de
 aeronaves}
 \titlePGTEX{Titulo em ingles}
 % T?tulo do documento \titlePGTEX{\LaTeX ~Thesis/Dissertation Example Using the \pgeeltex} % T?tulo do documento, em ingl?s.
@@ -106,8 +105,9 @@ aeronaves}
 %      do respectivo membro da banca. Se este par?metro adicional n?o for utilizado, ent?o o valor padr?o
 %      "Doutor" ? atribuido.
 
-\bancaAPGTEX[Dra.]{Tatiana Aires Tavares}
-\bancaBPGTEX[Dr., UFPB]{Antonio Carlos Cavalcanti}
+\bancaAPGTEX[Dr., UFPB]{Alexandre Nóbrega}
+\bancaBPGTEX[Dr., UFPB]{Jairo Rocha de Faria}
+\bancaCPGTEX[Dr., UFPE]{Ricardo Faria}
 %\bancaCPGTEX{} % Como exemplo, o membro D da banca n?o vai aparecer por estar vazio.
 %\bancaDPGTEX{}
 %\bancaFPGTEX[Doutor, MIT]{Membro F da banca}
@@ -140,7 +140,7 @@ aeronaves}
 %
 % Est?o dispon?veis dois tipos de dedicat?ria:
 \begin{dedicatoriaPGTEX}
-Dedico esse trabalho a minha família que me ajudou em todos os momentos
+Dedico este trabalho a minha família que me ajudou em todos os momentos em
 que precisei.
 \end{dedicatoriaPGTEX}
 
@@ -185,19 +185,35 @@ Tecnológico, CNPq, pela bolsa concedida durante os anos do curso.
 % RESUMO:
 \begin{resumoPGTEX}
 Os problemas operacionais cresceram muito em complexidade nos
-últimos tempos, o que tem tornado necessário o desenvolvimento de técnicas que possam agilizar a tomada de decisão. Empresas que não utilizam sistemas 
-computadorizados com essa finalidade tem perdido espaço entre seus concorrentes.
+últimos tempos, o que tem acentuado a necessidade do desenvolvimento de
+técnicas que possam agilizar os processos de tomada de decisão. 
+
+%Empresas que
+%não utilizam sistemas computadorizados com essa finalidade tem perdido espaço
+%entre seus concorrentes.
+
+Este trabalho trata da etapa de geração dos trilhos de aeronaves, ou seja, o
+sequenciamento de voos de cada aeronave. O objetivo aqui é minimizar o número de
+aeronaves necessárias para operar uma dada malha de voos.
  
- A construção de trilhos de aeronaves é considerado um dos principais problemas da indústria aeronáutica e se 
- refere ao sequênciamento dos voos de uma companhia aérea de forma que o menor número de aeronaves seja necessário 
- para operá-los. Esse problema possui uma característica combinatória e a sua
- resolução fica mais difícil a medida que a quantidade de voos envolvidos cresce. Entretanto pequenas modificações nos horários de partida desses voos, 
- ou o acréscimo de algum voo de resposicionamento entre dois aeroportos próximos podem gerar soluções de baixo custo.
+ %A construção de trilhos de aeronaves é considerado um dos principais problemas
+ %da indústria aeronáutica e se refere ao sequênciamento dos voos de uma
+ %companhia aérea de forma que o menor número de aeronaves seja necessário para
+ %operá-los.
+ 
+ Esse problema possui é combinatoriamente explosivo e a sua resolução fica mais
+ difícil à medida que a quantidade de voos envolvidos cresce. Pequenas
+ modificações nos horários de partida desses voos, ou o acréscimo de algum voo
+ de resposicionamento entre dois aeroportos próximos podem gerar soluções de
+ melhor qualidade.
  
  Esse trabalho apresenta um algoritmo híbrido baseado na metaheurística GRASP,
- com a utilização do ILS e de programação inteira na busca local. A sua
- utilização é indicada para resolução de problemas de larga
- escala, pois nesse caso fica inviável a aplicação de um algoritmo puramente exato que poderia levar anos para realizar a tarefa. Os resultados preliminares tem mostrado agilidade na obtenção de boas soluções.
+ com a utilização do ILS e de programação inteira na busca local. 
+ %A sua utilização é indicada para resolução de problemas de larga escala, pois
+ % nesse caso fica inviável a aplicação de um algoritmo puramente
+ % exato que poderia levar anos para realizar a tarefa. 
+ Os resultados preliminares tem mostrado que essa abordagem é capaz de
+ gerar boas soluções.
  
  \\
  

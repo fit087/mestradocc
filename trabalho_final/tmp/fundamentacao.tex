@@ -2,20 +2,20 @@
 
 Nesse capítulo é feita a fundamentação dos principais assuntos presentes nesse
 trabalho: a heurística construtiva, as metaheurísticas e a programação
-linear. Nas seções seguintes são descritas os aspectos teóricos e os
+linear inteira. Nas seções seguintes são descritos os aspectos teóricos e os
 principais métodos relacionados a esse trabalho.
 
 \section{Heurísticas Construtivas}
 As técnicas de resolução heurísticas se utilizam de processos intuitivos com a
 finalidade de obter uma boa solução, a um custo computacional aceitável, ou
-seja não garante a otimalidade de um problema. O objetivo é obter em um tempo
-reduzido uma solução tão próxima quanto possível do ótimo global.
+seja, não garante a otimalidade da solução de um problema. O objetivo é obter,
+em um tempo reduzido, uma solução tão próxima quanto possível do ótimo global.
 		
 Uma heurística é dita construtiva quando a construção da solução se dá elemento
-por elemento. A forma de escolha dos elementos variam de acordo com a
+por elemento. A forma de escolha dos elementos varia de acordo com a
 estratégia e a função de avaliação adotada, essa escolha deve levar em
-consideração o benefício da inserção de cada elemento para a solução final,
-escolhendo sempre o \emph{melhor} elemento em cada passo.
+consideração o benefício da inserção de cada elemento para a qualidade da
+solução final, escolhendo sempre o \emph{melhor} elemento em cada passo.
 		
 O Algoritmo \ref{alg:heurconsgulosa} mostra o pseudocódigo para a construção de
 uma solução inicial para um problema de otimização que utiliza uma função
@@ -47,7 +47,7 @@ inicial. \newline \mbox{Fonte:
 
 Uma outra forma de obter uma solução inicial é escolhendo os elementos
 candidatos aleatoriamente. Isto é, a cada passo, o elemento a ser inserido na
-solução é aleatoriamente selecionado dentre o conjunto de elementos candidatos
+solução é aleatoriamente selecionado dentre os elementos candidatos
 ainda não selecionados. A grande vantagem desta metodologia reside na
 simplicidade de implementação. Segundo testes empíricos , a desvantagem é a
 baixa qualidade, em média, da solução final. Essa técnica é recomendada quando
@@ -75,7 +75,7 @@ solução inicial. \newline \mbox{Fonte:
 \end{programma}
 \end{figure}
 
-Para melhores resultados essa etapa deve ser seguida de um refinamento, pois a
+Para melhores resultados, essa etapa deve ser seguida de um refinamento, pois a
 solução, quando gerada aleatoriamente, não costuma ser de boa qualidade.
 
 \section{Metaheurística}
@@ -107,7 +107,7 @@ As metaheurísticas podem explorar o espaço de soluções basicamente de duas
 formas: as metaheurísticas de busca local e as metaheurísticas de busca
 populacional. Nas metaheurísticas de busca local, o procedimento de busca
 utiliza uma solução como ponto de partida em cada iteração. As metaheurísticas
-GRASP, arrefecimento simulado (\textit{Simulated Annealing}), busca tabu e ILS
+GRASP, recozimento simulado (\textit{Simulated Annealing}), busca tabu e ILS
 podem ser citadas como exemplos de metaheurísticas ponto-a-ponto. Nas metaheurísticas de
 busca populacionais, soluções de boa qualidade são combinadas com o intuito de
 produzir soluções melhores. Podemos citar como exemplo de métodos
@@ -137,11 +137,11 @@ melhor solução encontrada é inicializada com $\infty$(infinito). A linha 2
 repete o procedimento de construção e refinamento $GRASPMax$ vezes, por causa dessa
 etapa que o GRASP é considerado \textit{multi-start}.
 
-Na linha 3 e 4 são feitas respectivamente a construção e a busca local que são
+Nas linhas 3 e 4 são feitas respectivamente a construção e a busca local que são
 representadas nos Algoritmos \ref{alg:graspcons} e \ref{alg:grasplocal} e serão
 detalhadas mais adiante.
 
-Nas linhas 5 à 8, se a solução obtida na busca local for melhor que a melhor
+Nas linhas 5 a 8, se a solução obtida na busca local for melhor que a melhor
 solução obtida até o momento ($f(s) < f{*}$) então são atualizadas
 respectivamente a solução e o custo relativo a função objetivo da melhor
 solução corrente. A linha 9 encerra as iterações do GRASP e a linha 10 retorna a
@@ -166,14 +166,14 @@ melhor solução obtida na execução do algoritmo.
 \end{programma}
 \end{figure}
 
-Na fase de construção uma solução é iterativamente construída, elemento por
+Na fase de construção, uma solução é iterativamente construída, elemento por
 elemento. A parte gulosa da função visa gerar uma solução factível. O
 componente aleatório é incluído para explorar regiões diversas do espaço de
 soluções e é uma das chaves da efetividade do GRASP.
 
 A fase de construção do GRASP é baseada na construção de uma lista restrita de
 candidatos (LCR). Essa lista contem os melhores candidatos que podem ser
-adicionados a solução em um dado momento, a quantidade de elementos dessa lista
+adicionados a solução em um dado momento. A quantidade de elementos dessa lista
 é regulada pelo $\alpha$ que é um dos parâmetros do GRASP. O $\alpha$ é
 definido como sendo o nível de aleatoriedade da solução.
 
@@ -219,13 +219,13 @@ gulosas enquanto a escolha de um $\alpha = 1$ faz com que o algoritmo gere
 soluções puramente aleatórias.
  
 A construção do GRASP difere do Algoritmo \ref{alg:heurconsgulosa} por causa
-das linhas 4 à 7. A linha 4 obtém o valor mínimo que será acrescentado a
+das linhas 4 a 7. A linha 4 obtém o valor mínimo que será acrescentado a
 solução final, dentre os candidatos possíveis e a linha 5 obtém o valor máximo.
 A linha 6 forma a LCR com os elementos que tiverem o valor entre $g(t_{min}) +
 \alpha(g(t_{max}) - g(t_{min}))$. Por fim a linha 7 seleciona aleatoriamente um
 elemento da LCR.
 
-Com isso a quantidade de soluções possíveis é ampliada porém somente soluções
+Com isso a quantidade de soluções possíveis é ampliada, porém somente soluções
 promissoras são geradas.
 
 As soluções geradas pela fase de construção do GRASP normalmente não são
@@ -235,8 +235,8 @@ o objetivo de melhorar a solução construída na fase de construção. O Algori
 \ref{alg:grasplocal} descreve um procedimento básico de busca local relativo a
 uma vizinhança $N(.)$ de $s$ para um problema de minimização. A qualidade da
 construção gerada causa um impacto direto na busca local, uma vez que essa
-solução inicial podem constituir pontos de partidas promissores para a busca
-local, permitindo assim agilizá-los.
+solução inicial pode se mostrar como um ponto de partida promissor para a busca
+local, permitindo assim agilizá-la.
  
 \begin{figure}[h]
 \caption{Pseudocódigo do procedimento de busca local do GRASP. \newline
@@ -255,8 +255,8 @@ local, permitindo assim agilizá-los.
 \end{programma}
 \end{figure}
 
-O algoritmo de busca local define no passo 1 e 5 o conjunto de vizinhos da
-solução $s{'}$ que melhoram o valor de sua função objetivo. Do passo 2 à 6 a
+O algoritmo de busca local define nos passos 1 e 5 o conjunto de vizinhos da
+solução $s{'}$ que melhoram o valor de sua função objetivo. Do passo 2 a 6, a
 solução corrente é atualizada enquanto houver uma solução melhor na vizinhança.
 
 O GRASP apresenta basicamente o parâmetro $\alpha$ que pode ser ajustado.
@@ -272,15 +272,15 @@ Procedimentos GRASP mais sofisticados levam em consideração a mudança do valo
 de $\alpha$ ao longo das iterações de acordo com os resultados obtidos em
 iterações anteriores. Estudos feitos em \cite{prais2000} indicam que essa
 adaptação do valor de $\alpha$ produz soluções melhores do que aquelas obtidas
-considerando-o fixo.
+com um valor fixo.
 
 \subsection{ILS}
 
-Essa seção descreve a metaheurística ILS (Iterated Local Search - Busca Local
-Iterativa) que se baseia na idéia de que um procedimento de busca local
-consegue melhores resultados a medida que a solução base é variada.
-Esses locais diferentes são obtidos a partir de pertubações em cima da solução
-ótima local corrente.
+Essa seção descreve a metaheurística ILS (\textit{Iterated Local Search} -
+Busca Local Iterativa) que se baseia na idéia de que um procedimento de busca local
+consegue melhores resultados quando inicializa a busca em diferentes bacias de
+atração. Esses locais diferentes são obtidos a partir de pertubações em cima da
+solução ótima local corrente.
 
 O Algoritmo \ref{alg:ils} ilustra o pseudo-código do ILS. Nele pode-se perceber
 a necessidade da definição de quatro procedimentos: (a) $GeraSoluçãoInicial()$
@@ -333,14 +333,14 @@ Uma exemplo de pertubação seria a aplicação sucessiva de estruturas de vizin
 \section{Programação Linear}
 
 A programação linear é provavelmente a mais conhecida e utilizada técnica de
-otimização em todo o mundo e geralmente é utilizada para tomada de
+otimização em todo o mundo, e geralmente é utilizada para tomada de
 decisões gerenciais sobre a alocação de recursos para produção. Os custos dos recursos e
 as receitas geradas pelos produtos são usados para determinar a melhor solução.
 Qualquer problema que possa ser formulado com variáveis de decisão reais, tendo
 uma função objetivo linear, e funções de restrição lineares, em princípio pode
 ser solucionado através da programação linear. Tais programas originariamente
-utilizavam o método \textit{Simplex}, porém, recentemente, métodos de
-"\textit{pontos interiores}" se mostraram mais eficientes.
+utilizavam o método \textit{Simplex}, porém, recentemente, temos também métodos
+de "\textit{pontos interiores}".
 
 Embora a programação linear seja muito eficiente para a resolução de problemas
 lineares, sua aplicação a problemas que apresentem objetivos ou restrições

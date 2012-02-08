@@ -1,10 +1,10 @@
 \chapter{Descrição do problema}\label{cap:descprob}
 
-Com um conjunto de voos atribuído a uma mesma frota tem-se a necessidade de
-sequência-los de forma que cada aeronave possa ficar responsável por uma
+Com um conjunto de voos atribuídos a uma mesma frota tem-se a necessidade de
+sequenciá-los de forma que cada aeronave possa ficar responsável por uma
 sequência válidas de voos que são chamada de trilho. Um conjunto de voos está
-bem sequenciado se é possível atende-los com o menor número de aeronáves e com a
-menor alteração do planejamento inicial desses voos.
+bem sequenciado se é possível atendê-los com o menor número de aeronaves e com a
+menor alteração do planejamento inicial dos horários desses voos.
  
 Esse problema apresenta uma grande quantidade de restrições que devem ser
 atendidas. Essas restrições foram obtidas a partir da literatura e também da
@@ -14,7 +14,7 @@ academia e as empresas que, em sua grande maioria, são fechadas a esse tipo de
 comunicação com a finalidade de proteger seus ativos.
 
 As principais restrições que envolvem o PCTA são as temporais e as geográficas.
-Essas duas restrições são triviais e representam respectivamente que uma voo não
+Essas duas restrições são triviais e representam respectivamente que um voo não
 pode partir antes da chegada de seu antecessor e que um voo não pode partir de
 um local diferente do voo que lhe antecede, a não ser que haja tempo para a
 criação de um voo de reposicionamento. 
@@ -37,9 +37,9 @@ reposicionamento, ou seja, de um voo que não estava no planejamento
 inicial.
 
 Essas restrições induzem a formação de uma rede de possíveis conexões entre
-voos, essas conexões são denominadas de tipo de arco. Porém para conseguir
+voos, essas conexões são denominadas de tipos de arcos. Porém para conseguir
 melhores resultados deve-se permitir uma maior flexibilidade na construção dos
-trilhos permitindo mudanças no tempo de partida sugerido dos voos e
+trilhos possibilitando mudanças no tempo de partida sugerido dos voos e
 também a criação de voos de reposicionamento.
 
 A ligação dos voos pode ocorrer de 6 formas distintas. Os arcos do tipo 1
@@ -50,8 +50,8 @@ mas sem inserir atraso em nenhum dos voos envolvidos. Os arcos do tipo 4
 utilizam-se de atrasos e de um voo de reposicionamento para fazer a ligação
 entre dois voos. Os arcos do tipo 5 e 6 são usados na modelagem matemática, que
 foi formulado como um problema de minimização de fluxos em rede, para
-representar respectivamente o nó origem(source) e o destino(sink). Abaixo um
-maior detalhamento desses arcos:
+representar respectivamente o nó origem(\textit{source}) e o
+destino(\textit{sink}). Abaixo um maior detalhamento desses arcos:
   
 \begin{itemize}
 \item Conexão natural (Arco do tipo 1) - Os arcos desse tipo conectam dois voos
@@ -85,10 +85,10 @@ horários de partida envolvidos.
 \end{figure}
 
 \item Voos de reposicionamento (Arco do tipo 3) - Esses arcos representam
-conexões entre dois voos em que a origem parte de um aeroporto diferente do
-local de partida do voo de destino, no entanto, existe tempo suficiente para um
-voo de reposicionamento, entre os dois locais, sem violar as restrições de
-tempo de solo. Os custos de um arco do tipo 3 é igual a duração do voo de
+conexões entre dois voos onde o primeiro chega em um aeroporto diferente do
+aeroporto de partida do voo seguinte, no entanto, existe tempo suficiente para
+um voo de reposicionamento, entre os dois locais, sem violar as restrições de
+tempo de solo. O custo de um arco do tipo 3 é igual a duração do voo de
 reposicionamento, incluindo o seu tempo de solo.
 
 \begin{figure}[ht]
@@ -124,14 +124,14 @@ arcos do tipo 6 não tem custo.
 
 \end{itemize}
 
-Abaixo na Figura \ref{fig:arpexample} temos um exemplo visual de como a forma
-que é feita a montagem dos trilhos das aeronaves podem influênciar de forma
-significativa na utilização dos recursos da companhia aérea. Cada
-retangulo representa um voo onde a parte laranja representa o tempo de solo que
-cada voo deve obedecer e a azul o tempo de voo esperado da cidade de origem para
-a cidade de destino. As letras representam aeroportos diferentes e a linha
-pontilhada indica o tempo de inicio e de termino de cada voo, ela é importante
-para identificação dos atrasos.
+Na Figura \ref{fig:arpexample} temos um exemplo visual de como o processo de 
+montagem dos trilhos das aeronaves podem influenciar de forma significativa na
+utilização dos recursos da companhia aérea. Cada retângulo representa um voo
+onde a parte laranja representa o tempo de solo que cada voo deve obedecer e a
+azul o tempo de voo esperado da cidade de origem para a cidade de destino. As
+letras representam aeroportos diferentes e a linha pontilhada indica o tempo de
+início e de término de cada voo, ela é importante para identificação dos
+atrasos.
 
 \begin{figure}[ht]
 	\caption{Construção de Trilhos de Aeronaves. \newline \mbox{Fonte: (Própria)}}
@@ -141,7 +141,7 @@ para identificação dos atrasos.
 
 A parte 1 da Figura \ref{fig:arpexample} representa os voos da companhia que
 ainda não foram cobertos por nenhuma aeronave e nas partes 2 e 3 são
-demonstrado duas formas de organizar esses voos em trilhos.
+demonstradas duas formas de organizar esses voos em trilhos.
 
 Na parte 2 temos a melhor forma possível de se organizar os voos disponíveis
 utilizando apenas os arcos do tipo 1, ou seja sem a utilização de atrasos ou de
