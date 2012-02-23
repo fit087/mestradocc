@@ -2,27 +2,27 @@
   
 O método proposto se utiliza do GRASP, do ILS e da abordagem exata através da
 programação linear inteira, pretendendo tirar proveito das vantagens de cada
-uma dessas técnicas. A agilidade dos métodos heurísticos e a optimalidade do
-método exato.
+uma dessas técnicas. Ou seja, combinando a agilidade dos métodos heurísticos com
+a optimalidade do método exato.
   
-Da mesma forma que as outras abordagens heurísticas esse novo algoritmo
+Da mesma forma que em outras abordagens heurísticas, esse novo algoritmo
 consome pouco tempo computacional, em relação ao método exato e tem a capacidade
 de escapar de mínimos locais.
   
-O GRASP foi utilizado como a base do algoritmo onde a parte da construção
+O GRASP foi utilizado como a base do algoritmo, onde a parte da construção
 seguiu a sua definição padrão, com a geração de uma lista restrita de candidatos
 (LRC) e a posterior escolha aleatória entre esses elementos. A parte da busca
 local foi adaptada para executar em conjunto com o ILS modificado. Para o ILS
 foram definidos algumas estruturas de vizinhança que foram utilizadas
-na busca local e a perturbação foi feita com a utilização de um solver em uma
-parte do problema. Essa abordagem permite que o algoritmo gere boas
+na busca local, e a perturbação foi feita com a utilização de um \textit{solver}
+em uma parte do problema. Essa abordagem permite que o algoritmo gere boas
 soluções e escape de mínimos locais além de promover uma aceleração na obtenção
-de boas soluções através de uma intensificação em uma direção totalmente
-arbitrária proporcionando assim um alto grau de convergência.
+de boas soluções, pois quando o \textit{solver} encontra uma melhor solução ele
+consegue mudar o espaço de soluções em que a busca era efetuada.
 
 
-O solver funciona a partir de um modelo matemático que foi desenvolvido baseado
-na proposta de \cite{pontes2002} que é aplicado a uma parte do problema cada
+O \textit{solver} é utilizado para resolver um modelo matemático que foi
+desenvolvido baseado na proposta de \cite{pontes2002} que é aplicado a uma parte do problema cada
 vez que se deseja fazer uma perturbação. Enquanto a busca local usa o método de
 descida, variando entre três estruturas de vizinhança, o \textit{swap-x}, o
 \textit{crossover} e a \textit{compactação}. Mais adiante serão dado mais
@@ -30,18 +30,17 @@ detalhes sobre o modelo matemático, a forma de escolha do sub problema, da fase
 de construção que foi implementada, da busca local e das implementações que não
 tiveram êxito.
 
-\section{Modelo matemática} \label{sec:modelomat}
+\section{Modelo matemático} \label{sec:modelomat}
 
    
 A modelagem proposta por \cite{pontes2002} aborda todas as restrições do
 problema fazendo com que a quantidade de restrições geradas seja muito elevada.
 A idéia utilizada na nossa formulação é a de tentar reduzir ao máximo a
 quantidade de restrições necessárias. Isso é feito com a modelagem de apenas
-algumas restrições, aquelas que são possíveis no mundo real. Ela também
-é feita através da incorporação de restrições em outras.
+algumas restrições, aquelas que são possíveis no mundo real.
 
 Primeiro se percebeu que não há necessidade de modelar os 4 tipos de arcos para
-cada voo, uma vez que dado dois voos só pode vir a ocorrer dois tipos de arcos
+cada voo, uma vez que dados dois voos só pode vir a ocorrer dois tipos de arcos
 possíveis entre eles. Essa situação é ilustrada na Figura
 \ref{fig:modelagem_arcos}.
 
@@ -57,22 +56,22 @@ Em a) os voos respeitam a restrição geográfica, dessa forma apenas os arcos d
 tipo 1 e 2 precisam ser modelados uma vez que não teria sentido fazer um voo de
 reposicionamento nessa situação. Em b) os aeroportos em questão são diferentes,
 sendo necessário apenas a modelagem dos arcos do tipo 3 e 4, perceba que não
-teria outra alternativa se não efetuar um voo de reposicionamento.
+teria outra alternativa se não fazer um voo de reposicionamento.
 
 \subsection{Definição}
 
 Seja $D = (V,A)$ um grafo representando uma instância do PCTA, onde o conjunto
 de vértice $V = {v_{i}:i \in I}$ de D é indexado por $I = {1, 2, ..., n+1,
 n+2}$ onde $v_{n+1}$ e $v_{n+2}$, identificam, respectivamente, os nós fonte e
-destino. E os nós restantes referem-se ao conjunto de arcos originais, com $n$
-elementos. Seja os custos ${c_{ij}:(i,j) \in A}$ introduzidos acima, estando
-associados com cada arco da instância.
+destino. E os nós restantes referem-se ao conjunto de nós originais, com $n$
+elementos. Sejam os custos ${c_{ij}:(i,j) \in A}$ introduzidos acima, estando
+associados com cada arco do grafo.
   
 Seja ${x_{ij}:(i,j) \in A}$ um conjunto binário 0-1 de variáveis usada para
 controlar a inclusão $(x_{ij} = 1)$ ou a exclusão $(x_{ij} = 0)$ de um arco
 (possível conexão) entre vértices (voos) $v_{i}$ e $v_{j}$. O conjunto
 $\overline{I}$ identifica o conjunto de nós excluindo o nó fonte $(v_{n+1})$ e
-o nó de destino $(v_{n+2})$. A função objetiva foi dividida para facilitar o
+o nó de destino $(v_{n+2})$. A função objetivo foi dividida para facilitar o
 entendimento de como é feito o custo de adicionar um trilho. Variáveis reais
 $\delta_{i}$ e $\theta_{i}$, $i \in \overline{I}$ são usados para representar,
 respectivamente, o desvio do tempo de partida sugerido e a norma desse desvio
@@ -109,7 +108,7 @@ Minimizar \  \ \sum_{j \in \overline{I}} x_{v_{n+1}j}(CUSTO\_TRILHO) + \sum_{i \
 
 \item[b)] Viabilidade das conexões \\
 \begin{equation}
-s_{i} + t_{i}x_{ij} - INF(1 - x_{ij}) + \delta_{i} \leq s_{j} + \delta_{j} \   \ \forall_{i,j} \in \overline{I}
+s_{i} + t_{i}x_{ij} - M(1 - x_{ij}) + \delta_{i} \leq s_{j} + \delta_{j} \   \ \forall_{i,j} \in \overline{I}
 \end{equation}
 %\begin{equation}
 %\sum_{i \in I} x_{i(n+1)} = 0
@@ -133,6 +132,9 @@ s_{i} + t_{i}x_{ij} - INF(1 - x_{ij}) + \delta_{i} \leq s_{j} + \delta_{j} \   \
 \begin{equation}
 0 \geq \theta_{i} \geq \gamma_{i} \   \ \forall{i} \in \overline{I}
 \end{equation}
+\begin{equation}
+x_{ij} \in \{0,1\}
+\end{equation}
 \end{enumerate}
 
 \clearpage
@@ -153,15 +155,15 @@ quantidade de restrições do problema.
 
 Além disso o conjunto $A$ contém apenas um tipo de arco, o arco do tipo 1 se os
 voos satisfazem a restrição geográfica e o arco do tipo 3 caso não satisfaçam.
-Os arcos do tipo 2 e 4 são modelados a partir  da variável $\delta$ que tem seu
-custo acrescentado na função objetivo.
+Os arcos dos tipos 2 e 4 são modelados a partir  da variável $\delta$ que tem
+seu custo acrescentado na função objetivo.
 
 Essa estratégia permite a redução de 3 arcos para cada voo, o que deixa o
 modelo mais leve.
 
 O calculo dos custos são feitos através de um pré-processamento, onde os arcos
 viáveis recebem os valores referentes ao seu tipo, por exemplo, no caso de um
-arco originário do nó source, arco do tipo 6, um custo 1000 é atribuído. No
+arco originário do nó origem, arco do tipo 6, um custo 1000 é atribuído. No
 caso de arcos que deverão ser evitados um custo elevado é atribuído.
   	
   	
@@ -177,7 +179,7 @@ GRASP. Inicialmente é feita a ordenação do conjunto de voos a partir do seu
 tempo de partida sugerido. O algoritmo só termina quando todos os voos já
 foram alocados em algum trilho.
   
-Existe duas formas de fazer a montagem da solução, uma seria a montagem de
+Existem duas formas de fazer a montagem da solução, uma seria a montagem de
 trilhos de forma sequencial, onde um novo trilho só é iniciado quando o anterior
 se encontra saturado. A outra forma é a montagem de trilhos de forma paralela,
 que, a priori, provocaria uma melhor distribuição dos voos. Na prática a
@@ -187,20 +189,61 @@ sempre, soluções de melhor qualidade.
 Pode ser que para instâncias com alguma característica específica a
 estratégia de montagem dos trilhos de forma paralela pode apresentar melhores
 resultados.
+
+\begin{figure}[h]
+\caption{Pseudocódigo do procedimento de seleção de um voo inicial. \newline
+\mbox{Fonte: Própria}}\label{alg:selectinit}
+\begin{programma}
+\ALGORITHM{selecionaVooInicial(V)}
+
+\STATE $LCI$ \GETS cincoPrimeirosVoos($V$);
+\STATE $h(v_{min}) \GETS min\{h(v) \mid v \in LCI\}$;
+\STATE $h(v_{max}) \GETS max\{h(v) \mid v \in LCI\}$;
+\STATE $LRI \GETS \{v \in LCI \mid h(v) \leq h(v_{min}) + \alpha(h(v_{max}) -
+h(v_{min}))\}$;
+\STATE Selecione aleatoriamente um elemento $v \in LRI$;
+\STATE\RETURN $v$;
+\ENDALGORITHM
+\end{programma}
+\end{figure}
   
 \subsection{Formação dos trilhos de forma sequencial}
 
-Quando se pensa na escolha do primeiro voo do trilho a decisão imediata é a
-escolha do voo que contenha o menor horário de partida sugerido. Porém essa
-escolha reduz a quantidade de soluções que podem ser geradas, isso ocorre pois o
-primeiro voo tem uma grande influência nas possíveis soluções que um trilho pode
-assumir. Para evitar isso a escolha do primeiro voo de um trilho é feita
-baseando-se nos 5 voos com menor horário de partida que ainda não esteja
-alocado a nenhum outro trilho. 
+Quando se pensa na escolha do primeiro voo do trilho, a decisão imediata é a
+escolha do voo que contenha o menor horário de partida sugerido, ou seja, o voo
+mais próximo. Porém essa escolha reduz a quantidade de soluções que podem ser
+geradas, isso ocorre pois o primeiro voo tem uma grande influência nas
+possíveis soluções que um trilho pode assumir. Para evitar isso a escolha do
+primeiro voo de um trilho é feita baseando-se nos 5 voos com menor horário de
+partida que ainda não estejam alocados a nenhum outro trilho. 
 
-Esses voos são adicionados a lista de candidatos iniciais (LCI) e a escolha do
-voo é feita de forma aleatória utilizando o GRASP, para evitar a escolha de
-candidatos que estejam muito distantes do voo de menor horário de partida.
+Esses voos são adicionados a lista de candidatos iniciais (LCI) em seguida é
+feita a escolha do elemento que irá iniciar o novo trilho levando em
+consideração apenas os elementos que possuam o horário de partida distante de
+até $\alpha \%$ do voo de menor horário de partida. Isso é feito para
+evitar a escolha de um voo muito distante do menor voo.
+
+\begin{figure}[h]
+\caption{Pseudocódigo do procedimento de formação sequencial dos trilhos.
+\newline
+\mbox{Fonte: Própria}}\label{alg:formseq}
+\begin{programma}
+\ALGORITHM{construçãoSequencial(V)}
+
+\STATE Ordene o conjunto de voos não alocados $V$;
+\STATE $M \GETS \emptyset$;
+\WHILE{$V \neq \emptyset$}
+\STATE $v \GETS selecionaVooInicial(V)$
+\STATE $T \GETS \{v\}$;
+\STATE $T \GETS completaTrilho(T)$;
+\STATE $V \GETS V - \{v \in T\}$;
+\STATE $M \GETS M \cup T$;
+\ENDWHILE
+\STATE\RETURN $M$;
+
+\ENDALGORITHM
+\end{programma}
+\end{figure}
 
 \subsection{Formação dos trilhos de forma paralela}
  
@@ -209,15 +252,77 @@ inserido em nenhum dos trilhos que estejam sendo montados, mantendo-se assim um
 conjunto de trilhos disponíveis (CTD).
 
 Em cada iteração o trilho corrente (TC) é escolhido a partir do CTD de forma
-aleatória. Feito adiciona-se um voo a esse trilho. Caso não exista voos
+aleatória. Feito isso, adiciona-se um voo a esse trilho. Caso não existam voos
 candidatos para adição no TC este é removido da CTD e uma nova iteração é
 iniciada.
+
+\begin{figure}[h]
+\caption{Pseudocódigo do procedimento de formação paralela dos trilhos.
+\newline
+\mbox{Fonte: Própria}}\label{alg:formparalel}
+\begin{programma}
+\ALGORITHM{construçãoParalela(V)}
+
+\STATE Ordene o conjunto de voos não alocados $V$;
+\STATE $M \GETS \emptyset$;
+\STATE $CTD \GETS \emptyset$;
+\WHILE{$V \neq \emptyset$}
+\STATE $v \GETS selecionaVooInicial(V)$
+\IF {$v$ pode ser inserido em um trilho do CTD}
+	\STATE $TC \GETS escolheTrilhoAleatório(CTD)$;
+	\STATE $nv \GETS selecionaVooCandidato(TC)$;
+	\IF {$nv = \emptyset$}
+		\STATE $CDT \GETS CDT - \{TC\}$
+		\STATE $M \GETS M \cup \{TC\}$
+	\ELSE
+		\STATE $TC \GETS TC \cup \{nv\}$
+	\ENDIF
+\ELSE
+	\STATE $T \GETS \{v\}$; 
+	\STATE $CTD \GETS CTD \cup T$ 	
+\ENDIF
+\ENDWHILE
+
+\STATE $M = M \cup \{t \in CTD\}$;
+\STATE\RETURN $M$;
+
+\ENDALGORITHM
+\end{programma}
+\end{figure}
+
+\begin{figure}[h]
+\caption{Pseudocódigo de calculo do proximo voo de um trilho
+\newline
+\mbox{Fonte: Própria}}\label{alg:calcvoo}
+\begin{programma}
+\ALGORITHM{obtemProximoVoo(T,V)}
+
+\STATE $A \GETS \{1,2,3,4\}$;
+\STATE $a \GETS sorteaTipoDeArco(TiposDeArco, P_{1},P_{2},P_{3},P_{4})$;
+\STATE $A \GETS A - \{a\}$;
+\STATE $v \GETS ultimoVoo(T)$;
+
+\FOR{$i$ \FROM $1$ \TO $4$}\PGlnlabel{forline}
+\STATE $c \GETS proximoCandidato(v, V, a)$;
+\IF {$c = \emptyset$}
+	\STATE $a \GETS proximoArco(A)$;
+	\STATE $A \GETS A - \{a\}$;
+\ELSE
+	\STATE\RETURN $c$;
+\ENDIF 
+\ENDFOR
+
+\STATE\RETURN $\emptyset$;
+
+\ENDALGORITHM
+\end{programma}
+\end{figure}
   
 \subsection{Escolha dos voos de um trilho}
 
 A escolha do primeiro voo de um trilho é feita como explicado nas seções
 anteriores enquanto os demais voos são escolhidos tendo como base um tipo de
-arco e uma lisat restrita de candidatos (CLR).
+arco e uma lista restrita de candidatos (CLR).
  
 Os tipos de arcos foram definidos no Capítulo \ref{cap:descprob}, porém nessa
 etapa apenas 4 tipos são considerados, o   $A_{1},A_{2},A_{3},A_{4}$ que
