@@ -190,7 +190,43 @@ Pode ser que para instâncias com alguma característica específica a
 estratégia de montagem dos trilhos de forma paralela pode apresentar melhores
 resultados.
 
-\begin{figure}[h]
+
+  
+\subsection{Formação dos trilhos de forma sequencial}
+
+Quando se pensa na escolha do primeiro voo do trilho, a decisão imediata é a
+escolha do voo que contenha o menor horário de partida sugerido, ou seja, o voo
+mais próximo. Porém essa escolha reduz a quantidade de soluções que podem ser
+geradas, isso ocorre pois o primeiro voo tem uma grande influência nas
+possíveis soluções que um trilho pode assumir. Para evitar isso a escolha do
+primeiro voo de um trilho é feita baseando-se nos 5 voos com menor horário de
+partida que ainda não estejam alocados a nenhum outro trilho. 
+
+Esses voos são adicionados a lista de candidatos iniciais (LCI) em seguida é
+feita a escolha do elemento que irá iniciar o novo trilho levando em
+consideração apenas os elementos que possuam o horário de partida distante de
+até $\alpha \%$ do voo de menor horário de partida, esses elementos são então
+inseridos em uma lista restrita inicial (LCI) na qual é feita a seleção
+aleatório de um dos voos. Isso é feito para evitar a escolha de um voo muito
+distante do menor voo.
+
+Os pseudocódigos \ref{alg:selectinit} e \ref{alg:formseq} ajudam a elucidar esse
+entendimento. Primeiro deve-se entender o pseudocódigo \ref{alg:selectinit}
+onde é feito a escolha de um voo que deverá iniciar um trilho, esse
+pseudocódigo serve tando para montar trilhos de forma sequencial como de forma
+paralela. Em 1 é formada a LCI que é composta pelos 5 primeiros voos ainda não
+alocados, de 2 a 4 é feita a formação da LRI tendo como base o menor horário de
+partida $h(v_{min})$, o maior horário de partida $h(v_{max})$ e o $\alpha$ e em
+5 é feita a escolha aleatória de um desses voos. Já no pseudocódigo
+\ref{alg:formseq} é feita a montagem dos trilhos de forma sequencial. Em 1 os
+voos disponíveis são ordenados de acordo com seu horário de partida, em 2 a
+malha, que será o resultado, é inicializada com vazio. De 3 a 9 é feita a
+montagem dos trilhos que irão compor a malha, em 4 e 5 é obtido o primeiro voo
+do trilho, em 6 é feita a montagem completa desse trilho, em 7 os voos
+pertencente ao trilho corrente são removidos do conjunto de voos disponíveis e
+em 8 o trilho corrente é adicionado a malha resultante.
+
+ \begin{figure}[h]
 \caption{Pseudocódigo do procedimento de seleção de um voo inicial. \newline
 \mbox{Fonte: Própria}}\label{alg:selectinit}
 \begin{programma}
@@ -206,22 +242,6 @@ h(v_{min}))\}$;
 \ENDALGORITHM
 \end{programma}
 \end{figure}
-  
-\subsection{Formação dos trilhos de forma sequencial}
-
-Quando se pensa na escolha do primeiro voo do trilho, a decisão imediata é a
-escolha do voo que contenha o menor horário de partida sugerido, ou seja, o voo
-mais próximo. Porém essa escolha reduz a quantidade de soluções que podem ser
-geradas, isso ocorre pois o primeiro voo tem uma grande influência nas
-possíveis soluções que um trilho pode assumir. Para evitar isso a escolha do
-primeiro voo de um trilho é feita baseando-se nos 5 voos com menor horário de
-partida que ainda não estejam alocados a nenhum outro trilho. 
-
-Esses voos são adicionados a lista de candidatos iniciais (LCI) em seguida é
-feita a escolha do elemento que irá iniciar o novo trilho levando em
-consideração apenas os elementos que possuam o horário de partida distante de
-até $\alpha \%$ do voo de menor horário de partida. Isso é feito para
-evitar a escolha de um voo muito distante do menor voo.
 
 \begin{figure}[h]
 \caption{Pseudocódigo do procedimento de formação sequencial dos trilhos.
@@ -245,6 +265,7 @@ evitar a escolha de um voo muito distante do menor voo.
 \end{programma}
 \end{figure}
 
+
 \subsection{Formação dos trilhos de forma paralela}
  
 Nessa estratégia um trilho é iniciado sempre que existe um voo que não pode ser
@@ -255,6 +276,24 @@ Em cada iteração o trilho corrente (TC) é escolhido a partir do CTD de forma
 aleatória. Feito isso, adiciona-se um voo a esse trilho. Caso não existam voos
 candidatos para adição no TC este é removido da CTD e uma nova iteração é
 iniciada.
+
+O pseudocódigo \ref{alg:formparalel} ajudam no entendimento do algoritmo. Em 1
+os voos disponíveis são ordenados de acordo com seu horário de partida, em 2 e 3
+respectivamente a malha resultante e o CDT são inicializados com vazio. De 4 a
+19 é feita a montagem paralela dos trilhos que irão formar a malha. Em 5 é feita
+a seleção de um voo inicial. Em 6 verifica-se se existe algum trilho corrente
+que pode incorporar esse voo, se existir então em 7 é feita a seleção de um
+trilho corrente (TC) a partir dos elementos da CDT e em 8 seleciona-se um voo
+que possa ser inserido em TC e insere o voo em 13. 	Se não existir nenhum
+voo que possa ser inserido em TC então este é removido da CDT como pode ser
+visto de 9 a 12. 
+
+De 15 a 18 é criado um novo trilho sempre que não existe nenhum trilho da CDT
+que possa comportar o voo selecionado em 5. Em 20 se insere os trilhos
+pertencentes a CDT na malha resultante. Isso ocorre porque todos os voos já
+foram alocados em algum trilho.
+
+
 
 \begin{figure}[h]
 \caption{Pseudocódigo do procedimento de formação paralela dos trilhos.
@@ -290,33 +329,7 @@ iniciada.
 \end{programma}
 \end{figure}
 
-\begin{figure}[h]
-\caption{Pseudocódigo de calculo do proximo voo de um trilho
-\newline
-\mbox{Fonte: Própria}}\label{alg:calcvoo}
-\begin{programma}
-\ALGORITHM{obtemProximoVoo(T,V)}
 
-\STATE $A \GETS \{1,2,3,4\}$;
-\STATE $a \GETS sorteaTipoDeArco(TiposDeArco, P_{1},P_{2},P_{3},P_{4})$;
-\STATE $A \GETS A - \{a\}$;
-\STATE $v \GETS ultimoVoo(T)$;
-
-\FOR{$i$ \FROM $1$ \TO $4$}\PGlnlabel{forline}
-\STATE $c \GETS proximoCandidato(v, V, a)$;
-\IF {$c = \emptyset$}
-	\STATE $a \GETS proximoArco(A)$;
-	\STATE $A \GETS A - \{a\}$;
-\ELSE
-	\STATE\RETURN $c$;
-\ENDIF 
-\ENDFOR
-
-\STATE\RETURN $\emptyset$;
-
-\ENDALGORITHM
-\end{programma}
-\end{figure}
   
 \subsection{Escolha dos voos de um trilho}
 
@@ -325,7 +338,7 @@ anteriores enquanto os demais voos são escolhidos tendo como base um tipo de
 arco e uma lista restrita de candidatos (CLR).
  
 Os tipos de arcos foram definidos no Capítulo \ref{cap:descprob}, porém nessa
-etapa apenas 4 tipos são considerados, o   $A_{1},A_{2},A_{3},A_{4}$ que
+etapa apenas 4 tipos são considerados, o   $a_{1},a_{2},a_{3},a_{4}$ que
 representam formas de ligações entre os voos. Os arcos do tipo 5 e 6 só são
 utilizados na modelagem matemática. Os arcos do tipo 1 permitem a
 ligação de voos sem a utilização de atrasos e/ou reposicionamentos. Os arcos do
@@ -341,7 +354,7 @@ Primeiramente é feita a escolha do tipo de arco que será utilizado para efetua
 a ligação do ultimo voo do trilho corrente. Essa escolha é feita tendo
 como base as probabilidades de cada um desses arcos acontecer. Essa
 probabilidade foi definida como sendo
-$P(A_{1})=0.79,P(A_{2})=0.16,P(A_{3})=0.04,P(A_{4})=0.01$ pois a solução ótima
+$P(a_{1})=0.79,P(a_{2})=0.16,P(a_{3})=0.04,P(a_{4})=0.01$ pois a solução ótima
 do problema real da Rio Sul apresentava essas características. Esses valores
 são empíricos e para determinadas instâncias podem gerar melhores soluções se
 alterados.
@@ -364,6 +377,44 @@ candidatos que tenha o valor de impacto na solução de até $valor_{menor} +
 \alpha*(valor_{maior} + valor_{menor})$, onde $\alpha$ é o grau de
 gulosidade do GRASP. O candidato deve ser escolhido de forma aleatória entre os
 elementos da LCR.
+
+O pseudocódigo \ref{alg:calcvoo} explica como isso acontece. Em 1 inicializa o
+conjunto de arcos com os 4 tipos possíveis em 2 realiza-se um sorteio do tipo de
+arco que irá ser inicialmente avaliado levando em consideração a probabilidade
+de cada um deles acontecer ($P(a_{1}), P(a_{2}), P(a_{3}), P(a_{4})$). Em 3 é
+feita a remoção do tipo de arco selecionado do conjunto inicial e em 4
+é selecionado o voo corrente que necessita de um sucessor, nesse caso o último
+voo do trilho.
+
+De 5 a 13 procura-se um candidato para o voo corrente levando em consideração
+todos os tipos de arcos, iniciando pelo que foi selecionado no passo 2.
+
+\begin{figure}[h]
+\caption{Pseudocódigo de calculo do proximo voo de um trilho
+\newline
+\mbox{Fonte: Própria}}\label{alg:calcvoo}
+\begin{programma}
+\ALGORITHM{obtemProximoVoo(T,V)}
+
+\STATE $A \GETS \{1,2,3,4\}$;
+\STATE $a \GETS sorteaTipoDeArco(A, P(a_{1}),P(a_{2}),P(a_{3}),P(a_{4}))$;
+\STATE $A \GETS A - \{a\}$; \STATE $v \GETS ultimoVoo(T)$;
+
+\FOR{$i$ \FROM $1$ \TO $4$}\PGlnlabel{forline}
+\STATE $c \GETS proximoCandidato(v, V, a)$;
+\IF {$c = \emptyset$}
+	\STATE $a \GETS proximoArco(A)$;
+	\STATE $A \GETS A - \{a\}$;
+\ELSE
+	\STATE\RETURN $c$;
+\ENDIF 
+\ENDFOR
+
+\STATE\RETURN $\emptyset$;
+
+\ENDALGORITHM
+\end{programma}
+\end{figure}
  
  \section{Fase de busca local do GRASP}
 

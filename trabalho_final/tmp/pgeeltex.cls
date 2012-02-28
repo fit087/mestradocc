@@ -93,14 +93,15 @@
 		\LoadClass[capchap,sumarioincompleto,times,a4paper,12pt]{abnt} % Carrega classe Abntex para modo draft.
 	}
 	{
-	\LoadClass[capchap,oneside,sumarioincompleto,times,a5paper,10pt]{abnt} % Carrega classe Abntex para modo A5, padr�o BU.
+	\LoadClass[capchap,oneside,sumarioincompleto,times,a5paper,10pt]{abnt} 
+	%Carrega classe Abntex para modo A5, padr�o BU. 
 	}
 }
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Terceira parte: Implementa��o
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 % Implementa��o de comandos:
 
@@ -199,6 +200,7 @@
 %  {\paperheight-\topmargin-\voffset-1in-\headheight-\headsep-1.5cm}
 %
 
+
 % Se a op��o PGTEXdraft estiver ativa, muda as marges e fontes.
 \ifthenelse{\boolean{flagdraftPGTEX}}
 { % then
@@ -225,9 +227,9 @@
   	\setlength{\parskip}{0cm}
 	  
 	% HORIZONTAL LENGHTS %
-	\setlength{\oddsidemargin}{2.5cm-\hoffset-1in}
-	\setlength{\evensidemargin}{1.5cm-\hoffset-1in}
-	\setlength{\textwidth}{\paperwidth-\oddsidemargin-\hoffset-1in-1.5cm}
+	\setlength{\oddsidemargin}{1.7cm-\hoffset-1in}
+	\setlength{\evensidemargin}{0.1cm-\hoffset-1in}
+	\setlength{\textwidth}{\paperwidth-\oddsidemargin-\hoffset-1in-0.7cm}
 	
 	% VERTICAL LENGHTS %
 	\setlength{\headsep}{0.9cm-\headheight}
@@ -922,7 +924,7 @@
 %\setlength{\parskip}{.3cm}
 \espaco{1.5}
 \begin{center}
-{\bfseries\fontsize{18}{20}\selectfont UNIVERSIDADE FEDERAL DA PAR\'IBA \par}
+{\bfseries\fontsize{18}{20}\selectfont UNIVERSIDADE FEDERAL DA PARA\'IBA \par}
 {\bfseries\fontsize{13}{15}\selectfont PROGRAMA DE P\'OS-GRADUA\c C\~AO EM INFORM\'ATICA \par}
 {\bfseries\fontsize{13}{15}\selectfont \MakeUppercase{\PGTEXlab} \par}
 {\fontsize{12}{14}\selectfont DISCIPLINA: \MakeUppercase{\PGTEXdiscip} \par}
@@ -985,8 +987,9 @@
 \thispagestyle{empty}
 \espaco{1}
   \begin{center}
-    {\bfseries\fontsize{10.5}{12.5}\selectfont UNIVERSIDADE FEDERAL DA PAR\'IBA PROGRAMA DE P\'OS-GRADUA\c C\~AO EM INFORM\'ATICA}%
-  \end{center}%
+    {\bfseries\fontsize{10.5}{12.5}\selectfont UNIVERSIDADE FEDERAL DA PARA\'IBA
+    PROGRAMA DE P\'OS-GRADUA\c C\~AO EM INFORM\'ATICA} 
+    \end{center}%
 \vfill
 \ABNTifnotempty{\ABNTautordata}%
   {%
