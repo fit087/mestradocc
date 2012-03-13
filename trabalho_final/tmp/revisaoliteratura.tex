@@ -1,45 +1,51 @@
 \chapter{Revisão da literatura}
   
-	
-O trabalho de Argüello e Bard \cite{arguelo1997}  apresenta um
-algoritmo baseado no GRASP para resconstruir trilhos de aeronaves que tenham
-sofrido atrasos durante o decorrer do dia e tem como principal objetivo a
-reducão dos custos da reatribuição das aeronaves aos voos que é mensurado
-apartir do atraso dado aos voos e pelo número de voos cancelados. 
+\cite{arguelo1997} apresenta um algoritmo, baseado no GRASP, para reconstruir
+trilhos de aeronaves que tenham sofrido modificações durante o decorrer do dia.
 
-Nesse trabalho foi utilizado a ideia de trilhos cancelado, que é formado
-pelos voos que não serão levados em consideração na solução final. 
-		
-A reconstrução dos trilhos é feita com a utilização sucessiva de três
-estruturas de vizinhança, \textit{flight routing augmentation}, \textit{partial route exchange} e
-\textit{simple circuit cancelation} onde as duas primeiras são aplicadas em um
-par de trilhos e a terceira é aplicada em trilhos individualmente
+Para isso ele usa uma função de avaliação gulosa e um método de seleção
+aleatório e de forma iterativa consiga construir uma solução viável, a solução
+inicial é utilizada como entrada e então é viabilizada através desses
+movimentos. Note que se a solução inicial ainda for válida a fase de construção
+se torna desnecessária. 
 
-O \textit{flight routing augmentation} remove uma sequência de voos do
-primeiro trilho e acrescenta eles no trilho de destino, ou seja, o segundo
-trilho é acrescido dos voos que foram removidos do primeiro. O trilho de
-destino pode crescer de três formas. Primeiro um circuito pode ser inserida
-no seu início. Um circuito é uma sequência de voos que se origina e termina no
-mesmo aeroporto. A segunda forma é a adição de um circuito em algum lugar
-entre o primeiro e o ultimo voo. A terceira forma envolve a adição de uma
-sequência de voos, que não precisa ter a mesma origem e destino, e a sua
-inserção no final do segundo trilho. Lembrando que apenas movimentos viáveis
-são avaliados. 
-		
-O movimento de \textit{partial route exchange} é uma simples
-troca de um par de sequências de voos. Dois tipos de trocas são possíveis. A
-primeira é a troca de duas sequências que possuam os mesmo extremos. E a
-segunda é uma troca que resulta na mudança do aeroporto de destino. Um trilho
-de cancelamento não pode trocar seus aeroportos de destino com outro trilho
-pois esse movimento poderia causar uma violação na restrição de balanceamento
-de aeronáves.
-		
-O \textit{simple circuit cancelation} é feito em um único trilho e ela
-simplesmente remove um circuito desse trilho e efetua a criação de um novo
-trilho de cancelamento. Além disso foi desenvolvido um modelo matemático que
-foi utilizado apenas para a obtenção de um limite inferior (\textit{lower
-bound}).
-		
+Em cada iteração os movimentos possíveis são gerados e
+avaliados. Os mais promissores são armazenados na lista restrita de candidatos
+(LRC) na qual uma é selecionada aleatoriamente. A LCR pode ser restringida por
+quantidade ou por qualidade. Por exemplo, os melhores $X$ movimentos ou todos os
+movimentos com $Y$ porcento do melhor movimento podem ser armazenados na LRC.
+Esse processo é repetido até que uma solução válida seja obtida. Isto
+representa uma iteração. A vantagem de usar a solução inicial é que ela é
+próxima a malha aérea planejada inicialmente pela companhia. 
+
+A fase de busca local usa a solução da fase de construção para encontrar um
+mínimo local. Essa fase usa procedimentos de trocas determinísticas para
+atingir o mínimo local. 
+
+A vizinhança definida inclui a criação de um novo  conjunto de trilhos em que os
+voos que forem alocados a eles serão cancelados. Três são as operações usadas
+para gerar novos vizinhos: \textit{flight route augmentation}, \textit{partial
+route exchange}, e \textit{simple circuit cancellation}. Os dois primeiros são
+aplicados em um par de trilhos e o terceiro é aplicado em um único trilho. 
+
+O \textit{flight route augmentation} opera removendo um voo ou uma sequência de
+voos de um dos trilhos e adicionando esses voos no outro. O trilho de destino é
+aumentado dos voos removidos do trilho de origem. O trilho de destino pode ser
+aumentado de três formas distintas. Primeiro, um circuito pode ser colocado no
+seu início. Um circuito é uma sequência de voos que inicia e termina no mesmo
+aeroporto. Uma segunda forma é inserir o circuito em algum lugar entre o
+primeiro e o último voo do trilho de destino. A terceira forma permite alterar
+o aeroporto de destino, ou seja, insere uma sequência de voos no trilho de destino. 
+
+O \textit{partial route exchange} opera simplesmente trocando um par de
+sequências de voos entre dois trilhos e o \textit{simple circuit cancelation}
+remove um circuito de um trilho e cria um trilho de cancelamento. 
+
+Os testes realizados no artigo foram feitos em uma instância cedida pela
+Continental Airlines, referente a frota 757, com 42 voos operados por 16
+aeronaves em uma rede de 13 aeroportos espalhados por 3 continentes. A malha
+não foi disponibilizada no artigo.
+
 		
 Mercier e Soumis \cite{mercier2007} resolveram o PCTA em conjunto com
 o problema de escala de tripulantes pois Cordeau et al. \cite{cordeau2001},
@@ -50,7 +56,7 @@ Com essa finalidade eles proporam uma formulação compacta do problema e
 utilizaram o método de decomposição de Benders com um procedimento de geração
 de restrição dinâmica para resolve-lo. Com a agregação desses dois problemas a
 resolução se tornou pesada e viável apenas para instâncias diárias. Os testes
-do algoritmo foram baseados em instâncias contendo no máximo 500 voos que
+do algoritmo foram baseados em instâncias contendo no máximo 500 voos que 
 foram fornecidas por duas grandes companhias aereas, porém elas não se
 encontram disponíveis no artigo. 
 		

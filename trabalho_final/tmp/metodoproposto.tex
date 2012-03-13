@@ -196,7 +196,7 @@ caso de arcos que deverão ser evitados um custo elevado é atribuído.
 %No caso da instância possuir mais de um dia de operação então pode-se quebra-la
 %em dias se houver tempo vago entre os dias dessa instância.
   
-\section{Fase de construção do GRASP}
+\section{Fase de construção do GRASP}\label{sessao:construcao}
   
 A construção da solução é feita elemento a elemento utilizando o
 GRASP. Inicialmente é feita a ordenação do conjunto de voos a partir do seu
@@ -557,18 +557,20 @@ imediata.
 
 \subsection{Método de construção paralela}
 
-A estratégia paralela visa aumentar a escalabilidade na resolução de grandes
-problemas. O seu funcionamento parte da divisão da instância em fatias de tempos
-iguais que são distribuídas para cada processo. Em cada fatia de tempo é feita
-uma construção da mesma forma que foi explicado nas sessões anteriores
-resultando assim um conjunto de trilhos que são posteriormente ligados aos
-processos vizinhos.
+A estratégia paralela foi desenvolvida para aumentar a escalabilidade na
+resolução de grandes problemas e também na tentativa de obter melhores soluções
+em um menor espaço de tempo. O seu funcionamento parte da divisão da instância
+em períodos de tempos iguais que são distribuídas para cada processo. Em cada
+período os processos realizam uma construção do algoritmo descrito na sessão
+\ref{sessao:construcao}. Ao final dessa etapa cada processo possui um um
+conjunto de trilhos que devem ser ligados uns com os outros para a geração de
+uma malha de voo completa.
  
 O algoritmo é dividido em passos onde em cada passo um
 nível diferente de vizinho é visitado na tentativa de efetuar a ligação dos seus
 trilhos. No nível 1 é feita a comunicação seguindo a topologia de uma
 rede em anel, onde cada processo fala com seu vizinho sucessor a uma distância
-de 1, ou seja, o processo 0 fala com o processo 1, o 2 com o 3 e assim por
+de 1, ou seja, o processo 0 fala com o processo 1, o 1 com o 2 e assim por
 diante até que o último processo fale com o processo 0. Quando todos as tentativas de
 ligação de trilhos entre esses processo são esgotados então o passo do algoritmo
 é incrementado para que o processo consiga conversar com o processo sucessor que
@@ -579,18 +581,11 @@ se comunicados com os outros ou até que todos os trilhos estejam ligados.
 Essa estratégia é interessante pois normalmente as empresas trabalham com uma
 malha circular que costuma se repetir toda a semana.
 
-Na prática essa estratégia conseguiu obter resultados aproximadamente 10\%
-melhores que a estratégia sequencial, ou seja, de um processo com a fatia
-completa do tempo levando em consideração apenas a fase de construção. Por
-questões de tempo esse experimento não foi concluído, com a inserção da fase de
-refinamento que se utiliza do \textit{solver}.
+O pseudocódigo \ref{alg:metodoparalel} simplifica o entendimento do algoritmo.
+Perceba que a complexidade de execução e de mensagens do algoritmo distribuído
+\ref{alg:metodoparalel} no pior caso é de $O(s.c)$, onde $s$ é o número de
+processos e $c$ é a maior quantidade de trilhos de um processo.
 
-Para justificar o uso de uma estratégia mais eficiente seria necessário obter
-primeiro uma instância que não obtivesse resultados satisfatórios com a
-estratégia híbrida sequencial, mas aparentemente essa nova estratégia iria
-ocasionar melhoras nos resultados finais já que a qualidade da solução
-gerada na construção tem influencia direta na velocidade que o algoritmo
-encontra uma melhor solução.
 
 \begin{figure}[h]
 \caption{Pseudocódigo do método de comunicação paralela usado na construção dos
@@ -600,7 +595,7 @@ trilhos.
 \begin{programma}
 \ALGORITHM{inicioComunicacaoParalela(M, s, r)}
 
-\STATE inicializaVoos(M);
+\STATE inicializaVoos(M,s,r);
 \FOR{$cn$ \FROM $1$ \TO $(s-1)$}\PGlnlabel{forline}
 \STATE $dest \GETS (r + cn)$ MOD $s$;
 \STATE $c \GETS 0$;
@@ -612,9 +607,7 @@ trilhos.
 	\ENDIF
 \ENDFOR
 
-\ENDFOR
-
-\STATE $F \GETS \emptyset$;
+\STATE EnviaFinalizaMsg(dest);
 
 \WHILE{Não tiver respondido todas as requisições}
 	\STATE $P \GETS RecebeMSG()$;
@@ -622,21 +615,78 @@ trilhos.
 		\STATE $f \GETS $selecionaUmVoo(M, P.voo);
 		\IF{$f \neq \emptyset$}
 			\STATE EfetuaConexão(P, f);
+		\ELSE
+			\STATE RejeitaConexão(P, f);
 		\ENDIF
 	\ELSEIF{P é uma aceitação de conexão}
 		\STATE ConfiguraLigação(P);
 	\ELSEIF{P é uma finalização de mensagens}
-		\STATE $F \GETS F \cup P.dest$;
+		\STATE $F \GETS verdadeiro$;
 	\ENDIF 
 	
 \ENDWHILE
+\ENDFOR
 
 \ENDALGORITHM
 \end{programma}
-\end{figure}
+\end{figure} 
 
-Perceba que a complexidade de execução e de mensagens do algoritmo distribuído
-\ref{alg:metodoparalel} no pior caso é de $O(s.c)$.
+
+A linha 1 é utilizada na inicialização dos voos, onde cada processo obtém o
+conjunto de voos que irá trabalhar, esse conjunto de voos é definido pela
+instância $M$, pelo número de processor que estão executando $s$ e pelo número
+do processo corrente $r$. O laço iniciado na linha 2 modela a quantidade de
+iterações do algoritmo, que é baseado no número de processos. A variável $cn$ é
+o contador de nível e informa para qual vizinho o processo corrente irá tentar
+efetuar ligações dos seus trilhos disponíveis.
+
+O cálculo do índice do processo que irá receber a comunicação é feita na linha
+3. A linha 4 inicia o contador de mensagens enviadas, que é usado como auxiliar
+de condição de parada no laço da linha 13.
+
+É feito então uma tentativa de conectar os trilhos que ainda não
+foram conectados com os trilhos dos vizinhos. Nas linhas 6 a 10 é
+feito o envio de solicitações de conexões de todos os últimos voos ainda não
+conectados de cada um dos seus trilhos para o vizinho corrente que é definido
+pela variável $dest$. Na linha 12 o processo sinaliza para o seu vizinho
+corrente que não tem mais nenhum trilho para tentar efetuar uma ligação.
+
+Depois o processo passa a agir como uma máquina de estados, como pode ser visto
+nas linhas 13 a 27, respondendo as requisições que forem recebendo. Isso
+acontece até ele receber uma mensagem de finalização do seu vizinho e todas as mensagens
+que ele tenha enviado anteriormente tenham sido respondidas. Na linha 14
+o processo recebe uma mensagem que vai lhe informar qual a ação que deverá
+ser executada.
+
+Quando a mensagem é uma solicitação de conexão, linhas 15 a 22, então o processo
+tenta selecionar um voo, do inicio de um de seus trilhos, que ainda não tenha se
+ligado com nenhum outro trilho para se ligar com o voo candidato da solicitação.
+A escolha do voo que vai se ligar é feita usando o GRASP com uma LRC. Caso
+exista algum voo que possa se conectar, linha 17, então uma mensagem de
+aceitação de conexão é enviada para o solicitante e o voo é marcado como já
+selecionado, isso é feito no procedimento \textit{EfetuaConexão(P, f)}. Caso
+não exista nenhum voo que possa se candidatar então uma mensagem de rejeição de
+conexão é enviada pelo procedimento \textit{RejeitaConexão(P, f)}.
+
+As linhas 22 a 24 é executada quando o processo recebe uma mensagem de aceitação
+ou rejeição de conexão e é utilizada para configurar o voo que teve a
+solicitação aceita. Já as linhas 24 a 26 marca a flag de finalização do vizinho
+$F$ como verdadeiro.
+
+Na prática essa estratégia conseguiu obter resultados aproximadamente 10\%
+melhores que a estratégia sequencial, ou seja, de um processo com a fatia
+completa do tempo, levando em consideração apenas a fase de construção. Por
+questões de tempo esse experimento não foi concluído, com a inserção da fase de
+refinamento que utiliza o \textit{solver}.
+
+Para justificar o uso de uma estratégia mais eficiente, como essa, seria
+necessário obter primeiro uma instância que não obtivesse resultados
+satisfatórios com a estratégia híbrida sequencial. Aparentemente essa nova
+estratégia iria ocasionar melhoras nos resultados finais já que a qualidade da
+solução gerada na construção tem influencia direta na velocidade que o
+algoritmo encontra uma melhor solução.
+
+
 
 % Dessa forma o
 %número de processos que serão usados deverá ser calibrado de acordo com a
