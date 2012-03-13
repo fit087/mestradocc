@@ -359,7 +359,7 @@ foram alocados em algum trilho.
 
 A escolha do primeiro voo de um trilho é feita como explicado nas seções
 anteriores enquanto os demais voos são escolhidos tendo como base um tipo de
-arco e uma lista restrita de candidatos (CLR).
+arco e uma lista restrita de candidatos (LRC).
  
 Os tipos de arcos foram definidos no Capítulo \ref{cap:descprob}, porém nessa
 etapa apenas 4 tipos são considerados, o   $a_{1},a_{2},a_{3},a_{4}$ que
@@ -370,9 +370,9 @@ tipo 2 utilizam atrasos mas não o reposicionamento. Os arcos do tipo 3 permitem
 o sequenciamento com a utilização de um voo de reposicionamento mas sem inserir
 atraso em nenhum dos voos envolvidos. Os arcos do tipo 4 utilizam-se de atrasos
 e de um voo de reposicionamento para fazer a ligação entre dois voos. Os arcos
-do tipo 5 pargem do nó \textit{source} e servem para modelar o inicio de um
-trilho. Os arcos do tipo 6 tem chegam ao nó \textit{sink} e indicam o fim de um
-trilho.
+do tipo 5 partem do nó \textit{source} e servem para modelar o início de um
+trilho. Os arcos do tipo 6 representam o no de destino (\textit{sink}), nele
+incidem todos os últimos voos de cada trilho.
 
 Primeiramente é feita a escolha do tipo de arco que será utilizado para efetuar
 a ligação do ultimo voo do trilho corrente. Essa escolha é feita tendo
@@ -380,8 +380,8 @@ como base as probabilidades de cada um desses arcos acontecer. Essa
 probabilidade foi definida como sendo
 $P(a_{1})=0.79,P(a_{2})=0.16,P(a_{3})=0.04,P(a_{4})=0.01$ pois a solução ótima
 do problema real da Rio Sul apresentava essas características. Esses valores
-são empíricos e para determinadas instâncias podem gerar melhores soluções se
-alterados.
+são empíricos e se alterados podem vir a melhorar, ou piorar, a qualidade da
+solução, dependendo das características da instância.
 
 De posse do tipo de arco, é feita então a formação da lista de candidatos. Essa
 lista é ordenada de acordo com o seu horário de partida sugerido, caso o arco
@@ -392,15 +392,15 @@ trilho de nenhuma forma, quando isso ocorrer a construção
 desse trilho é finalizada.
  
 Caso seja possível a obtenção de uma lista de candidatos então ela é reduzida
-tendo como base o passo 4 a 6 do algoritmo \ref{alg:graspcons} formando assim a
-lista de candidatos restrita (LCR), essa redução remove os candidatos que estão
+tendo como base o passo 2 a 4 do algoritmo \refa{alg:selectinit} formando
+assim a lista de candidatos restrita (LCR), essa redução remove os candidatos que estão
 muito afastado do melhor candidato da lista. Como está lista se encontra
 ordenada, então, o elemento de menor impacto ($v_{menor}$) na solução é o
 primeiro e o de maior impacto ($v_{maior}$) é o último. A LCR contém os
-candidatos que tenha o valor de impacto na solução de até $valor_{menor} +
-\alpha*(valor_{maior} + valor_{menor})$, onde $\alpha$ é o grau de
-gulosidade do GRASP. O candidato deve ser escolhido de forma aleatória entre os
-elementos da LCR.
+candidatos que tenha o valor de impacto na solução entre $v_{menor}$
+e $v_{menor} + \alpha*(v_{maior} + v_{menor})$, onde $\alpha$ é o
+grau de gulosidade do GRASP, que nesse trabalho foi definido como sendo 0.5. O
+candidato deve ser escolhido de forma aleatória entre os elementos da LCR.
 
 O pseudocódigo \ref{alg:calcvoo} explica como isso acontece. Em 1 inicializa o
 conjunto de arcos com os 4 tipos possíveis em 2 realiza-se um sorteio do tipo de
@@ -440,20 +440,19 @@ todos os tipos de arcos, iniciando pelo que foi selecionado no passo 2.
 \end{programma}
 \end{figure}
  
- \section{Fase de busca local do GRASP}
+ \section{Fase de busca local}
 
 Com a finalização da etapa anterior tem-se uma solução do problema. A fase de busca
 local efetua modificações nessa solução com a finalidade de obter outras
 melhores que estejam próximos a ela, isso é feito através da aplicação das
 estruturas de vizinhanças. No método proposto essa fase foi implementada através
 da utilização da metaheurística ILS que alterna busca local com pertubações
-conseguindo assim escapar de mínimos locais quando não consegue mais melhorar a
-solução, ou seja, primeiro são aplicados as estruturas de vizinhança, visando
-obter o valor ótimo local da solução, depois é feita uma perturbação que
-diversifica melhorando o valor da função objetivo através da aplicação do
-modelo matemático que foi desenvolvido em uma parte do problema. Quando nenhuma
-das duas estratégias consegue melhorar a solução então a busca local encerra e
-uma nova iteração do GRASP pode ser iniciada.
+conseguindo assim escapar de mínimos locais, ou seja, primeiro são aplicados as
+estruturas de vizinhança, visando obter o valor ótimo local da solução, depois
+é feita uma perturbação que diversifica a solução. Isso é feito através da
+aplicação do modelo matemático, definido no início desse capítulo, em uma parte
+do problema. Quando nenhuma das duas estratégias consegue melhorar a solução
+então a busca local encerra e uma nova iteração do GRASP pode ser iniciada.
  
 \subsection{Estruturas de vizinhança}
  
@@ -467,8 +466,9 @@ do número de trilhos. Abaixo essa estruturas são explicadas.
 Esse operador efetua a troca de X voos de um trilho por um conjunto de voos de
 outro trilho. Dessa forma pode-se conseguir remover os atrasos que foram criados
 na etapa de construção. No método proposto apenas os movimentos do tipo Swap-1
-e Swap-2 são utilizados, pois essa vizinhança é considerada grande. Na Figura
-\ref{fig:swap1} um caso de melhoria no custo dos trilhos é exemplificada.
+e Swap-2 são utilizados, pois foram as que obtiveram mais êxito em melhorar a
+solução. A Figura \ref{fig:swap1} mostra um caso em que a aplicação dessa
+estrutura permite remover um atraso.
 
 \begin{figure}[ht]
 	\caption{Estrutura de vizinhança Swap-1. \newline \mbox{Fonte:
@@ -480,9 +480,9 @@ e Swap-2 são utilizados, pois essa vizinhança é considerada grande. Na Figura
  \subsubsection{Cross-Over}
  
 A ideia do operador $crossover$ é a de efetuar troca entre dois segmentos de
-trilhos com a finalidade de gerar novos trilhos com menos modificações no
-horário de partida. A Figura \ref{fig:crossover} ilustra uma melhoria causada por um
-movimento desse tipo.
+trilhos com a finalidade de gerar novos trilhosque não apresentes voos
+atrasados. A Figura \ref{fig:crossover} mostra um caso em que a aplicação dessa
+estrutura melhroa a solução.
 
 
 \begin{figure}[ht]
@@ -495,10 +495,9 @@ movimento desse tipo.
  \subsubsection{Compactação}
  
 A compactação é a única estrutura de vizinhança utilizada que é capaz de
-reduzir a quantidade de trilhos da solução final.
- 
-Isso ocorre porque ela consegue, insere um trilho em outro de forma direta ou
-com a utilização de um voo de reposicionamento.
+reduzir a quantidade de trilhos da solução final. Isso ocorre porque ela
+consegue inserir um trilho em outro de forma direta ou com a utilização de um
+voo de reposicionamento.
  
 A figura \ref{fig:compactacao} mostra a redução de um trilho com a utilização
 desse movimento.
@@ -512,7 +511,7 @@ desse movimento.
  
  \subsection{Perturbação usando o método exato}
    
-A perturbação normalmente é utilizada quando as estruturas de vizinhança não
+A perturbação é utilizada quando as estruturas de vizinhança não
 conseguem melhorar a solução, quando isso ocorre, pode-se dizer que a
 solução corrente é a ótima local com relação a vizinhança que foi definida.
  
@@ -523,15 +522,15 @@ em outros locais no espaço de soluções através da sua busca local.
  
 O método de perturbação utilizado aqui difere do que normalmente é aplicado
 pois a solução tem a sua estrutura modificada e ainda consegue melhorar a sua
-qualidade. Isso é feito através da aplicação do modelo matemático em uma
+qualidade. Isso é feito através da resolução do modelo matemático em uma
 parte do problema. A sua utilização ocorre com a seleção de um conjunto de
-trilhos, e sua a posterior aplicação no solver com o modelo desenvolvido
-configurado para o conjunto de voos da seleção.
+trilhos, e sua a posterior aplicação no \textit{solver} configurado para o
+conjunto de voos da seleção.
 
 O método exato retorna a configuração ótima desses voos, que
 são agrupados novamente a solução antiga. O solver tem um tempo máximo
-estabelecido e se não retornar nenhuma solução considera-se que não houve
-melhora sua aplicação.
+estabelecido e se não retornar nenhuma solução nesse tempo considera-se que não
+houve melhora e uma nova iteração é iniciada.
 
 A seleção dos trilhos é feita com base no seu
 \textit{grau de compactação} que é definido como sendo porcentagem de
@@ -540,20 +539,20 @@ e o tempo de chegada do último voo da instância, ou seja, quanto maior o tempo
 que a aeronave, que opera um determinado trilho, permanece voando maior será o
 seu grau de compactação. O calculo do grau de compactação não leva em
 consideração os voos de reposicionamento, pois eles não estão no planejamento
-inicial e por sua vez não são passados para o modelo.
+inicial e por isso não são passados para o modelo.
 
-Existe três formas de fazer a seleção dos trilhos que serão aplicados no solver,
-pode-se adicionar os trilhos que possuem o maior grau de compactação, pode-se
-adicionar os trilhos que possuem o menor grau de compactação ou pode-se alternar
-entre a escolha de um trilho com o maior grau de compactação e um de menor grau
-de compactação.
+Existe três formas de fazer a seleção desses. Pode-se adicionar os trilhos que
+possuem o maior grau de compactação, ou adicionar os trilhos que possuem o
+menor grau de compactação ou pode-se alternar entre a escolha de um trilho com
+o maior grau de compactação e um de menor grau de compactação.
 
 Na prática adotou-se a segunda abordagem, selecionando os trilhos de menor grau
-de compactação, pois os resultados foram melhores.
+de compactação, pois os resultados foram superiores aos das outras abordagens.
  
 Os trilhos são adicionados a solução até o limite de 80 voos, pois o solver
 conseguiu em nossos experimentos resolver um problema desse porte de forma
-imediata. 
+imediata. Isso ocorre porque em nossos experimentos o \textit{solver} conseguiu
+resolver um problema desse porte de forma quase imediata.
 
 \subsection{Método de construção paralela}
 
@@ -689,7 +688,7 @@ algoritmo encontra uma melhor solução.
 
 
 % Dessa forma o
-%número de processos que serão usados deverá ser calibrado de acordo com a
+%número de processos que serão usados deverá ser calibrado de acordo com a 
 %duração da instância.
 
 %Nos testes realizados constatou-se que fatias de tempos menores que 6 horas não
