@@ -47,19 +47,24 @@ aeronaves em uma rede de 13 aeroportos espalhados por 3 continentes. A malha
 não foi disponibilizada no artigo.
 
 		
-Mercier e Soumis \cite{mercier2007} resolveram o PCTA em conjunto com
-o problema de escala de tripulantes pois Cordeau et al. \cite{cordeau2001},
-Klabjan et al. \cite{klabjan2002} e Cohn e Barnhart \cite{mainville2003}
-mostraram que a resolução desses problema de forma integrada pode gerar
-soluções que são significantemente melhor que as geradas de forma sequencial.
-Com essa finalidade eles proporam uma formulação compacta do problema e
-utilizaram o método de decomposição de Benders com um procedimento de geração
-de restrição dinâmica para resolve-lo. Com a agregação desses dois problemas a
-resolução se tornou pesada e viável apenas para instâncias diárias. Os testes
-do algoritmo foram baseados em instâncias contendo no máximo 500 voos que 
-foram fornecidas por duas grandes companhias aereas, porém elas não se
-encontram disponíveis no artigo. 
-		
+\cite{mercier2007} desenvolveram um modelo matemático que permite resolver de
+forma integrada a construção de trilhos de aeronaves e a escala de tripulantes
+permitindo mudanças nos horários dos voos. A ligação entre as restrições desses
+dois problemas garante que o mesmo planejamento seja feito para os trilhos das
+aeronaves e para a escala dos tripulantes, permitindo assim a redução de custos
+pela antecipação de problemas das etapas futuras. Por outro lado essa abordagem
+aumenta a complexidade na resolução desses problemas. Com a agregação desses
+dois problemas a resolução se tornou pesada e viável apenas para instâncias
+diárias. Os testes do algoritmo foram baseados em instâncias contendo no máximo
+500 voos que foram fornecidas por duas grandes companhias aereas, os dados
+dessas instâncias não se encontram disponíveis no artigo.
+
+\cite{cordeau2001}, \cite{klabjan2002} e \cite{mainville2003} mostrarm em seus
+trabalhos que a resolução desses problemas de forma integrada podem gerar
+soluções que são significativamente melhores que as obtidas pela resolução
+sequencial.
+
+  		
 Pontes R., et al \cite{pontes2002} utilizaram a fase de construção do GRASP
 para resolver o PCTA, também propuseram um modelo matemático que foi
 adaptado para auxiliar na geração da nossa solução. Além disso uma instância
@@ -67,7 +72,7 @@ da Rio-Sul foi disponibilizada para a realização de testes. Com o solver eles
 conseguiram obter a solução ótima dessa instância mas o autor informou que
 essa resolução demorou dias para finalizar. Com a utilização da heurística
 eles conseguiram apenas se aproximar dessa solução porém com um tempo de 384
-segundos.
+segundos. 
 		
 Em \cite{mohamed2011} Mohamed et al. resolveu de forma integrada o problema
 de atribuição de frota e o problema de construção de trilhos de aeronaves,

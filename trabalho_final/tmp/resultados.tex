@@ -185,7 +185,7 @@ Instância 		& $s_{m}$ (trilhos) & $t_{s}(s)$ & $\Delta$
 Rio Sul 			& 19.049 (19) 	& 247 s  & 0.11\\
 TAM     			& 42.328 (42)	& 1710 s & 0.20\\
 Rio Sul Estendida 	& 21.516 (20)	& 1687 s & 0.17\\
-TAM Estendida 		& 51.903 (44)	& xxxx s & -\\
+TAM Estendida 		& 51.903 (44)	& 11722 s & -\\
 
 \hline
 \end{tabular}
@@ -207,7 +207,7 @@ Instância 			& $s_{m}$ (trilhos) & $t_{s}(s)$ & $\Delta$
 Rio Sul 			& 18.256 (18) 	& 224 s  & 0.13\\
 TAM     			& 41.719 (41)	& 2066 s & 0.19\\
 Rio Sul Est. 		& 20.080 (19)	& 1592 s & 0.15\\ 
-TAM Estendida 		& 51.032 (44)	& xxxx s & -\\
+TAM Estendida 		& 51.032 (44)	& 11902 s & -\\
 
 \hline
 \end{tabular}
@@ -217,7 +217,7 @@ TAM Estendida 		& 51.032 (44)	& xxxx s & -\\
 
 O algoritmo usando a metaheurística pura teve dificuldades para resolver as
 instâncias, inclusive não obteve o valor ótimo de nenhuma delas ficando entre
-13\% e 23\% da solução ótima obtida pelo \textit{solver}. Apesar dos
+11\% e 20\% da solução ótima obtida pelo \textit{solver}. Apesar dos
 resultados não terem sido o esperado, nota-se que ele ainda é melhor que o que
 era utilizado em produção pela Rio-Sul. O GRASP foi configurado para fazer 1000
 repetições, pois a quantidade de soluções geradas nesse método é muito
@@ -318,8 +318,8 @@ resultado obtido detalhado no Anexo \ref{anx:resulttam}.
  
 Experimentos realizados com a implementação paralela discutida no Capítulo
 \ref{cap:metodoprop} demonstrou potencial de melhorar os resultados obtidos pois
-as soluções iniciais geradas por ela se mostraram melhores que as obtidas
-sequencialmente.
+as soluções iniciais geradas por ela se mostraram melhores que as obtidas de
+forma sequencial.
  
 
 %Com a eficiência obtida com o método exato existe uma necessidade de geração de instâncias maiores que possam ser utilizadas parar ajustar e justificar a utilização de uma abordagem mais complexa como o uso de uma metaheurística híbrida.
@@ -379,4 +379,20 @@ sequencialmente.
 %\end{tabular}
 
 %\end{table}
+
+%Duração: 11722
+%NVoss: 246 NTrilhos: 41
+%Valor: 41506
+%NVoss: 245 NTrilhos: 42
+%Valor: 42393
+%NVoss: 244 NTrilhos: 42
+%Valor: 42328
+%NVoss: 244 NTrilhos: 42
+%%Valor: 42247
+%NVoss: 244 NTrilhos: 42
+%Valor: 42439
+%NVoss: 243 NTrilhos: 42
+%Valor: 42255
+%NVoss: 247 NTrilhos: 41
+%Valor: 41909
 
