@@ -12,15 +12,15 @@ Neste capítulo apresenta-se os resultados que foram encontrados através da
 aplicação do solver, da metaheurística pura e da metaheurística híbrida em um
 conjunto de quatro instâncias obtidas ou adaptadas de duas grandes companhias
 aéreas, a Rio-Sul e a TAM. Os resultados obtidos com a programação linear
-inteira, que foi utilizado como limite inferior - \textit{lower bound} das
+inteira, foram utilizados como limite inferior - \textit{lower bound} das
 soluções. Serão mostrados os resultados da metaheurística pura para mostrar as
 vantagens que foram obtidas com a utilização de uma abordagem híbrida.
 
-Na seção \ref{result:ambiente} é apresentado o ambiente de testes as
+Na seção \ref{result:ambiente} são apresentados o ambiente de teste e as
 características dos problemas de testes que foram utilizados nos
 experimentos. Nas seções \ref{result:otimizador}, \ref{result:metaheuristica},
-\ref{result:hibrid} será mostrado respectivamente os resultados obtidos com o
-otimizador, metaheurística pura e metaheurística híbrida. Na seção
+\ref{result:hibrid} serão mostrados, respectivamente, os resultados obtidos com
+o otimizador, metaheurística pura e metaheurística híbrida. Na seção
 \ref{result:finalizacao} são dadas as considerações finais.
 
 \section{Ambiente de testes} \label{result:ambiente}
@@ -34,23 +34,23 @@ e com o sistema operacional operacional Linux Ubuntu 11.04 de 32 bits.
 As instâncias obtidas tem a duração de um dia, a da Rio-Sul tem 107
 voos e a da TAM tem 241 voos. A instância da Rio-Sul foi obtida a partir do
 trabalho de \cite{pontes2002} e a da TAM foi obtida através da seleção manual dos voos
-pelo $site$ da companhia. Com o desenvolvimento do trabalho essas
+pelo $site$ da companhia. Com o desenvolvimento do trabalho, essas
 instâncias passaram a ser resolvidas facilmente pelo algoritmo. Com a finalidade
-de gerar instâncias mais difíceis foi proposto a extensão da frequência dos
-voos da instância Rio-Sul e da TAM para uma semana, dessa forma foi gerado uma
+de gerar instâncias mais difíceis foi proposta a extensão da frequência dos
+voos da instância Rio-Sul e da TAM para uma semana, dessa forma foi gerada uma
 instância com 749 voos e outra de 1687. A instância diária da Rio-Sul era
-operada por 20 aeronaves, com uma malha que construída manualmente por um
+operada por 20 aeronaves, com uma malha construída manualmente por um
 funcionário com larga experiência nesse tipo de serviço.
 
 Para manter a compatibilidade dos resultados com o trabalho de
 \cite{pontes2002} foi utilizado o tempo de solo de 20 minutos para todos os
 aeroportos. Vale lembrar que esse tempo pode variar de acordo com o aeroporto e
-o tipo da frota. Houveram dificudades na obtenção de dados mais detalhados junto
-com as companhias aéreas.
+o tipo da frota. Houve dificudades na obtenção de dados mais detalhados junto
+às companhias aéreas.
 
 O GRASP foi configurado com 1000 iterações na sua aplicação pura e com 10 na
-sua aplicação híbrida foi utilizado um $\alpha$ de 0.4. Esses valores foram obtidos de
-forma empírica a partir dos testes que foram feitos no decorrer do trabalho. A
+sua aplicação híbrida, também foi utilizado um $\alpha$ de 0.4. Esses valores
+foram obtidos de forma empírica a partir dos testes que foram feitos no decorrer do trabalho. A
 busca local é exaustiva e finaliza quando não consegue melhorar o valor
 objetivo da solução. O tempo máximo de execução dos algoritmos foram de 32 horas
 (115200 segundos).
@@ -58,31 +58,31 @@ objetivo da solução. O tempo máximo de execução dos algoritmos foram de 32 
 No método híbrido a maior utilização do poder de processamento do CPU é
 gasto executando a etapa de busca local, cerca de 98\% do tempo. 
 
-A demonstração da eficiência do algoritimo foi feita baseado-se na solução ótima
-dos problemas que foi obtida a partir da utilização do modelo
+A demonstração da eficiência do algoritimo foi feita baseando-se na solução
+ótima dos problemas que foi obtida a partir da utilização do modelo
 matemático descrito no Capítulo \ref{cap:metodoprop}. A única
-instância em que isso não foi possível foi na TAM estendida onde no período
-máximo estabelecido não foi possível obter nenhuma solução inteira para o
+instância em que isso não foi possível foi na TAM estendida, onde, no período
+máximo estabelecido, não foi possível obter nenhuma solução inteira para o
 problema. Essa foi a maior instância utilizada no trabalho.
 
 Nesse capítulo $s*$ indica o valor ótimo de uma solução, $s_{m}$ indica a média
 dos valores obtidos com todas as execuções do algoritmo, $t_{s*}$ é o
 tempo de execução do solver e $t_{s}$ representa o tempo médio de execução do
 algoritmo. Por fim $\Delta$ (GAP) representa a diferencia da média dos valores
-das soluções obtidas em relação ao valor ótimo da instância, o seu cálculo é
+das soluções obtidas em relação ao valor ótimo da instância. O seu cálculo é
 feito com a fórmula abaixo:
 
 \[  \Delta (GAP) = (s - s*)/s* \]
 
-A resolução dessas instâncias foram parametrizadas levando em consideração dois
-cenários. O cenário 1 faz o sequenciamento dos voos sem a permissão de utilizar
+A resolução dessas instâncias foram parametrizadas levando-se em consideração
+dois cenários. O cenário 1 faz o sequenciamento dos voos sem a permissão de utilizar
 nenhum atraso, essa representação é comum nas companhias que não aceitam a
 modificação do planejamento inicial. O cenário 2 se utiliza de atrasos, de no
 máximo 10 minutos, permitindo assim uma maior liberdade na hora da montagem dos
-trilhos obtendo assim um melhor aproveitamento da utilização das aeronáves. Os parâmetros
-utilizados são detalhados na Tabela \ref{tab:params}.
+trilhos e obtendo, assim, um melhor aproveitamento da utilização das aeronaves.
+Os parâmetros utilizados são detalhados na Tabela \ref{tab:params}.
 
-Os resultados que utilizaram da metaheurística foram obtidos a partir de 100
+Os resultados que utilizaram a metaheurística foram obtidos a partir de 100
 execuções e somente os valores das médias foram levados em consideração.
 
 
@@ -164,7 +164,7 @@ tamanho das instâncias, demorando 6 a 9 horas para resolver uma instância de
 instância com 1687 voos (TAM estendida) nos cenários que foram modelados.
 
 Percebeu-se também que existe um sequenciamento possível nos voos que permite
-economizar até 4 aeronáves para atender a instância da Rio-Sul. Na prática essa
+economizar até 4 aeronaves para atender a instância da Rio-Sul. Na prática essa
 instância era operada com 20 aeronaves.
 
 % O gráfico abaixo permite fazer uma estimativa de quanto tempo 

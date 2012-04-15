@@ -4,16 +4,16 @@
 trilhos de aeronaves que tenham sofrido modificações durante o decorrer do dia.
 
 Para isso ele usa uma função de avaliação gulosa e um método de seleção
-aleatório e de forma iterativa consiga construir uma solução viável, a solução
-inicial é utilizada como entrada e então é viabilizada através desses
-movimentos. Note que se a solução inicial ainda for válida a fase de construção
+aleatório que de forma iterativa tenta construir uma solução viável, a
+solução inicial é utilizada como entrada e então é viabilizada através desses
+movimentos. Note que se a solução inicial ainda for válida, a fase de construção
 se torna desnecessária. 
 
 Em cada iteração os movimentos possíveis são gerados e
 avaliados. Os mais promissores são armazenados na lista restrita de candidatos
 (LRC) na qual uma é selecionada aleatoriamente. A LCR pode ser restringida por
 quantidade ou por qualidade. Por exemplo, os melhores $X$ movimentos ou todos os
-movimentos com $Y$ porcento do melhor movimento podem ser armazenados na LRC.
+movimentos com $Y$\% do melhor movimento podem ser armazenados na LRC.
 Esse processo é repetido até que uma solução válida seja obtida. Isto
 representa uma iteração. A vantagem de usar a solução inicial é que ela é
 próxima a malha aérea planejada inicialmente pela companhia. 
@@ -59,7 +59,7 @@ diárias. Os testes do algoritmo foram baseados em instâncias contendo no máxi
 500 voos que foram fornecidas por duas grandes companhias aereas, os dados
 dessas instâncias não se encontram disponíveis no artigo.
 
-\cite{cordeau2001}, \cite{klabjan2002} e \cite{mainville2003} mostrarm em seus
+\cite{cordeau2001}, \cite{klabjan2002} e \cite{mainville2003} mostraram em seus
 trabalhos que a resolução desses problemas de forma integrada podem gerar
 soluções que são significativamente melhores que as obtidas pela resolução
 sequencial.
@@ -67,7 +67,7 @@ sequencial.
   		
 Pontes R., et al \cite{pontes2002} utilizaram a fase de construção do GRASP
 para resolver o PCTA, também propuseram um modelo matemático que foi
-adaptado para auxiliar na geração da nossa solução. Além disso uma instância
+adaptado para auxiliar na geração da nossa solução. Além disso, uma instância
 da Rio-Sul foi disponibilizada para a realização de testes. Com o solver eles
 conseguiram obter a solução ótima dessa instância mas o autor informou que
 essa resolução demorou dias para finalizar. Com a utilização da heurística

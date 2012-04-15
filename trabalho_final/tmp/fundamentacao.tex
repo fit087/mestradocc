@@ -46,11 +46,11 @@ inicial. \newline \mbox{Fonte:
 \end{figure}		
 		
 
-Uma outra forma de obter uma solução inicial é escolhendo os elementos
+Uma outra forma de obter uma solução inicial é escolher os elementos
 candidatos aleatoriamente. Isto é, a cada passo, o elemento a ser inserido na
 solução é aleatoriamente selecionado dentre os elementos candidatos
 ainda não selecionados. A grande vantagem desta metodologia reside na
-simplicidade de implementação. Segundo testes empíricos , a desvantagem é a
+simplicidade de implementação. Segundo testes empíricos a desvantagem é a
 baixa qualidade, em média, da solução final. Essa técnica é recomendada quando
 a característica do problema torna mais fácil o refinamento do que a construção
 de uma solução \cite{notasmarcone}.
@@ -82,10 +82,10 @@ solução, quando gerada aleatoriamente, não costuma ser de boa qualidade.
 \section{Metaheurística}
 
 A utilização de métodos exatos para a resolução de problemas reais envolvendo
-otimização combinatória é restrito. Isso acontece pois com o aumento das
-instâncias envolvidas, o número de soluções possíveis cresce exponencialmente,
-fazendo com que as operações necessárias para a sua resolução não possa feita
-com os computadores atuais em tempo viável.
+otimização combinatória é restrito. Isso acontece pois com o aumento da
+complexidade das instâncias envolvidas, o número de soluções possíveis cresce
+exponencialmente, fazendo com que as operações necessárias para a sua resolução
+não possa ser feita com os computadores atuais em tempo viável.
 
 Para contornar essa limitação e obter soluções para esses tipos de problemas,
 os pesquisadores desenvolveram técnicas que são capazes de guiar o procedimento
@@ -98,52 +98,51 @@ decisão tem que acontecer em um curto espaço de tempo.
 As metaheurísticas são aplicadas a uma maior gama de problemas e surgiu para
 suprir algumas deficiências das heurísticas. Para contornar essas deficiências,
 foram desenvolvidas técnicas mais generalistas que foram denominadas de
-metaheurísticas. As metaheurísticas podem ser definidas como sendo um método
+metaheurísticas. A metaheurística pode ser definida como um método
 heurístico para resolver de forma genérica problemas de otimização com a
 capacidade de escapar de ótimos locais. A idéia utilizada, normalmente, é
 obtida de algum evento natural como sistemas biológicos, da física, da
 inteligência artificial entre outros.
 
 As metaheurísticas podem explorar o espaço de soluções basicamente de duas
-formas: as metaheurísticas de busca local e as metaheurísticas de busca
-populacional. Nas metaheurísticas de busca local, o procedimento de busca
-utiliza uma solução como ponto de partida em cada iteração. As metaheurísticas
-GRASP, recozimento simulado (\textit{Simulated Annealing}), busca tabu e ILS
-podem ser citadas como exemplos de metaheurísticas ponto-a-ponto. Nas metaheurísticas de
-busca populacionais, soluções de boa qualidade são combinadas com o intuito de
+formas: as de busca local e as de busca populacional. Nas metaheurísticas de
+busca local, o procedimento de busca utiliza uma solução como ponto de partida
+em cada iteração. As metaheurísticas GRASP, recozimento simulado
+(\textit{Simulated Annealing}), busca tabu e ILS podem ser citadas como
+exemplos de metaheurísticas ponto-a-ponto. Nas metaheurísticas de busca
+populacionais, soluções de boa qualidade são combinadas com o intuito de
 produzir soluções melhores. Podemos citar como exemplo de métodos
 populacionais, os algoritmos genéticos, colônia de formigas (\textit{Ant Colony
-System}), núvem de particulas (\textit{Particle Swarm Optimization}) e etc
-\cite{maritan2009}.
+System}), núvem de particulas (\textit{Particle Swarm Optimization}) e etc \cite{maritan2009}.
 
-Nesse trabalho foram utilizados as metaheurísticas de busca local GRASP e ILS
+Nesse trabalho foram utilizadas as metaheurísticas de busca local GRASP e ILS
 de forma híbrida. As próximas seções descrevem essas metaheurísticas.
 
 \subsection{GRASP}
 
 Essa seção descreve a metaheurística GRASP (\textit{Greedy Randomized Adaptive
 Search Procedure} - Procedimento de busca adaptativa gulosa e randômica), que
-foi proposto por \cite{resende1995}, e cujos conceitos serão
+foi proposta por \cite{resende1995}, e cujos conceitos serão
 utilizados na metodologia proposta para resolução do PCTA. A metaheurística
 GRASP é um método iterativo do tipo \textit{multi-start} formado por duas
 fases: uma fase de construção de uma solução e outra de busca local. A fase de
-construção objetiva gerar uma solução viável para o problema proposto. E a fase
-de busca local na qual se pesquisa  um ótimo local na vizinhança da solução
+construção objetiva gerar uma solução viável para o problema proposto. A fase
+de busca local tem como meta encontrar um ótimo local na vizinhança da solução
 construída. A melhor solução encontrada, ao longo de todas as
 iterações GRASP realizadas, é retornada.
 
 O pseudo-código descrito no Algoritmo \ref{alg:grasp} ilustra um procedimento
 GRASP para um problema de minimização. Na linha 1 o custo da função objetivo da
 melhor solução encontrada é inicializada com $\infty$(infinito). A linha 2
-repete o procedimento de construção e refinamento $GRASPMax$ vezes, por causa dessa
-etapa que o GRASP é considerado \textit{multi-start}.
+repete o procedimento de construção e refinamento $GRASPMax$ vezes. Por causa
+dessa etapa que o GRASP é considerado \textit{multi-start}.
 
-Nas linhas 3 e 4 são feitas respectivamente a construção e a busca local que são
-representadas nos Algoritmos \ref{alg:graspcons} e \ref{alg:grasplocal} e serão
+Nas linhas 3 e 4 são feitas, respectivamente, a construção e a busca local, que
+são apresentadas nos Algoritmos \ref{alg:graspcons} e \ref{alg:grasplocal} e serão
 detalhadas mais adiante.
 
 Nas linhas 5 a 8, se a solução obtida na busca local for melhor que a melhor
-solução obtida até o momento ($f(s) < f{*}$) então são atualizadas
+solução obtida até o momento ($f(s) < f{*}$), então são atualizados
 respectivamente a solução e o custo relativo a função objetivo da melhor
 solução corrente. A linha 9 encerra as iterações do GRASP e a linha 10 retorna a
 melhor solução obtida na execução do algoritmo.
@@ -201,8 +200,8 @@ de minimização. \newline \mbox{Fonte:
 
 Em cada iteração são selecionados todos os elementos que podem ser
 inseridos na solução e então é formada uma lista de candidatos que é ordenada
-segundo algum critério pré-determinado, no caso de um problema de
-minimização a lista normalmente é ordenada de acordo com o acréscimo na função
+segundo algum critério pré-determinado. No caso de um problema de
+minimização, a lista normalmente é ordenada de acordo com o acréscimo na função
 objetivo que esse elemento acarretaria se fosse escolhido. A
 heurística é dita adaptativa porque os benefícios associados com a escolha de
 cada elemento são atualizados em cada iteração da fase de construção para
@@ -220,10 +219,10 @@ gulosas enquanto a escolha de um $\alpha = 1$ faz com que o algoritmo gere
 soluções puramente aleatórias.
  
 A construção do GRASP difere do Algoritmo \ref{alg:heurconsgulosa} por causa
-das linhas 4 a 7. A linha 4 obtém o valor mínimo que será acrescentado a
-solução final, dentre os candidatos possíveis e a linha 5 obtém o valor máximo.
+das linhas 4 a 7. A linha 4 obtém o valor mínimo que será acrescentado à
+solução final, dentre os candidatos possíveis, e a linha 5 obtém o valor máximo.
 A linha 6 forma a LCR com os elementos que tiverem o valor entre $g(t_{min}) +
-\alpha(g(t_{max}) - g(t_{min}))$. Por fim a linha 7 seleciona aleatoriamente um
+\alpha(g(t_{max}) - g(t_{min}))$. Por fim, a linha 7 seleciona aleatoriamente um
 elemento da LCR.
 
 Com isso a quantidade de soluções possíveis é ampliada, porém somente soluções
@@ -327,9 +326,13 @@ Um aspecto importante do critério de aceitação e da pertubação é que eles 
 	\includegraphics[scale=0.3]{./img/ilsfuncionamento.png}
 \end{figure}
 
-A Figura \ref{img:ilsfuncionamento} demonstra o funcionamento do método ILS em um problema de minimização. Dado um ótimo local $s$, é realizada uma pertubação que lhe direciona para $s{'}$. Depois da aplicação da busca local, o novo mínimo $s{''}$, melhor que a anterior, é encontrada. Ou seja $f(s{''}) < f(s)$.
+A Figura \ref{img:ilsfuncionamento} demonstra o funcionamento do método ILS em
+um problema de minimização. Dado um ótimo local $s$, é realizada uma pertubação
+que lhe direciona para $s{'}$. Depois da aplicação da busca local, o novo
+mínimo $s{''}$, melhor que a anterior, é encontrada. Ou seja $f(s{''}) < f(s)$.
 
-Uma exemplo de pertubação seria a aplicação sucessiva de estruturas de vizinhança a solução corrente.
+Uma exemplo de pertubação seria a aplicação sucessiva de estruturas de
+vizinhança a solução corrente.
 
 \section{Programação Linear}
 
@@ -340,8 +343,8 @@ as receitas geradas pelos produtos são usados para determinar a melhor soluçã
 Qualquer problema que possa ser formulado com variáveis de decisão reais, tendo
 uma função objetivo linear, e funções de restrição lineares, em princípio pode
 ser solucionado através da programação linear. Tais programas originariamente
-utilizavam o método \textit{Simplex}, porém, recentemente, temos também métodos
-de "\textit{pontos interiores}".
+utilizavam o método \textit{Simplex}, porém, após a decada de 80,
+temos também métodos de "\textit{pontos interiores}".
 
 Embora a programação linear seja muito eficiente para a resolução de problemas
 lineares, sua aplicação a problemas que apresentem objetivos ou restrições
@@ -359,9 +362,9 @@ diretamente com o uso de programação linear. Programação inteira usa
 programação linear para resolver problemas sobre variáveis inteiras, mas ainda
 com funções objetivo e restrições puramente lineares. As variáveis inteiras são
 representadas como variáveis reais no algoritmo de resolução do problema. Então
-um processo repetitivo é usado para "delimitar" o valor destas variáveis em
+um processo repetitivo é usado para delimitar o valor destas variáveis em
 valores inteiros, através da adição de restrições e reprocessamento da solução.
-Esse método, conhecido como \textit{"branch \& bound"}, finaliza quando todas
+Esse método, conhecido como \textit{branch \& bound}, finaliza quando todas
 as variáveis assumem valores inteiros. Quando o número de variáveis inteiras é
 pequeno, a programação inteira soluciona o problema rapidamente. Infelizmente
 esse procedimento pode consumir muito tempo com um número grande de variáveis

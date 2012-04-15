@@ -1,33 +1,32 @@
 \chapter{Introdução}
   
  A aviação é o principal meio de transporte de pessoas e de mercadorias capaz
- de atravessar grandes distâncias além de ser fundamental para o crescimento
- da economia e do turismo mundial contribuindo assim para a melhora da
- qualidade de vida das pessoas proporcionando lazer e experiências com outras
- culturas. O uso da aviação comercial tem crescido significativamente nas
- últimas décadas e a previsão é que esse aumento seja cada vez maior, pelo
- menos no Brasil, que está fazendo grandes investimento para ampliar e
- melhorar a infraestrutura aeroportuária com a finalidade de atender a grande
- demanda que é esperada para a Copa do Mundo de 2014 e para as Olimpíadas de
- 2016. Além disso a economia do país está crescendo e provocando um aumento da
- renda e da qualidade de vida, incentivando as pessoas a viajar e explorar novas
- oportunidades.
+ de atravessar grandes distâncias. Ela é fundamental para o crescimento
+ da economia e do turismo mundial, contribui para a melhora da qualidade
+ de vida das pessoas proporcionando lazer e experiências com outras culturas. O
+ uso da aviação comercial tem crescido significativamente nas últimas décadas e
+ a previsão é que esse aumento seja cada vez maior, pelo menos no Brasil, que
+ está fazendo grandes investimento para ampliar e melhorar a infraestrutura
+ aeroportuária com a finalidade de atender a grande demanda que é esperada para
+ a Copa do Mundo de 2014 e para as Olimpíadas de 2016. Além disso, a economia do
+ país está crescendo e provocando um aumento da renda e da qualidade de vida,
+ incentivando as pessoas a viajar e explorar novas oportunidades.
 
 %Pode se falar também do aumento da confiança no setor aereo que está sendo
 % associado a uma forma segura de viajar.
   	
 Esse ambiente favorável tem provocado o aumento do número de companhias
-aéreas, fazendo com que ocorra uma maior competição, isso faz com que acentua-se
-a necessidade de otimizar a utilização dos recursos disponíveis, reduzindo os
-custos para poder continuar a crescer e oferecer tarifas mais competitivas.
+aéreas, fazendo com que ocorra uma maior competição, isso faz com que
+se acentue a necessidade de otimizar a utilização dos recursos disponíveis,
+reduzindo os custos para poder continuar a crescer e oferecer tarifas mais competitivas.
 Porém, os problemas presentes na indústria aeronáutica são complexos envolvendo
 múltiplas decisões conflitantes que precisam ser otimizadas em conjunto.
 Diversas técnicas são desenvolvidas e utilizadas para tentar melhorar o
 planejamento e a operação das empresas aéreas. Muitas dessas técnicas estão
 disponíveis na literatura científica, nos campos da pesquisa operacional e da
-matemática. Normalmente essas técnicas são modeladas para funcionar em sistemas
-computadorizados de alta capacidade, com a finalidade de automatizar, ou pelo
-menos auxiliar na tomada de decisões. Essas técnicas se tornam
+matemática. Normalmente, essas técnicas são modeladas para funcionar em sistemas
+computadorizados de alta capacidade, com a finalidade de automatizar ou, pelo
+menos, auxiliar na tomada de decisões. Essas técnicas se tornam
 necessárias à medida que a empresa aérea cresce e o processo de tomada de
 decisão, baseada nos julgamentos individuais e nas experiências se torna mais
 difícil \cite{ahmed2009}.
@@ -46,25 +45,26 @@ conexões e de escalas.
 	
 Para que seja possível ter uma visão geral do contexto é necessário descrever os
 problemas que estão associados com a construção de trilhos de aeronaves. O
-primeiro dos problemas que será mencionado aqui é a modelagem de mercado que tem
-como objetivo fazer o levantamento da quantidade de passageiros que tem
+primeiro dos problemas, que será mencionado aqui, é a modelagem de mercado que
+tem como objetivo fazer o levantamento da quantidade de passageiros que tem
 interesse em viajar entre as localidades levando em consideração o espaço de
 tempo desejado. Adicionalmente pode-se criar demandas através da criação de
 novas rotas com o auxilio de propagandas e promoções. Essa demanda normalmente
-apresenta uma grande variedade dependendo da época do ano e o levantamento desses dados de forma errada pode
-causar grandes prejuízos. É importante categorizar o tipo de passageiro para
-poder fazer escolhas futuras que não levem em consideração apenas fatores
-quantitativos.
+apresenta uma grande variedade dependendo da época do ano e o levantamento
+desses dados de forma errada pode causar grandes prejuízos. É importante
+categorizar o tipo de passageiro para poder fazer escolhas futuras que não
+levem em consideração apenas fatores quantitativos.
 
-Posterior a modelagem de mercado tem-se a necessidade de definir qual
+Posterior a modelagem de mercado, tem-se a necessidade de definir qual
 equipamento (frota) irá operar cada trecho definido pela
 demanda \cite{pimentel2005}, esse problema é conhecido como a atribuição de
 frota (\textit{Fleet Assigment Problem}) . A definição de um equipamento errado
 pode provocar a subutilização da aeronave o que provocaria prejuízos ou a
 superutilização que provocaria a perda de clientes para a
 concorrência. Ao final dessa etapa irão ser formados
-conjuntos de voos que deverão ser operados por tipos de aeronaves específicas. É a partir desses conjuntos que deverá ser feito a
-construção dos trilhos das aeronaves.
+conjuntos de voos que deverão ser operados por tipos de aeronaves específicas.
+É a partir desses conjuntos que deverá ser feita a construção dos trilhos das
+aeronaves.
 
 Um trilho de aeronave é a sequência de voos que uma aeronave deve operar em um
 determinado período, e o problema de construção desses trilhos 
@@ -73,25 +73,28 @@ redução do número de aeronaves necessárias para operar todos os voos e como
 objetivo secundário fazer o menor número de modificações no planejamento inicial desses
 voos.
 
-O problema seguinte utiliza das sequências de voos das aeronaves para construir
-o melhor conjunto de \textit{pairings}\footnote{Pairing é o conjunto de voos que
+O problema seguinte utiliza-se das sequências de voos das aeronaves para
+construir o melhor conjunto de \textit{pairings}\footnote{Pairing é o conjunto de voos que
 pode ser operados por uma tripulação sem que seja violada qualquer regra da
 legislação vigente e que ao final do último voo o tripulante esteja de volta a
 sua cidade base.} de forma que cada voo seja coberto por pelo menos um pairing.
 Gastos com alojamentos, alimentação, transporte em terra e
 \textit{deadheads}\footnote{Deadhead é o voo que o tripulante viaja sem
-trabalhar, com a finalidade de transporte para outra localidade normalmente para sua base ou para suprir uma nova demanda, o deadhead pode ser operado por aviões de outras companhias, nesse caso o custo da viagem é maior.} devem ser levados em consideração. A partir desse conjunto é feito a escala dos
-tripulantes (\textit{Crew Scheduling Problem}) que atribui os pairings a
+trabalhar, com a finalidade de transporte para outra localidade normalmente
+para sua base ou para suprir uma nova demanda, o deadhead pode ser operado por
+aviões de outras companhias, nesse caso o custo da viagem é maior.} devem ser
+levados em consideração. A partir desse conjunto é feita a escala dos
+tripulantes, (\textit{Crew Scheduling Problem}) que atribui os pairings à
 tripulação acrescentando as atividades de solo, tais como \textit{Call
 Time}\footnote{Call time é o tempo que a tripulação tem para se apresentar a
 companhia aérea antes de iniciar de fato seu turno de trabalho.},
-\textit{Stand-by duties}\footnote{Stand-by duties
-são turnos em que o tripulante fica a disposição da companhia aérea afim de
-suprir possíveis eventualidades.} e os dias de descanso. O objetivo dessa última
-etapa é fazer uma distribuição da forma mais justa possível, tentando balancear
-a quantidade de trabalho (horas a serem voadas) entre os tripulantes e também
-tentar cumprir suas preferências sem violar nenhuma restrição da
-legislação trabalhista em vigor.
+\textit{Stand-by duties}\footnote{Stand-by duties são turnos em que o
+tripulante fica a disposição da companhia aérea a fim de suprir possíveis
+eventualidades.} e os dias de descanso. O objetivo dessa última etapa é fazer
+uma distribuição da forma mais justa possível, tentando balancear a quantidade
+de trabalho (horas a serem voadas) entre os tripulantes e também tentar cumprir
+suas preferências sem violar nenhuma restrição da legislação trabalhista em
+vigor.
    
 
 Esse trabalho mostra uma forma eficiente de resolver o Problema de Construção
@@ -103,18 +106,20 @@ Problem (ARP)
 . O PCTA é um dos principais problemas presentes na industria da aviação e seu objetivo
 é fazer o sequenciamento dos voos de cada frota da companhia de forma que seja
 possível operá-las com o menor número de aeronaves possíveis \cite{abiliolivro}
-bem como efetuar a menor modificação possível no planejamento inicial dos voos. Cada sequência de voos recebe o nome de trilho de aeronave e o conjunto desses
-trilhos é denominado de malha aérea. 
+bem como efetuar a menor modificação possível no planejamento inicial dos voos.
+Cada sequência de voos recebe o nome de trilho de aeronave e o conjunto desses
+trilhos é denominado de malha aérea.
 
 Para resolver o PCTA foram aplicadas metaheurísticas combinadas com
 método exato de \textit{branch-and-bound} através da
 resolução de um modelo matemático de programação linear inteira simplificado.
-Essa estratégia foi escolhida pois com os computadores atuais não é possível obter resultados apenas com a aplicação do modelo, que retorna
-o resultado ótimo, pois o tempo necessário para resolver instâncias semanais do
-PCTA já leva um tempo inviável. A utilização apenas de metaheurística foi levada
-em consideração no início, porém nos resultados práticos a qualidade da solução
-se mostrou muito aquém da desejada. Dessa forma surgiu a idéia de juntar as
-duas técnicas, com a finalidade de obter a convergência do método exato e a
+Essa estratégia foi escolhida pois com os computadores atuais não é possível
+obter resultados apenas com a aplicação do modelo exato, que retorna o resultado
+ótimo, pois o tempo necessário para resolver instâncias semanais do PCTA já
+leva um tempo inviável. A utilização apenas de metaheurística foi levada em
+consideração no início, porém nos resultados práticos a qualidade da solução se
+mostrou muito aquém da desejada. Dessa forma surgiu a idéia de juntar as duas
+técnicas, com a finalidade de obter a convergência do método exato e a
 velocidade da metaheurística.
 
 Na literatura tem-se observado um crescimento no número de trabalhos que se
@@ -171,13 +176,14 @@ complexos de otimização combinatória apresentando soluções de alta qualidad
   
 Nos dias de hoje, com o avanço da tecnologia e o aumento da competitividade,
 desenvolver soluções com melhor qualidade acaba se tornando um fator decisivo
-para a permanência no mercado, tornando-se então necessário a obtenção de
+para a permanência no mercado, tornando-se então necessária a obtenção de
 soluções de forma mais rápida, mais barata e utilizando menos recursos. Por
-causa da dificuldade que é inerente a essa classe de problemas a qualidade das
+causa da dificuldade que é inerente a essa classe de problemas, a qualidade das
 soluções obtidas manualmente são muito inferiores em relação à melhor solução
-possível. Outra característica que reforça a necessidade da obtenção de melhores soluções é o
-aumento do tamanho e da complexidade das instâncias trabalhadas. A partir desse
-cenário pode-se perceber a necessidade de utilização de técnicas de otimização.
+possível. Outra característica que reforça a necessidade da obtenção de
+melhores soluções é o aumento do tamanho e da complexidade das instâncias
+trabalhadas. A partir desse cenário pode-se perceber a necessidade de
+utilização de técnicas de otimização.
 
   
 %As metaheurísticas podem ser definidas como um conjunto de procedimentos de
@@ -223,14 +229,14 @@ http://people.brunel.ac.uk/~mastjjb/jeb/info.html} que foi descrito
 inicialmente em J.E.Beasley \cite{orlibrary} permitindo o acesso a centenas de
 conjuntos de instâncias a partir da Internet.
   
-Apesar da existência dessas entidades apenas uma instância, a da Rio Sul, foi
+Apesar da existência dessa entidade apenas uma instância, a da Rio Sul, foi
 encontrada em um relatório técnico da UFPB. Com a finalidade de ter outra
-instância, foi feito o  na web dos voos operados pela
-compahia denominada TAM (http://www.tam.com.br). Esse levantamento foi feito
-através de uma pesquisa observativa fazendo-se o comparativo da malha operada
-pela companhia, que pode ser visto na Figura \ref{fig:malhatam}, e as
-possibilidades de voos diretos do equipamento AirBus Industrie A310, que formava
-a maior frota da empresa.
+instância, foi feito na web a coleta dos dados dos voos operados pela compahia
+denominada TAM (http://www.tam.com.br). Esse levantamento foi feito através de
+uma pesquisa observativa fazendo-se o comparativo da malha operada pela
+companhia, que pode ser visto na Figura \ref{fig:malhatam}, e as possibilidades
+de voos diretos do equipamento AirBus Industrie A310, que formava a maior frota
+da empresa.
 	
 \begin{figure}[h]
 \centering
@@ -242,7 +248,7 @@ a maior frota da empresa.
 \end{figure}
 	
 A malha da Rio Sul se refere a uma instância com voos de um dia de operação da
-empresa contendo 107 voos, onde na prática era operado com 20 trilhos
+empresa contendo 107 voos, onde na prática os voos eram operados com 20 trilhos
 obtidos pela montagem manual de um experiente operador \cite{pontes2002}. A
 malha da TAM, que foi obtida manualmente, é formada por 241 voos possuindo
 uma grande quantidade de ligações entre os 31 aeroportos envolvidos, dessa
@@ -256,7 +262,7 @@ Levou-se em consideração apenas instâncias de companhias aéreas brasileiras 
 as grandes empresas globais apresentam uma malha com característica
 \textit{hub-and-spoke}, como pode ser visto na Figura \ref{fig:hubandspoke}. Uma
 malha é caracterizada como sendo do tipo \textit{hub-and-spoke} se ela
-apresentar uma grande concen tração de voos em poucos aeroportos e
+apresentar uma grande concentração de voos em poucos aeroportos e
 adicionalmente se um voo tem ligação com um \textit{hub} ele não poderá ter
 ligação com outros \textit{hubs} a não ser que ele também seja um \textit{hub}.
 Instâncias com essa caractéristicas são mais fáceis de serem resolvidas pois
@@ -270,8 +276,9 @@ não apresentam a caractéristica explosiva no nível presente nas malhas aérea
  	 	
 	
 Não foi possível obter mais instâncias reais pois a comunicação entre essas
-empresas e a acadêmia é fraca. Grande parte dessa falta de comunicação se deve
-ao receio de revelar dados que podem vir a lhes prejudicar junto a concorrência.
+empresas e a acadêmia é fraca. Grande parte dessa falta de comunicação
+provavelmente se deve ao receio de revelar dados que podem vir a lhes prejudicar
+junto a concorrência.
 
 As instâncias podem ser vistas nos anexos ao final desse trabalho.
 
@@ -301,11 +308,11 @@ O método proposto consegue acelerar a convergência da fase de busca local
 através de uma busca exata em uma vizinhança restrita usando programação
 linear inteira. Adicionalmente esse método permite escapar de minimos locais.
 
-Para conseguir melhores resultados foi permitido, em alguns cenários, a
+Para conseguir melhores resultados foi permitida, em alguns cenários, a
 utilização de pequenas alterações no horário de partida sugerido dos voos bem
 como a criação de voos de reposicionamento.
 
-\section {Organização da proposta }
+\section {Organização da dissertação }
 
 O restante desse trabalho está estruturado da seguinte forma:
 
@@ -332,7 +339,7 @@ feita a integração das metaheurísticas e da programação linear inteira e ta
 diretrizes de como utilizar o método proposto.
 %\item Capítulo 8: Dá uma conclusão, indicando o que tem que ser melhorado e o que se espera ter para a finalização do trabalho.
 
-\item No final é apresentado a bibliográfia e os anexos que contém um maior
+\item No final são apresentados a bibliográfia e os anexos que contém um maior
 detalhamento das instâncias e dos resultados obtidos.
 
 \end{itemize}

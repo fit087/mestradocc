@@ -25,7 +25,7 @@ O \textit{solver} é utilizado para resolver um modelo matemático que foi
 desenvolvido baseado na proposta de \cite{pontes2002} que é aplicado a uma parte do problema cada
 vez que se deseja fazer uma perturbação. Enquanto a busca local usa o método de
 descida, variando entre três estruturas de vizinhança, o \textit{swap-x}, o
-\textit{crossover} e a \textit{compactação}. Mais adiante serão dado mais
+\textit{crossover} e a \textit{compactação}. Mais adiante serão dados mais
 detalhes sobre o modelo matemático, a forma de escolha do sub problema, da fase
 de construção que foi implementada, da busca local e das implementações que não
 tiveram êxito.
@@ -158,7 +158,7 @@ $x_{ij} = 0$ então M irá validar automáticamente essa restrição. M tem valo
 igual a soma da duração dos voos. As restrições 5, 6 e 7 modelam o valor
 absoluto do atraso em $\theta$.
 
-A equação 8 restrige o atraso/adiantamento máximo que pode ser utilizado e a
+A equação 8 restringe o atraso/adiantamento máximo que pode ser utilizado e a
 equação 9 modela a variável de decisão $x$ como sendo booleana.
 
 Pode-se perceber que o modelo matemático não faz menção ao tempo de solo ($g$).
@@ -177,7 +177,7 @@ quantidade de restrições do problema.
 	
 \end{figure}
 
-Além disso o conjunto $A$ contém apenas um tipo de arco, o arco do tipo 1 se os
+Além disso, o conjunto $A$ contém apenas um tipo de arco, o arco do tipo 1 se os
 voos satisfazem a restrição geográfica e o arco do tipo 3 caso não satisfaçam.
 Os arcos dos tipos 2 e 4 são modelados a partir  da variável $\delta$ que tem
 seu custo acrescentado na função objetivo.
@@ -185,7 +185,7 @@ seu custo acrescentado na função objetivo.
 Essa estratégia permite a redução de 3 arcos para cada voo, o que deixa o
 modelo mais leve.
 
-O calculo dos custos são feitos através de um pré-processamento, onde os arcos
+O cálculo dos custos são feitos através de um pré-processamento, onde os arcos
 viáveis recebem os valores referentes ao seu tipo, por exemplo, no caso de um
 arco originário do nó origem, arco do tipo 6, um custo 1000 é atribuído. No
 caso de arcos que deverão ser evitados um custo elevado é atribuído.
@@ -211,7 +211,7 @@ primeira abordagem foi adotada, pois, nas instâncias disponíveis ela apresento
 sempre, soluções de melhor qualidade. 
 
 Pode ser que para instâncias com alguma característica específica a
-estratégia de montagem dos trilhos de forma paralela pode apresentar melhores
+estratégia de montagem dos trilhos de forma paralela podem apresentar melhores
 resultados.
 
 
@@ -234,9 +234,9 @@ inseridos em uma lista restrita inicial (LCI) na qual é feita a seleção
 aleatório de um dos voos. Isso é feito para evitar a escolha de um voo muito
 distante do menor voo.
 
-Os pseudocódigos \ref{alg:selectinit} e \ref{alg:formseq} ajudam a elucidar esse
-entendimento. Primeiro deve-se entender o pseudocódigo \ref{alg:selectinit}
-onde é feito a escolha de um voo que deverá iniciar um trilho, esse
+Os pseudocódigos \ref{alg:selectinit} e \ref{alg:formseq} apresentam esses
+procedimentos. Primeiro deve-se entender o pseudocódigo \ref{alg:selectinit}
+onde é feita a escolha de um voo que deverá iniciar um trilho, esse
 pseudocódigo serve tando para montar trilhos de forma sequencial como de forma
 paralela. Em 1 é formada a LCI que é composta pelos 5 primeiros voos ainda não
 alocados, de 2 a 4 é feita a formação da LRI tendo como base o menor horário de
@@ -247,7 +247,7 @@ voos disponíveis são ordenados de acordo com seu horário de partida, em 2 a
 malha, que será o resultado, é inicializada com vazio. De 3 a 9 é feita a
 montagem dos trilhos que irão compor a malha, em 4 e 5 é obtido o primeiro voo
 do trilho, em 6 é feita a montagem completa desse trilho, em 7 os voos
-pertencente ao trilho corrente são removidos do conjunto de voos disponíveis e
+pertencentes ao trilho corrente são removidos do conjunto de voos disponíveis e
 em 8 o trilho corrente é adicionado a malha resultante.
 
  \begin{figure}[h]
@@ -294,9 +294,9 @@ h(v_{min}))\}$;
  
 Nessa estratégia um trilho é iniciado sempre que existe um voo que não pode ser
 inserido em nenhum dos trilhos que estejam sendo montados, mantendo-se assim um
-conjunto de trilhos disponíveis (CTD).
+Conjunto de Trilhos Disponíveis (CTD).
 
-Em cada iteração o trilho corrente (TC) é escolhido a partir do CTD de forma
+Em cada iteração o Trilho Corrente (TC) é escolhido a partir do CTD de forma
 aleatória. Feito isso, adiciona-se um voo a esse trilho. Caso não existam voos
 candidatos para adição no TC este é removido da CTD e uma nova iteração é
 iniciada.
@@ -371,11 +371,11 @@ o sequenciamento com a utilização de um voo de reposicionamento mas sem inseri
 atraso em nenhum dos voos envolvidos. Os arcos do tipo 4 utilizam-se de atrasos
 e de um voo de reposicionamento para fazer a ligação entre dois voos. Os arcos
 do tipo 5 partem do nó \textit{source} e servem para modelar o início de um
-trilho. Os arcos do tipo 6 representam o no de destino (\textit{sink}), nele
+trilho. Os arcos do tipo 6 representam o nó de destino (\textit{sink}), nele
 incidem todos os últimos voos de cada trilho.
 
 Primeiramente é feita a escolha do tipo de arco que será utilizado para efetuar
-a ligação do ultimo voo do trilho corrente. Essa escolha é feita tendo
+a ligação do último voo do trilho corrente. Essa escolha é feita tendo
 como base as probabilidades de cada um desses arcos acontecer. Essa
 probabilidade foi definida como sendo
 $P(a_{1})=0.79,P(a_{2})=0.16,P(a_{3})=0.04,P(a_{4})=0.01$ pois a solução ótima
@@ -393,9 +393,9 @@ desse trilho é finalizada.
  
 Caso seja possível a obtenção de uma lista de candidatos então ela é reduzida
 tendo como base o passo 2 a 4 do algoritmo \refa{alg:selectinit} formando
-assim a lista de candidatos restrita (LCR), essa redução remove os candidatos que estão
-muito afastado do melhor candidato da lista. Como está lista se encontra
-ordenada, então, o elemento de menor impacto ($v_{menor}$) na solução é o
+assim a Lista de Candidatos Restrita (LCR), essa redução remove os candidatos
+que estão muito afastados do melhor candidato da lista. Como está lista se
+encontra ordenada, então, o elemento de menor impacto ($v_{menor}$) na solução é o
 primeiro e o de maior impacto ($v_{maior}$) é o último. A LCR contém os
 candidatos que tenha o valor de impacto na solução entre $v_{menor}$
 e $v_{menor} + \alpha*(v_{maior} + v_{menor})$, onde $\alpha$ é o
@@ -452,7 +452,7 @@ estruturas de vizinhança, visando obter o valor ótimo local da solução, depo
 é feita uma perturbação que diversifica a solução. Isso é feito através da
 aplicação do modelo matemático, definido no início desse capítulo, em uma parte
 do problema. Quando nenhuma das duas estratégias consegue melhorar a solução
-então a busca local encerra e uma nova iteração do GRASP pode ser iniciada.
+então a busca local se encerra e uma nova iteração do GRASP pode ser iniciada.
  
 \subsection{Estruturas de vizinhança}
  
@@ -480,9 +480,9 @@ estrutura permite remover um atraso.
  \subsubsection{Cross-Over}
  
 A ideia do operador $crossover$ é a de efetuar troca entre dois segmentos de
-trilhos com a finalidade de gerar novos trilhosque não apresentes voos
+trilhos com a finalidade de gerar novos trilhos que não apresentem voos
 atrasados. A Figura \ref{fig:crossover} mostra um caso em que a aplicação dessa
-estrutura melhroa a solução.
+estrutura melhora a solução.
 
 
 \begin{figure}[ht]
@@ -524,7 +524,7 @@ O método de perturbação utilizado aqui difere do que normalmente é aplicado
 pois a solução tem a sua estrutura modificada e ainda consegue melhorar a sua
 qualidade. Isso é feito através da resolução do modelo matemático em uma
 parte do problema. A sua utilização ocorre com a seleção de um conjunto de
-trilhos, e sua a posterior aplicação no \textit{solver} configurado para o
+trilhos, e sua posterior aplicação no \textit{solver} configurado para o
 conjunto de voos da seleção.
 
 O método exato retorna a configuração ótima desses voos, que
@@ -537,7 +537,7 @@ A seleção dos trilhos é feita com base no seu
 utilização efetiva de um trilho com relação ao tempo de partida do primeiro voo
 e o tempo de chegada do último voo da instância, ou seja, quanto maior o tempo
 que a aeronave, que opera um determinado trilho, permanece voando maior será o
-seu grau de compactação. O calculo do grau de compactação não leva em
+seu grau de compactação. O cálculo do grau de compactação não leva em
 consideração os voos de reposicionamento, pois eles não estão no planejamento
 inicial e por isso não são passados para o modelo.
 
@@ -560,7 +560,7 @@ A estratégia paralela foi desenvolvida para aumentar a escalabilidade na
 resolução de grandes problemas e também na tentativa de obter melhores soluções
 em um menor espaço de tempo. O seu funcionamento parte da divisão da instância
 em períodos de tempos iguais que são distribuídas para cada processo. Em cada
-período os processos realizam uma construção do algoritmo descrito na seção
+período os processos realizam uma construção do algoritmo descrito na Seção
 \ref{sessao:construcao}. Ao final dessa etapa cada processo possui um um
 conjunto de trilhos que devem ser ligados uns com os outros para a geração de
 uma malha de voo completa.
@@ -575,7 +575,7 @@ ligação de trilhos entre esses processo são esgotados então o passo do algor
 é incrementado para que o processo consiga conversar com o processo sucessor que
 possua uma distância de 2 dele, ou seja, o processo 0 se comunica com o processo
 2, o 1 com o 3 e assim por diante, isso ocorre até que todos os processo tenham
-se comunicados com os outros ou até que todos os trilhos estejam ligados.
+se comunicado com os outros ou até que todos os trilhos estejam ligados.
 
 Essa estratégia é interessante pois normalmente as empresas trabalham com uma
 malha circular que costuma se repetir toda a semana.
@@ -633,7 +633,7 @@ trilhos.
 
 A linha 1 é utilizada na inicialização dos voos, onde cada processo obtém o
 conjunto de voos que irá trabalhar, esse conjunto de voos é definido pela
-instância $M$, pelo número de processor que estão executando $s$ e pelo número
+instância $M$, pelo número de processos que estão executando $s$ e pelo número
 do processo corrente $r$. O laço iniciado na linha 2 modela a quantidade de
 iterações do algoritmo, que é baseado no número de processos. A variável $cn$ é
 o contador de nível e informa para qual vizinho o processo corrente irá tentar
@@ -643,7 +643,7 @@ O cálculo do índice do processo que irá receber a comunicação é feita na l
 3. A linha 4 inicia o contador de mensagens enviadas, que é usado como auxiliar
 de condição de parada no laço da linha 13.
 
-É feito então uma tentativa de conectar os trilhos que ainda não
+É feita então uma tentativa de conectar os trilhos que ainda não
 foram conectados com os trilhos dos vizinhos. Nas linhas 6 a 10 é
 feito o envio de solicitações de conexões de todos os últimos voos ainda não
 conectados de cada um dos seus trilhos para o vizinho corrente que é definido
@@ -667,12 +667,12 @@ selecionado, isso é feito no procedimento \textit{EfetuaConexão(P, f)}. Caso
 não exista nenhum voo que possa se candidatar então uma mensagem de rejeição de
 conexão é enviada pelo procedimento \textit{RejeitaConexão(P, f)}.
 
-As linhas 22 a 24 é executada quando o processo recebe uma mensagem de aceitação
-ou rejeição de conexão e é utilizada para configurar o voo que teve a
+As linhas 22 a 24 são executadas quando o processo recebe uma mensagem de
+aceitação ou rejeição de conexão e é utilizada para configurar o voo que teve a
 solicitação aceita. Já as linhas 24 a 26 marca a flag de finalização do vizinho
 $F$ como verdadeiro.
 
-Na prática essa estratégia conseguiu obter resultados aproximadamente 10\%
+Na prática, essa estratégia conseguiu obter resultados aproximadamente 10\%
 melhores que a estratégia sequencial, ou seja, de um processo com a fatia
 completa do tempo, levando em consideração apenas a fase de construção. Por
 questões de tempo esse experimento não foi concluído, com a inserção da fase de
